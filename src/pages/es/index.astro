@@ -1,0 +1,374 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { localized, tr } from '../../i18n/utils';
+
+const locale = 'es' as const;
+const t = tr(locale);
+
+const allProjects = await getCollection('projects', ({ data }) => data.locale === locale);
+const featured = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const services = [
+  { eyebrow: '// servicio · 01', title: 'factibilidad informada por datos', icon: 'query_stats', body: 'la energía es dinero, y el dinero impulsa la factibilidad. los modelos energéticos tempranos traducen clima, envolvente y operación al lenguaje del pro-forma.' },
+  { eyebrow: '// servicio · 02', title: 'diseño conceptual', icon: 'architecture', body: 'orientación, masa y programa puestos a prueba contra el clima antes de comprometer la sección.' },
+  { eyebrow: '// servicio · 03', title: 'diseño + coordinación arquitectónica', icon: 'dashboard_customize', body: 'entrega arquitectónica integral, con el modelo energético dentro de la conversación desde el primer día.' },
+  { eyebrow: '// servicio · 04', title: 'permisos + documentación', icon: 'description', body: 'documentos constructivos que pasan revisión y que el contratista realmente puede construir.' },
+  { eyebrow: '// servicio · 05', title: 'asesoría en energía y desempeño', icon: 'monitoring', body: 'simulación de envolvente, estudios de luz natural, soporte leed / edge, como servicio independiente o integrado.' },
+];
+
+const problems = [
+  { p: 'alto consumo energético', s: 'control solar, estrategia de envolvente, alineación de sistemas.', icon: 'bolt' },
+  { p: 'sobrecalentamiento + quejas de confort', s: 'sombra, movimiento de aire, enfriamiento pasivo.', icon: 'device_thermostat' },
+  { p: 'humedad + calidad de aire interior', s: 'manejo de carga latente y detallado para durabilidad.', icon: 'humidity_mid' },
+  { p: 'exposición costera + corrosión', s: 'selección de materiales y detallado protector.', icon: 'waves' },
+  { p: 'poca luz natural o reflejos', s: 'modelado de luz natural y acceso solar controlado.', icon: 'wb_sunny' },
+  { p: 'mantenimiento a largo plazo', s: 'sistemas más simples y ensambles duraderos.', icon: 'build' },
+];
+
+const manifesto = ['sombra', 'ventilación', 'humedad', 'durabilidad', 'masa térmica', 'energía'];
+---
+
+<BaseLayout
+  title="entrópica · arquitectura energética para el trópico"
+  description="diseñamos edificios eficientes para el trópico. arquitectura guiada por simulación desde antes del primer día. desde panamá, trabajando en todo el mundo."
+  locale={locale}
+>
+  <section class="hero">
+    <div class="site-wrap">
+      <div class="hero-grid">
+        <div class="hero-eb">// estudio de arquitectura tropical · fundada en 2020</div>
+        <h1 class="hero-h">
+          diseñamos edificios eficientes<br />
+          para el trópico.
+        </h1>
+        <p class="hero-lede">
+          entrópica es un estudio de arquitectura tropical en panamá, con experticia
+          profunda en modelado energético, termodinámica edilicia y ciencia del clima.
+          somos arquitectos primero; la simulación es el instrumento, no el autor. el
+          modelo informa. la arquitectura decide.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn amber" href={localized('/projects', locale)}>
+            {t('cta.viewWork')}
+            <span class="arrow-tail" aria-hidden="true"></span>
+          </a>
+          <a class="btn" href={localized('/contact', locale)}>{t('cta.contact')}</a>
+        </div>
+        <div class="hero-where">// panamá · kunshan · el caribe · la costa pacífica seca</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto-strip">
+    <div class="site-wrap">
+      <div class="manifesto-eb">// el desempeño es material de diseño</div>
+      <div class="manifesto-grid">
+        {manifesto.map((word) => (
+          <div class="manifesto-cell">{word} <span class="amber">es arquitectura.</span></div>
+        ))}
+      </div>
+      <p class="manifesto-note">
+        lo que la práctica de climas templados trata como cuestión de ingeniería, sombra,
+        ventilación, humedad, energía, es para nosotros el material mismo del diseño.
+        el edificio no es un contenedor de desempeño. el desempeño es el edificio.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="site-wrap">
+      <div class="two-col">
+        <div class="col-eb"><div class="eyebrow">// el problema · pt 01</div></div>
+        <div class="col-body">
+          <div class="col-image placeholder">
+            <span class="ph-tag">// imagen · el ciclo de diseño convencional</span>
+          </div>
+          <h2 class="block-h">
+            la energía y los costos operativos rara vez son parte de las decisiones arquitectónicas.
+          </h2>
+          <div class="prose">
+            <p>
+              en el proceso convencional, las decisiones arquitectónicas se toman antes de
+              que el impacto energético sea visible. el modelado llega demasiado tarde para
+              influir en la forma. los costos operativos se evalúan después de fijar la
+              intención. para entonces, los ahorros importantes ya están perdidos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="site-wrap">
+      <div class="two-col">
+        <div class="col-eb"><div class="eyebrow">// el problema · pt 02</div></div>
+        <div class="col-body">
+          <div class="col-image">
+            <img src="/home/tropics-fundamentally.png" alt="entorno operativo del trópico" />
+          </div>
+          <h2 class="block-h">
+            el trópico es un entorno operativo fundamentalmente distinto.
+          </h2>
+          <div class="prose">
+            <p>
+              calor constante, humedad constante, sol constante. el enfriamiento, la
+              deshumidificación y el control solar son cargas permanentes, no condiciones
+              pico. decisiones que serían tolerables en un clima templado se vuelven
+              costosas aquí, rápida y mediblemente.
+            </p>
+            <p>
+              los estándares importados y los flujos de trabajo genéricos no logran predecir
+              el comportamiento operativo real. los edificios tropicales necesitan pensamiento
+              tropical, desde la sección hacia arriba.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="site-wrap">
+      <div class="two-col">
+        <div class="col-eb"><div class="eyebrow">// el trabajo</div></div>
+        <div class="col-body">
+          <div class="col-image">
+            <img src="/home/simulation-drives.jpg" alt="resultado de simulación guiando la sección" />
+          </div>
+          <h2 class="block-h">
+            la simulación dirige el diseño, no el deck.
+          </h2>
+          <div class="prose">
+            <p>
+              usamos simulación de desempeño (energy+, openfoam, radiance) como un
+              ingeniero estructural usa un modelo fea: temprano, frecuente, y pequeño. cada
+              modelo responde una pregunta. cada respuesta reescribe una parte de la sección.
+            </p>
+            <p>
+              el resultado es desempeño que cumple o supera leed y edge, ganado por el
+              propio diseño, no agregado como certificado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block problems-section alt">
+    <div class="site-wrap">
+      <div class="proof-head">
+        <div class="eyebrow">// lo que normalmente nos piden resolver</div>
+        <h2 class="block-h">problemas de diseño resueltos con validación.</h2>
+      </div>
+      <div class="problems-grid">
+        {problems.map((p) => (
+          <div class="problem">
+            <span class="material-symbols-outlined icon-md icon-amber prob-icon">{p.icon}</span>
+            <div class="prob-name">{p.p}</div>
+            <div class="prob-soln">{p.s}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="block proof">
+    <div class="site-wrap">
+      <div class="proof-head">
+        <div class="eyebrow amber">// la prueba</div>
+        <h2 class="block-h">trabajos seleccionados.</h2>
+      </div>
+
+      <div class="proof-grid">
+        {featured.map((p, i) => (
+          <a class={`proj-card ${i === 0 ? 'lead' : ''}`} href={localized(`/projects/${p.data.slug}`, locale)}>
+            <div class="proj-photo">
+              <span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span>
+            </div>
+            <div class="proj-meta">
+              <div class="proj-eb">{p.data.eyebrow}</div>
+              <div class="proj-title">{p.data.title}</div>
+              <div class="proj-info">
+                <span>{p.data.location}</span>
+                <span class="sep">·</span>
+                <span>{p.data.year}</span>
+                <span class="sep">·</span>
+                <span>{p.data.area}</span>
+              </div>
+              <div class="proj-metric">
+                {i === 0 ? (
+                  <span class="amber-num">{p.data.metric.value}<span class="unit">{p.data.metric.unit}</span></span>
+                ) : (
+                  <span class="grey-num">{p.data.metric.value}<span class="unit">{p.data.metric.unit}</span></span>
+                )}
+                <span class="metric-label">{p.data.metric.label}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="proof-foot">
+        <a class="btn" href={localized('/projects', locale)}>
+          {t('cta.viewWork')}
+          <span class="arrow-tail" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block services">
+    <div class="site-wrap">
+      <div class="proof-head">
+        <div class="eyebrow">// servicios</div>
+        <h2 class="block-h">servicios arquitectónicos completos, guiados por energía.</h2>
+        <p class="block-sub">desde el concepto hasta la construcción. el desempeño energético y operativo guía cada decisión de diseño.</p>
+      </div>
+
+      <div class="services-grid">
+        {services.map((s) => (
+          <div class="svc">
+            <span class="material-symbols-outlined icon-md icon-amber svc-icon">{s.icon}</span>
+            <div class="svc-eb">{s.eyebrow}</div>
+            <h3 class="svc-title">{s.title}</h3>
+            <p class="svc-body">{s.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="proof-foot">
+        <a class="btn" href={localized('/services', locale)}>más sobre servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-cta">
+    <div class="site-wrap">
+      <div class="closing-inner">
+        <div class="eyebrow">// la próxima colaboración</div>
+        <h2 class="closing-h">
+          escríbenos, y hagamos juntos<br />
+          edificios frescos en lugares calurosos.
+        </h2>
+        <div class="closing-ctas">
+          <a class="btn amber" href={localized('/contact', locale)}>
+            {t('cta.contact')}
+            <span class="arrow-tail" aria-hidden="true"></span>
+          </a>
+          <a class="contact-line" href="mailto:info@entropica-lab.com">info@entropica-lab.com</a>
+          <a class="contact-line" href="https://wa.me/50769444740" target="_blank" rel="noopener">whatsapp · +507 6944-4740</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding: 120px 0 96px; }
+  .hero-grid { display: grid; gap: 32px; max-width: 980px; }
+  .hero-eb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
+  .hero-h { font-size: clamp(40px, 6vw, 76px); line-height: 0.98; letter-spacing: -0.03em; margin: 0; font-weight: 300; text-wrap: balance; }
+  .hero-lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; color: var(--mute-on-paper); max-width: 56ch; margin: 0; font-weight: 300; }
+  .hero-ctas { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .hero-where { margin-top: 32px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
+
+  /* section image (problem pts + the work) */
+  .col-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--paper-2);
+    border: 1px solid var(--line-on-paper);
+    margin-bottom: 32px;
+    overflow: hidden;
+    position: relative;
+  }
+  .block.alt .col-image { background: var(--paper); }
+  .col-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .col-image.placeholder {
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 14px, transparent 14px 28px);
+    display: grid; place-items: center;
+  }
+  .col-image .ph-tag {
+    position: absolute; top: 14px; left: 16px;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mute-on-paper-2); font-weight: 400;
+  }
+
+  /* manifesto strip */
+  .manifesto-strip { padding: 56px 0 72px; border-top: 1px solid var(--line-on-paper); }
+  .manifesto-eb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; margin-bottom: 24px; }
+  .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-on-paper); border-bottom: 1px solid var(--line-on-paper); }
+  .manifesto-cell { padding: 22px 24px; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.2; letter-spacing: -0.01em; font-weight: 300; border-right: 1px solid var(--line-on-paper); border-bottom: 1px solid var(--line-on-paper); }
+  .manifesto-cell:nth-child(3n) { border-right: none; }
+  .manifesto-cell:nth-last-child(-n+3) { border-bottom: none; }
+  .manifesto-cell .amber { color: var(--amber); }
+  .manifesto-note { margin-top: 20px; font-size: 14px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 400; max-width: 64ch; }
+  @media (max-width: 720px) {
+    .manifesto-grid { grid-template-columns: 1fr 1fr; }
+    .manifesto-cell:nth-child(3n) { border-right: 1px solid var(--line-on-paper); }
+    .manifesto-cell:nth-child(2n) { border-right: none; }
+    .manifesto-cell:nth-last-child(-n+3) { border-bottom: 1px solid var(--line-on-paper); }
+    .manifesto-cell:nth-last-child(-n+2) { border-bottom: none; }
+  }
+
+  /* problems strip */
+  .problems-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .problem { padding: 24px 28px; background: var(--paper); border: 1px solid var(--line-on-paper); display: flex; flex-direction: column; gap: 8px; }
+  .prob-icon { margin-bottom: 6px; }
+  .prob-name { font-size: 16px; font-weight: 500; color: var(--ink-on-paper); }
+  .prob-soln { font-size: 14px; color: var(--mute-on-paper); line-height: 1.6; font-weight: 400; }
+  @media (max-width: 900px) { .problems-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .problems-grid { grid-template-columns: 1fr; } }
+
+  .block { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .block.alt { background: var(--paper-2); }
+  .two-col { display: grid; grid-template-columns: 240px 1fr; gap: 80px; }
+  .col-eb .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; padding-top: 4px; }
+  .block-h { font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 24px; font-weight: 300; max-width: 24ch; text-wrap: balance; }
+  .block-sub { font-size: 17px; line-height: 1.55; color: var(--mute-on-paper); margin: 0; max-width: 56ch; font-weight: 300; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; gap: 24px; } .block { padding: 56px 0; } }
+
+  .proof-head { margin-bottom: 56px; }
+  .proof-head .eyebrow { margin-bottom: 16px; }
+  .proof-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
+  .proj-card { display: flex; flex-direction: column; gap: 16px; color: inherit; text-decoration: none; transition: transform 0.2s; }
+  .proj-card:hover { transform: translateY(-2px); }
+  .proj-photo { aspect-ratio: 4 / 3; background: var(--paper-2); background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px); border: 1px solid var(--line-on-paper); position: relative; }
+  .proj-card.lead .proj-photo { aspect-ratio: 5 / 4; }
+  .proj-photo .ph-tag { position: absolute; top: 14px; left: 16px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
+  .proj-meta { display: flex; flex-direction: column; gap: 6px; }
+  .proj-eb { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
+  .proj-title { font-size: 20px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 300; }
+  .proj-card.lead .proj-title { font-size: 24px; }
+  .proj-info { font-size: 11px; letter-spacing: 0.04em; color: var(--mute-on-paper); font-weight: 400; }
+  .proj-info .sep { color: var(--mute-on-paper-2); margin: 0 6px; }
+  .proj-metric { display: flex; align-items: baseline; gap: 10px; margin-top: 8px; border-top: 1px solid var(--line-on-paper); padding-top: 12px; }
+  .amber-num { font-size: 32px; color: var(--amber); font-feature-settings: 'tnum' 1, 'lnum' 1; letter-spacing: -0.025em; line-height: 1; }
+  .grey-num { font-size: 22px; color: var(--ink-on-paper); font-feature-settings: 'tnum' 1, 'lnum' 1; letter-spacing: -0.015em; line-height: 1; }
+  .amber-num .unit, .grey-num .unit { font-size: 0.5em; vertical-align: top; margin-left: 1px; }
+  .metric-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
+  .proof-foot { margin-top: 40px; display: flex; justify-content: flex-start; }
+  @media (max-width: 900px) { .proof-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  .services { background: var(--paper-2); }
+  .services-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .svc { background: var(--paper); border: 1px solid var(--line-on-paper); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .svc-icon { margin-bottom: 4px; }
+  .svc-eb { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
+  .svc-title { font-size: 16px; font-weight: 400; line-height: 1.2; margin: 0; }
+  .svc-body { font-size: 13px; line-height: 1.55; color: var(--mute-on-paper); font-weight: 300; margin: 0; }
+  @media (max-width: 1100px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
+
+  .closing-cta { padding: 120px 0; border-top: 1px solid var(--line-on-paper); }
+  .closing-inner { max-width: 800px; }
+  .closing-h { font-size: clamp(32px, 4.5vw, 56px); line-height: 1.05; letter-spacing: -0.025em; margin: 16px 0 32px; font-weight: 300; text-wrap: balance; }
+  .closing-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+  .contact-line { font-size: 14px; color: var(--mute-on-paper); border-bottom: 1px solid transparent; padding: 4px 0; }
+  .contact-line:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  @media (max-width: 900px) { .closing-cta { padding: 64px 0; } }
+</style>

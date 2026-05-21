@@ -1,0 +1,425 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { localized, tr } from '../../i18n/utils';
+
+const locale = 'en' as const;
+const t = tr(locale);
+
+export async function getStaticPaths() {
+  const all = await getCollection('projects', ({ data }) => data.locale === 'en');
+  return all.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const briefParas = (data.brief ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const approachParas = (data.approach ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+---
+
+<BaseLayout
+  title={`${data.title} · entrópica`}
+  description={data.lede}
+  locale={locale}
+>
+  <article class="cs">
+    <!-- top crumb -->
+    <div class="site-wrap">
+      <div class="crumb">
+        <a href={localized('/projects', locale)}>{t('cta.back')} {t('nav.work')}</a>
+        <span class="sep">·</span>
+        <span class="muted">case study</span>
+      </div>
+    </div>
+
+    <!-- hero -->
+    <section class="cs-hero">
+      <div class="site-wrap">
+        <div class="hero-top">
+          <div class="eyebrow amber">{data.eyebrow ?? `// ${data.typology}`}</div>
+          <h1 class="cs-h1">{data.title}.</h1>
+          <p class="cs-lede">{data.lede}</p>
+        </div>
+
+        <div class="hero-image">
+          {data.heroImage ? (
+            <img src={data.heroImage} alt={data.title} />
+          ) : (
+            <span class="ph-tag">// 16∶9 hero · {data.location}</span>
+          )}
+        </div>
+
+        <div class="cs-meta">
+          <div><div class="k">{t('meta.location')}</div><div class="v">{data.location}</div></div>
+          <div><div class="k">{t('meta.year')}</div><div class="v">{data.year}</div></div>
+          <div><div class="k">{t('meta.area')}</div><div class="v">{data.area}</div></div>
+          <div><div class="k">{t('meta.typology')}</div><div class="v">{data.typology}</div></div>
+          {data.status && (<div><div class="k">{t('meta.status')}</div><div class="v">{data.status}</div></div>)}
+          {data.role && (<div><div class="k">{t('meta.role')}</div><div class="v">{data.role}</div></div>)}
+        </div>
+      </div>
+    </section>
+
+    <!-- proof -->
+    <section class="cs-proof">
+      <div class="site-wrap">
+        <div class="proof-grid">
+          <div class="proof-num">
+            <span class="big">{data.metric.value}<span class="unit">{data.metric.unit}</span></span>
+          </div>
+          <div class="proof-text">
+            <div class="eyebrow amber">// the proof</div>
+            <h2>{data.metric.label}.</h2>
+            {data.metric.note && <p class="note">{data.metric.note}</p>}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- narrative · brief -->
+    {briefParas.length > 0 && (
+      <section class="cs-narrative">
+        <div class="site-wrap">
+          <div class="narr-grid">
+            <div class="narr-side">
+              <div class="eyebrow">// the brief</div>
+              <h2 class="narr-h">what the climate asked for.</h2>
+            </div>
+            <div class="narr-body">
+              {briefParas.map((p) => (<p>{p}</p>))}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- narrative · approach -->
+    {approachParas.length > 0 && (
+      <section class="cs-narrative alt">
+        <div class="site-wrap">
+          <div class="narr-grid">
+            <div class="narr-side">
+              <div class="eyebrow">// the approach</div>
+              <h2 class="narr-h">how we worked the problem.</h2>
+            </div>
+            <div class="narr-body">
+              {approachParas.map((p) => (<p>{p}</p>))}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- gallery -->
+    {data.gallery && data.gallery.length > 0 && (
+      <section class="cs-gallery">
+        <div class="site-wrap">
+          <div class="gal-grid">
+            {data.gallery.map((g, i) => (
+              <div class={`gal-cell c${i + 1}`}>
+                {g.src ? <img src={g.src} alt="" /> : <span class="ph-tag">{g.tag}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- strategy stack -->
+    {data.strategies && data.strategies.length > 0 && (
+      <section class="cs-strategies">
+        <div class="site-wrap">
+          <div class="strat-head">
+            <div class="eyebrow">// cumulative strategies</div>
+            <h2 class="narr-h">each move contributes incrementally.</h2>
+            <p class="narr-sub">performance is not one heroic intervention. it is the small decisions, added up. each row below is a number the model produced.</p>
+          </div>
+          <div class="strat-stack">
+            {data.strategies.map((s, i) => (
+              <div class="strat-row">
+                <div class="ix">{String(i + 1).padStart(2, '0')}</div>
+                <div class="lbl">{s.label}</div>
+                <div class="body">{s.body}</div>
+                <div class="d">{s.delta ?? ''}</div>
+              </div>
+            ))}
+            {data.resultDelta && (
+              <div class="strat-row result">
+                <div class="ix">∑</div>
+                <div class="lbl">result</div>
+                <div class="body">{data.resultLabel ?? 'the loop closes here. one number, in the unit the client pays in.'}</div>
+                <div class="d">{data.resultDelta}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- closing -->
+    {data.closingQuote && (
+      <section class="cs-closing">
+        <div class="site-wrap">
+          <blockquote>{data.closingQuote}</blockquote>
+          <div class="by">// project outcome · in the team's own words</div>
+        </div>
+      </section>
+    )}
+
+    <!-- MDX body (if any) -->
+    <div class="site-wrap mdx-body">
+      <Content />
+    </div>
+
+    <!-- next CTA -->
+    <section class="cs-cta">
+      <div class="site-wrap">
+        <a class="btn" href={localized('/projects', locale)}>{t('cta.back')} {t('nav.work')}</a>
+        <a class="btn amber" href={localized('/contact', locale)}>
+          {t('cta.contact')}
+          <span class="arrow-tail" aria-hidden="true"></span>
+        </a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .cs { padding-top: 24px; }
+
+  .crumb {
+    padding: 8px 0 32px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--mute-on-paper);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .crumb a {
+    color: var(--mute-on-paper);
+    border-bottom: 1px solid transparent;
+  }
+  .crumb a:hover {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+  .crumb .sep { color: var(--mute-on-paper-2); }
+  .crumb .muted { color: var(--mute-on-paper-2); text-transform: uppercase; letter-spacing: 0.12em; }
+
+  .cs-hero { padding: 24px 0 56px; }
+  .hero-top {
+    max-width: 920px;
+    margin-bottom: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .hero-top .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .cs-h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin: 0;
+    font-weight: 300;
+    text-wrap: balance;
+  }
+  .cs-lede {
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.55;
+    color: var(--mute-on-paper);
+    max-width: 56ch;
+    margin: 0;
+    font-weight: 300;
+  }
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 14px, transparent 14px 28px);
+    border: 1px solid var(--line-on-paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-image .ph-tag {
+    position: absolute; top: 20px; left: 24px;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mute-on-paper-2); font-weight: 400;
+  }
+
+  .cs-meta {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 32px;
+    padding: 32px 0;
+    margin-top: 32px;
+    border-top: 1px solid var(--line-on-paper);
+    border-bottom: 1px solid var(--line-on-paper);
+  }
+  .cs-meta .k { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); margin-bottom: 8px; font-weight: 400; }
+  .cs-meta .v { font-size: 14px; font-weight: 300; }
+  @media (max-width: 900px) {
+    .cs-meta { grid-template-columns: 1fr 1fr; gap: 20px; }
+  }
+
+  .cs-proof {
+    padding: 120px 0;
+    border-top: none;
+  }
+  .proof-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .proof-num .big {
+    font-size: clamp(120px, 18vw, 200px);
+    color: var(--amber);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    font-weight: 300;
+    display: inline-block;
+  }
+  .proof-num .big .unit {
+    font-size: 0.3em;
+    vertical-align: top;
+    margin-left: 4px;
+  }
+  .proof-text .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; display: inline-block; }
+  .proof-text h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    font-weight: 300;
+    max-width: 22ch;
+  }
+  .proof-text .note { font-size: 13px; color: var(--mute-on-paper); font-weight: 300; line-height: 1.6; margin: 0; max-width: 52ch; }
+  @media (max-width: 900px) {
+    .cs-proof { padding: 64px 0; }
+    .proof-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .cs-narrative {
+    padding: 80px 0;
+    border-top: 1px solid var(--line-on-paper);
+  }
+  .cs-narrative.alt { background: var(--paper-2); }
+  .narr-grid { display: grid; grid-template-columns: 260px 1fr; gap: 80px; }
+  .narr-side .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; }
+  .narr-h { font-size: clamp(22px, 2.5vw, 30px); line-height: 1.18; letter-spacing: -0.015em; margin: 0; font-weight: 300; max-width: 18ch; text-wrap: balance; }
+  .narr-sub { font-size: 15px; color: var(--mute-on-paper); margin-top: 12px; font-weight: 300; line-height: 1.6; max-width: 52ch; }
+  .narr-body p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-on-paper);
+    font-weight: 300;
+    max-width: 56ch;
+    margin: 0 0 18px;
+  }
+  @media (max-width: 900px) {
+    .narr-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  .cs-gallery { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .gal-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    min-height: 700px;
+  }
+  .gal-cell {
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 14px, transparent 14px 28px);
+    border: 1px solid var(--line-on-paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .gal-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .gal-cell .ph-tag {
+    position: absolute; top: 14px; left: 16px;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mute-on-paper-2); font-weight: 400;
+  }
+  .gal-cell.c1 { grid-row: 1 / 3; }
+  @media (max-width: 900px) {
+    .gal-grid { grid-template-columns: 1fr; grid-auto-rows: 220px; min-height: 0; }
+    .gal-cell.c1 { grid-row: auto; }
+  }
+
+  .cs-strategies { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .strat-head { margin-bottom: 48px; }
+  .strat-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; display: inline-block; }
+  .strat-stack { display: grid; gap: 0; }
+  .strat-row {
+    display: grid;
+    grid-template-columns: 60px 200px 1fr 120px;
+    gap: 32px;
+    align-items: baseline;
+    padding: 24px 0;
+    border-top: 1px solid var(--line-on-paper);
+    font-weight: 300;
+  }
+  .strat-row:last-child { border-bottom: 1px solid var(--line-on-paper); }
+  .strat-row .ix { font-size: 16px; color: var(--mute-on-paper-2); font-feature-settings: 'tnum' 1; letter-spacing: 0.10em; text-transform: uppercase; }
+  .strat-row .lbl { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
+  .strat-row .body { font-size: 16px; line-height: 1.5; max-width: 60ch; }
+  .strat-row .d {
+    font-size: 22px;
+    color: var(--manglar);
+    text-align: right;
+    font-feature-settings: 'tnum' 1;
+    line-height: 1;
+  }
+  .strat-row.result { border-top-color: var(--amber); border-top-width: 2px; padding-top: 28px; }
+  .strat-row.result .lbl, .strat-row.result .d { color: var(--amber); }
+  .strat-row.result .d { font-size: 28px; }
+  @media (max-width: 900px) {
+    .strat-row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
+    .strat-row .d { text-align: left; }
+  }
+
+  .cs-closing { padding: 120px 0; border-top: 1px solid var(--line-on-paper); }
+  .cs-closing blockquote {
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 32px;
+    font-weight: 300;
+    max-width: 40ch;
+    text-wrap: balance;
+  }
+  .cs-closing .by {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--mute-on-paper-2); font-weight: 400;
+  }
+
+  .mdx-body { margin-top: 32px; }
+  .mdx-body :global(p) { font-size: 17px; line-height: 1.7; font-weight: 300; max-width: 60ch; margin: 0 0 18px; }
+
+  .cs-cta {
+    padding: 80px 0;
+    border-top: 1px solid var(--line-on-paper);
+    display: flex;
+    justify-content: center;
+  }
+  .cs-cta .site-wrap {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+</style>

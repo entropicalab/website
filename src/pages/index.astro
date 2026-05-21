@@ -1,0 +1,724 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { localized, tr } from '../i18n/utils';
+
+const locale = 'en' as const;
+const t = tr(locale);
+
+const allProjects = await getCollection('projects', ({ data }) => data.locale === locale);
+const featured = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const services = [
+  { eyebrow: '// service · 01', title: 'data-informed project feasibility', icon: 'query_stats', body: 'energy is money, and money drives feasibility. early energy models translate climate, envelope, and operations into the unit the pro-forma speaks.' },
+  { eyebrow: '// service · 02', title: 'concept design', icon: 'architecture', body: 'orientation, massing, and program tested against the climate before the section is committed.' },
+  { eyebrow: '// service · 03', title: 'architectural design + coordination', icon: 'dashboard_customize', body: 'full architectural delivery, with the energy model in the conversation from day one.' },
+  { eyebrow: '// service · 04', title: 'permitting + documentation', icon: 'description', body: 'construction documents that pass review and that the contractor can actually build.' },
+  { eyebrow: '// service · 05', title: 'energy + performance advisory', icon: 'monitoring', body: 'envelope simulation, daylight studies, leed / edge support, as a standalone or in-house service.' },
+];
+
+const problems = [
+  { p: 'high energy use', s: 'solar control, envelope strategy, and system alignment.', icon: 'bolt' },
+  { p: 'overheating + comfort complaints', s: 'shading, air movement, passive cooling strategies.', icon: 'device_thermostat' },
+  { p: 'humidity + indoor air issues', s: 'moisture load management and detailing for durability.', icon: 'humidity_mid' },
+  { p: 'coastal exposure + corrosion', s: 'material selection and protective detailing.', icon: 'waves' },
+  { p: 'poor daylight or glare', s: 'daylight shaping and controlled solar access.', icon: 'wb_sunny' },
+  { p: 'long-term maintenance burden', s: 'simpler systems and durable assemblies.', icon: 'build' },
+];
+
+const manifesto = ['shade', 'airflow', 'moisture', 'durability', 'thermal mass', 'energy'];
+---
+
+<BaseLayout
+  title="entrópica · energy-led architecture for the tropics"
+  description="we design energy-efficient buildings for the tropics. simulation-led architecture from before day one of design. based in panamá, working worldwide."
+  locale={locale}
+>
+  <!-- ============ hero ============ -->
+  <section class="hero">
+    <div class="site-wrap">
+      <div class="hero-grid">
+        <div class="hero-eb">// tropical architecture studio · est. 2020</div>
+        <h1 class="hero-h">
+          we design energy-efficient<br />
+          buildings for the tropics.
+        </h1>
+        <p class="hero-lede">
+          entrópica is a tropical architecture studio in panamá, led by deep
+          expertise in energy modelling, building thermodynamics, and climate
+          science. we are architects first; simulation is the instrument, not the
+          author. the model informs. the architecture decides.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn amber" href={localized('/projects', locale)}>
+            {t('cta.viewWork')}
+            <span class="arrow-tail" aria-hidden="true"></span>
+          </a>
+          <a class="btn" href={localized('/contact', locale)}>{t('cta.contact')}</a>
+        </div>
+        <div class="hero-where">// panamá · kunshan · the caribbean · the dry pacific coast</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ manifesto strip ============ -->
+  <section class="manifesto-strip">
+    <div class="site-wrap">
+      <div class="manifesto-eb">// performance is design material</div>
+      <div class="manifesto-grid">
+        {manifesto.map((word) => (
+          <div class="manifesto-cell">
+            {word} <span class="amber">is architecture.</span>
+          </div>
+        ))}
+      </div>
+      <p class="manifesto-note">
+        the things temperate-climate practice treats as afterthoughts, shade,
+        airflow, moisture, energy, are, for us, the design material itself. the
+        building is not a container for performance. the performance is the
+        building.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ the problem · pt 1 ============ -->
+  <section class="block">
+    <div class="site-wrap">
+      <div class="two-col">
+        <div class="col-eb">
+          <div class="eyebrow">// the problem · pt 01</div>
+        </div>
+        <div class="col-body">
+          <div class="col-image placeholder">
+            <span class="ph-tag">// image · the conventional design loop</span>
+          </div>
+          <h2 class="block-h">
+            energy and operational costs are rarely part of architectural decision-making.
+          </h2>
+          <div class="prose">
+            <p>
+              in the conventional design process, architectural decisions are made before
+              energy impact is visible. modelling is introduced too late to influence form.
+              operational costs are evaluated after intent is fixed. by then, most meaningful
+              savings are already lost.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ the problem · pt 2 ============ -->
+  <section class="block alt">
+    <div class="site-wrap">
+      <div class="two-col">
+        <div class="col-eb">
+          <div class="eyebrow">// the problem · pt 02</div>
+        </div>
+        <div class="col-body">
+          <div class="col-image">
+            <img src="/home/tropics-fundamentally.png" alt="tropical climate operating environment" />
+          </div>
+          <h2 class="block-h">
+            the tropics are a fundamentally different operating environment.
+          </h2>
+          <div class="prose">
+            <p>
+              constant heat, constant humidity, constant sun. cooling, dehumidification, and
+              solar control are permanent loads, not peak conditions. design decisions that
+              would be forgiving in a temperate climate compound here, quickly and
+              measurably.
+            </p>
+            <p>
+              imported standards and generic workflows fail to predict real operational
+              behaviour. tropical buildings need tropical thinking, from the section up.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ the tools ============ -->
+  <section class="block">
+    <div class="site-wrap">
+      <div class="two-col">
+        <div class="col-eb">
+          <div class="eyebrow">// the work</div>
+        </div>
+        <div class="col-body">
+          <div class="col-image">
+            <img src="/home/simulation-drives.jpg" alt="simulation output guiding the section" />
+          </div>
+          <h2 class="block-h">
+            simulation drives the design, not the deck.
+          </h2>
+          <div class="prose">
+            <p>
+              we use building performance simulation (energy+, openfoam, radiance) the way
+              a structural engineer uses a fea model: early, often, and small. each model
+              answers one question. each answer rewrites one piece of the section.
+            </p>
+            <p>
+              the result is performance that meets or exceeds leed and edge, earned
+              through the design itself, not bolted on as a certificate.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ problems we solve ============ -->
+  <section class="block problems-section alt">
+    <div class="site-wrap">
+      <div class="proof-head">
+        <div class="eyebrow">// what we're usually asked to fix</div>
+        <h2 class="block-h">design problems we solve through validation.</h2>
+      </div>
+      <div class="problems-grid">
+        {problems.map((p) => (
+          <div class="problem">
+            <span class="material-symbols-outlined icon-md icon-amber prob-icon">{p.icon}</span>
+            <div class="prob-name">{p.p}</div>
+            <div class="prob-soln">{p.s}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ the proof, featured projects ============ -->
+  <section class="block proof">
+    <div class="site-wrap">
+      <div class="proof-head">
+        <div class="eyebrow amber">// the proof</div>
+        <h2 class="block-h">selected work.</h2>
+      </div>
+
+      <div class="proof-grid">
+        {featured.map((p, i) => (
+          <a class={`proj-card ${i === 0 ? 'lead' : ''}`} href={localized(`/projects/${p.data.slug}`, locale)}>
+            <div class="proj-photo">
+              <span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span>
+            </div>
+            <div class="proj-meta">
+              <div class="proj-eb">{p.data.eyebrow}</div>
+              <div class="proj-title">{p.data.title}</div>
+              <div class="proj-info">
+                <span>{p.data.location}</span>
+                <span class="sep">·</span>
+                <span>{p.data.year}</span>
+                <span class="sep">·</span>
+                <span>{p.data.area}</span>
+              </div>
+              <div class="proj-metric">
+                {i === 0 ? (
+                  <span class="amber-num">
+                    {p.data.metric.value}<span class="unit">{p.data.metric.unit}</span>
+                  </span>
+                ) : (
+                  <span class="grey-num">
+                    {p.data.metric.value}<span class="unit">{p.data.metric.unit}</span>
+                  </span>
+                )}
+                <span class="metric-label">{p.data.metric.label}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="proof-foot">
+        <a class="btn" href={localized('/projects', locale)}>
+          {t('cta.viewWork')}
+          <span class="arrow-tail" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ services strip ============ -->
+  <section class="block services">
+    <div class="site-wrap">
+      <div class="proof-head">
+        <div class="eyebrow">// services</div>
+        <h2 class="block-h">full architectural services, energy-led.</h2>
+        <p class="block-sub">from concept to construction. energy and operational performance guide every design decision.</p>
+      </div>
+
+      <div class="services-grid">
+        {services.map((s) => (
+          <div class="svc">
+            <span class="material-symbols-outlined icon-md icon-amber svc-icon">{s.icon}</span>
+            <div class="svc-eb">{s.eyebrow}</div>
+            <h3 class="svc-title">{s.title}</h3>
+            <p class="svc-body">{s.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="proof-foot">
+        <a class="btn" href={localized('/services', locale)}>more on services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ closing CTA ============ -->
+  <section class="closing-cta">
+    <div class="site-wrap">
+      <div class="closing-inner">
+        <div class="eyebrow">// the next collaboration</div>
+        <h2 class="closing-h">
+          reach out, and let's make<br />
+          cool buildings in hot places.
+        </h2>
+        <div class="closing-ctas">
+          <a class="btn amber" href={localized('/contact', locale)}>
+            {t('cta.contact')}
+            <span class="arrow-tail" aria-hidden="true"></span>
+          </a>
+          <a class="contact-line" href="mailto:info@entropica-lab.com">info@entropica-lab.com</a>
+          <a class="contact-line" href="https://wa.me/50769444740" target="_blank" rel="noopener">whatsapp · +507 6944-4740</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============ hero ============ */
+  .hero {
+    padding: 120px 0 96px;
+  }
+  .hero-grid {
+    display: grid;
+    gap: 32px;
+    max-width: 980px;
+  }
+  .hero-eb {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper);
+    font-weight: 400;
+  }
+  .hero-h {
+    font-size: clamp(40px, 6vw, 76px);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin: 0;
+    font-weight: 300;
+    text-wrap: balance;
+  }
+  .hero-lede {
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.55;
+    color: var(--mute-on-paper);
+    max-width: 56ch;
+    margin: 0;
+    font-weight: 300;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .hero-where {
+    margin-top: 32px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+  }
+
+  /* ============ section image (problem pts + the work) ============ */
+  .col-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--paper-2);
+    border: 1px solid var(--line-on-paper);
+    margin-bottom: 32px;
+    overflow: hidden;
+    position: relative;
+  }
+  .block.alt .col-image {
+    background: var(--paper);
+  }
+  .col-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .col-image.placeholder {
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 14px, transparent 14px 28px);
+    display: grid;
+    place-items: center;
+  }
+  .col-image .ph-tag {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+  }
+
+  /* ============ manifesto strip ============ */
+  .manifesto-strip {
+    padding: 56px 0 72px;
+    border-top: 1px solid var(--line-on-paper);
+  }
+  .manifesto-eb {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper);
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line-on-paper);
+    border-bottom: 1px solid var(--line-on-paper);
+  }
+  .manifesto-cell {
+    padding: 22px 24px;
+    font-size: clamp(18px, 1.8vw, 22px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 300;
+    border-right: 1px solid var(--line-on-paper);
+    border-bottom: 1px solid var(--line-on-paper);
+  }
+  .manifesto-cell:nth-child(3n) { border-right: none; }
+  .manifesto-cell:nth-last-child(-n+3) { border-bottom: none; }
+  .manifesto-cell .amber { color: var(--amber); }
+  .manifesto-note {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--mute-on-paper);
+    font-weight: 400;
+    max-width: 64ch;
+  }
+  @media (max-width: 720px) {
+    .manifesto-grid { grid-template-columns: 1fr 1fr; }
+    .manifesto-cell:nth-child(3n) { border-right: 1px solid var(--line-on-paper); }
+    .manifesto-cell:nth-child(2n) { border-right: none; }
+    .manifesto-cell:nth-last-child(-n+3) { border-bottom: 1px solid var(--line-on-paper); }
+    .manifesto-cell:nth-last-child(-n+2) { border-bottom: none; }
+  }
+
+  /* ============ problems strip ============ */
+  .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .problem {
+    padding: 24px 28px;
+    background: var(--paper);
+    border: 1px solid var(--line-on-paper);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .prob-icon {
+    margin-bottom: 6px;
+  }
+  .prob-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-on-paper);
+  }
+  .prob-soln {
+    font-size: 14px;
+    color: var(--mute-on-paper);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  @media (max-width: 900px) {
+    .problems-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 540px) {
+    .problems-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ============ blocks (problem / tools) ============ */
+  .block {
+    padding: 80px 0;
+    border-top: 1px solid var(--line-on-paper);
+  }
+  .block.alt {
+    background: var(--paper-2);
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 80px;
+  }
+  .col-eb .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 400;
+    padding-top: 4px;
+  }
+  .block-h {
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+    font-weight: 300;
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+  .block-sub {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--mute-on-paper);
+    margin: 0;
+    max-width: 56ch;
+    font-weight: 300;
+  }
+
+  @media (max-width: 900px) {
+    .two-col {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .block {
+      padding: 56px 0;
+    }
+  }
+
+  /* ============ proof / featured projects ============ */
+  .proof-head {
+    margin-bottom: 56px;
+  }
+  .proof-head .eyebrow {
+    margin-bottom: 16px;
+  }
+  .proof-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 16px;
+  }
+  .proj-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+  .proj-card:hover {
+    transform: translateY(-2px);
+  }
+  .proj-card:hover .proj-photo::after {
+    border-color: var(--amber);
+  }
+  .proj-photo {
+    aspect-ratio: 4 / 3;
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px);
+    border: 1px solid var(--line-on-paper);
+    position: relative;
+  }
+  .proj-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid transparent;
+    pointer-events: none;
+    transition: border-color 0.2s;
+  }
+  .proj-card.lead .proj-photo {
+    aspect-ratio: 5 / 4;
+  }
+  .proj-photo .ph-tag {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+  }
+  .proj-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .proj-eb {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+  }
+  .proj-title {
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 300;
+  }
+  .proj-card.lead .proj-title {
+    font-size: 24px;
+  }
+  .proj-info {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--mute-on-paper);
+    font-weight: 400;
+  }
+  .proj-info .sep {
+    color: var(--mute-on-paper-2);
+    margin: 0 6px;
+  }
+  .proj-metric {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 8px;
+    border-top: 1px solid var(--line-on-paper);
+    padding-top: 12px;
+  }
+  .amber-num {
+    font-size: 32px;
+    color: var(--amber);
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    letter-spacing: -0.025em;
+    line-height: 1;
+  }
+  .grey-num {
+    font-size: 22px;
+    color: var(--ink-on-paper);
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    letter-spacing: -0.015em;
+    line-height: 1;
+  }
+  .amber-num .unit, .grey-num .unit {
+    font-size: 0.5em;
+    vertical-align: top;
+    margin-left: 1px;
+  }
+  .metric-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper);
+    font-weight: 400;
+  }
+  .proof-foot {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 900px) {
+    .proof-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  /* ============ services ============ */
+  .services {
+    background: var(--paper-2);
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  .svc {
+    background: var(--paper);
+    border: 1px solid var(--line-on-paper);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .svc-icon {
+    margin-bottom: 4px;
+  }
+  .svc-eb {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+  }
+  .svc-title {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0;
+  }
+  .svc-body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--mute-on-paper);
+    font-weight: 300;
+    margin: 0;
+  }
+  @media (max-width: 1100px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ============ closing CTA ============ */
+  .closing-cta {
+    padding: 120px 0;
+    border-top: 1px solid var(--line-on-paper);
+  }
+  .closing-inner {
+    max-width: 800px;
+  }
+  .closing-h {
+    font-size: clamp(32px, 4.5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 16px 0 32px;
+    font-weight: 300;
+    text-wrap: balance;
+  }
+  .closing-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 28px;
+  }
+  .contact-line {
+    font-size: 14px;
+    color: var(--mute-on-paper);
+    border-bottom: 1px solid transparent;
+    padding: 4px 0;
+  }
+  .contact-line:hover {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+  @media (max-width: 900px) {
+    .closing-cta {
+      padding: 64px 0;
+    }
+  }
+</style>

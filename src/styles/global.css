@@ -1,0 +1,487 @@
+/* ============================================================
+   entrópica · global stylesheet
+   ------------------------------------------------------------
+   load order:
+     1. roboto mono via @fontsource (300, 400, 500)
+     2. entropica.css (brand design system — tokens, components)
+     3. site overrides below (room-mode-as-default for the site,
+        header/footer chrome, nav, lang toggle, forms)
+   ============================================================ */
+
+@import '@fontsource/roboto-mono/300.css';
+@import '@fontsource/roboto-mono/400.css';
+@import '@fontsource/roboto-mono/500.css';
+@import './entropica.css';
+
+/* ------------------------------------------------------------
+   room mode as the website default
+   the entropica.css system defaults to dark (ink) for decks
+   and technical artifacts. the website lives in room mode, so
+   we force paper as the body background and apply .room rules
+   site-wide.
+   ------------------------------------------------------------ */
+html,
+body {
+  background: var(--paper);
+  color: var(--ink-on-paper);
+}
+/* body weight bumped from brand-default 300 to 400 for screen readability —
+   roboto mono at 300 reads too thin at body sizes on most displays.
+   headlines (h1/h2/h3) stay 300; eyebrows/labels stay 400. */
+body {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+body h1,
+body h2,
+body h3,
+body h4 {
+  font-weight: 300;
+}
+body .eyebrow,
+body .up,
+body .uppercase,
+body .units,
+body .axis-label,
+body .meta-key {
+  font-weight: 400;
+}
+/* override the brand stylesheet's room-mode 300 for body paragraphs */
+body .room,
+body .surface-paper,
+body p,
+body p.body,
+body p.lede,
+body .muted,
+body li,
+body td,
+body th {
+  font-weight: 400;
+}
+body .bar {
+  background: var(--line-on-paper);
+}
+body p.body,
+body .muted {
+  color: var(--mute-on-paper);
+}
+
+/* eyebrow on paper: defaults to calm grey; amber only on proof.
+   this matches the brandbook rule for room mode. */
+body .eyebrow {
+  color: var(--mute-on-paper);
+}
+body .eyebrow.amber,
+body .eyebrow.proof {
+  color: var(--amber);
+}
+
+/* ------------------------------------------------------------
+   page shell
+   ------------------------------------------------------------ */
+:root {
+  --site-pad-x: 56px;
+  --site-pad-x-tight: 32px;
+  --site-max: 1400px;
+  --header-h: 84px;
+}
+@media (max-width: 900px) {
+  :root {
+    --site-pad-x: 28px;
+    --site-pad-x-tight: 20px;
+  }
+}
+
+.site-wrap {
+  width: 100%;
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 var(--site-pad-x);
+}
+
+/* ------------------------------------------------------------
+   header (top nav, on paper)
+   ------------------------------------------------------------ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-on-paper);
+}
+.site-header .inner {
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 20px var(--site-pad-x);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  min-height: var(--header-h);
+}
+.site-header .logo img {
+  display: block;
+  height: 20px;
+  width: auto;
+}
+.site-header nav.primary {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  font-size: 13px;
+  font-weight: 400;
+}
+.site-header nav.primary a {
+  color: var(--ink-on-paper);
+  position: relative;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.site-header nav.primary a:hover,
+.site-header nav.primary a[aria-current='page'] {
+  border-bottom-color: var(--amber);
+}
+.site-header .lang-toggle {
+  display: flex;
+  gap: 4px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute-on-paper);
+  font-weight: 400;
+}
+.site-header .lang-toggle a {
+  padding: 4px 6px;
+  color: var(--mute-on-paper);
+}
+.site-header .lang-toggle a:hover {
+  color: var(--ink-on-paper);
+}
+.site-header .lang-toggle a.active {
+  color: var(--amber);
+}
+.site-header .lang-toggle .sep {
+  color: var(--mute-on-paper-2);
+}
+
+/* mobile nav: stack */
+@media (max-width: 720px) {
+  .site-header .inner {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 12px;
+    padding: 16px var(--site-pad-x);
+  }
+  .site-header .logo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .site-header .lang-toggle {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .site-header nav.primary {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+}
+
+/* ------------------------------------------------------------
+   footer
+   ------------------------------------------------------------ */
+.site-footer {
+  margin-top: 120px;
+  border-top: 1px solid var(--line-on-paper);
+  padding: 64px var(--site-pad-x) 56px;
+  background: var(--paper);
+}
+.site-footer .inner {
+  max-width: var(--site-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+.site-footer .brand img {
+  display: block;
+  height: 24px;
+  width: auto;
+  margin-bottom: 20px;
+}
+.site-footer .brand .tag {
+  font-size: 17px;
+  line-height: 1.35;
+  color: var(--ink-on-paper);
+  max-width: 24ch;
+}
+.site-footer .col h4 {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute-on-paper-2);
+  margin: 0 0 14px;
+  font-weight: 400;
+}
+.site-footer .col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+.site-footer .col a {
+  color: var(--ink-on-paper);
+  border-bottom: 1px solid transparent;
+}
+.site-footer .col a:hover {
+  border-bottom-color: var(--amber);
+  color: var(--amber);
+}
+.site-footer .legal {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-on-paper);
+  max-width: var(--site-max);
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute-on-paper-2);
+  font-weight: 400;
+}
+@media (max-width: 720px) {
+  .site-footer .inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .site-footer .legal {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+/* ------------------------------------------------------------
+   material symbols icons
+   ------------------------------------------------------------ */
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24;
+  font-size: 24px;
+  line-height: 1;
+  vertical-align: middle;
+  user-select: none;
+  display: inline-block;
+}
+.icon-sm { font-size: 18px; }
+.icon-md { font-size: 24px; }
+.icon-lg { font-size: 32px; }
+.icon-amber { color: var(--amber); }
+.icon-mute { color: var(--mute-on-paper); }
+
+/* ------------------------------------------------------------
+   typographic helpers used across pages
+   ------------------------------------------------------------ */
+.prose {
+  max-width: 60ch;
+}
+.prose p {
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 300;
+  color: var(--ink-on-paper);
+  margin: 0 0 18px;
+}
+.prose p.lede {
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--mute-on-paper);
+}
+.prose a {
+  color: inherit;
+  border-bottom: 1px solid var(--line-on-paper-2);
+}
+.prose a:hover {
+  border-bottom-color: var(--amber);
+  color: var(--amber);
+}
+.prose h2 {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin: 48px 0 16px;
+}
+.prose h3 {
+  font-size: 19px;
+  font-weight: 400;
+  margin: 32px 0 12px;
+}
+.prose ul,
+.prose ol {
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 300;
+  padding-left: 20px;
+}
+.prose ul li,
+.prose ol li {
+  margin-bottom: 6px;
+}
+.prose code {
+  background: var(--paper-2);
+  border-color: var(--line-on-paper);
+}
+
+/* ------------------------------------------------------------
+   CTA button — calm, room-mode appropriate
+   ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--ink-on-paper);
+  color: var(--ink-on-paper);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn:hover {
+  background: var(--ink-on-paper);
+  color: var(--paper);
+}
+.btn.amber {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--ink);
+}
+.btn.amber:hover {
+  background: var(--ink-on-paper);
+  border-color: var(--ink-on-paper);
+  color: var(--paper);
+}
+.btn .arrow-tail {
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  position: relative;
+}
+.btn .arrow-tail::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: translate(1px, -50%) rotate(45deg);
+}
+
+/* ------------------------------------------------------------
+   forms — room mode
+   ------------------------------------------------------------ */
+form.contact-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+  max-width: 720px;
+}
+form.contact-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+form.contact-form .field.full {
+  grid-column: 1 / -1;
+}
+form.contact-form label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute-on-paper-2);
+  font-weight: 400;
+}
+form.contact-form input,
+form.contact-form select,
+form.contact-form textarea {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-on-paper-2);
+  color: var(--ink-on-paper);
+  border-radius: 0;
+  outline: none;
+}
+form.contact-form input:focus,
+form.contact-form select:focus,
+form.contact-form textarea:focus {
+  border-bottom-color: var(--amber);
+}
+form.contact-form textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.55;
+}
+form.contact-form .actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+form.contact-form .honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+@media (max-width: 720px) {
+  form.contact-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------
+   skip link for keyboard / screen readers
+   ------------------------------------------------------------ */
+.skip {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 8px 12px;
+  background: var(--amber);
+  color: var(--ink);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
