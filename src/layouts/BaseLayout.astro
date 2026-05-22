@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 import { getLocaleFromPath } from '../i18n/utils';
 import type { Locale } from '../i18n/strings';
 
@@ -53,6 +55,11 @@ const canonical = new URL(pathname, Astro.site).toString();
     <meta name="twitter:card" content="summary_large_image" />
 
     <meta name="theme-color" content="#f4f1ea" />
+
+    {/* google analytics + consent mode v2. only renders if a real measurement id
+        is set in src/config/analytics.ts. cookies stay denied until the visitor
+        accepts via ConsentBanner below. */}
+    <Analytics />
   </head>
   <body>
     <a class="skip" href="#main">skip to content</a>
@@ -61,5 +68,6 @@ const canonical = new URL(pathname, Astro.site).toString();
       <slot />
     </main>
     <Footer locale={locale} />
+    <ConsentBanner locale={locale} />
   </body>
 </html>

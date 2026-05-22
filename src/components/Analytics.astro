@@ -1,0 +1,56 @@
+---
+// ============================================================
+// google analytics 4 + consent mode v2
+// ------------------------------------------------------------
+// only renders if a real measurement id is configured.
+// initialises consent in "denied" state — gtag fires anonymized
+// pings (no cookies, no user id) until the visitor accepts via
+// the consent banner. once they accept, ConsentBanner.astro
+// calls gtag('consent', 'update', ...) to flip the flags.
+// ============================================================
+import { ANALYTICS, analyticsConfigured } from '../config/analytics';
+
+const id = ANALYTICS.measurementId;
+const cookieDomain = ANALYTICS.cookieDomain;
+---
+
+{analyticsConfigured && (
+  <>
+    {/* gtag init — runs synchronously before the gtag library loads */}
+    <script is:inline define:vars={{ id, cookieDomain }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      window.gtag = gtag;
+
+      // consent mode v2 — denied by default, flipped on user accept.
+      // analytics_storage controls the _ga cookies.
+      // ad_storage / ad_user_data / ad_personalization stay denied (we don't run ads).
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        wait_for_update: 500,
+      });
+
+      // restore prior consent choice from localStorage, if any
+      try {
+        var prior = localStorage.getItem('entropica.consent');
+        if (prior === 'accepted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
+
+      gtag('js', new Date());
+      gtag('config', id, {
+        cookie_domain: cookieDomain,
+        anonymize_ip: true,
+      });
+    </script>
+
+    {/* gtag library — async, doesn't block render */}
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${id}`}></script>
+  </>
+)}

@@ -42,6 +42,26 @@ const year = new Date().getFullYear();
 
   <div class="legal">
     <div>{t('footer.copyright')} · {year}</div>
-    <div>{t('footer.legal')}</div>
+    <div>
+      <a class="legal-link" href={localized('/privacy', locale)}>{t('consent.eyebrow').replace('// ', '')}</a>
+      <span class="legal-sep">·</span>
+      {t('footer.legal')}
+    </div>
   </div>
 </footer>
+
+<style>
+  .legal-link {
+    color: inherit;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+  }
+  .legal-link:hover {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+  .legal-sep {
+    margin: 0 8px;
+    color: var(--mute-on-paper-2);
+  }
+</style>

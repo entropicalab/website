@@ -1,0 +1,166 @@
+---
+import { tr, localized } from '../i18n/utils';
+import type { Locale } from '../i18n/strings';
+import { analyticsConfigured } from '../config/analytics';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = tr(locale);
+
+// no banner if there's no analytics to consent to
+if (!analyticsConfigured) {
+  // render nothing; we still ship the <style> to keep css class names predictable
+}
+---
+
+{analyticsConfigured && (
+  <div id="consent-banner" class="consent-banner" hidden aria-live="polite">
+    <div class="consent-inner">
+      <div class="consent-eb">{t('consent.eyebrow')}</div>
+      <p class="consent-text">{t('consent.text')}</p>
+      <div class="consent-actions">
+        <a class="consent-link" href={localized('/privacy', locale)}>{t('consent.more')} →</a>
+        <button class="consent-btn decline" data-consent="decline">{t('consent.decline')}</button>
+        <button class="consent-btn accept" data-consent="accept">{t('consent.accept')}</button>
+      </div>
+    </div>
+  </div>
+)}
+
+{analyticsConfigured && (
+  <script is:inline>
+    (function () {
+      var key = 'entropica.consent';
+      var banner = document.getElementById('consent-banner');
+      if (!banner) return;
+
+      // if already decided, leave hidden
+      var prior;
+      try { prior = localStorage.getItem(key); } catch (e) {}
+      if (prior === 'accepted' || prior === 'declined') return;
+
+      // show after a tiny delay so it doesn't compete with first paint
+      setTimeout(function () {
+        banner.hidden = false;
+        banner.classList.add('is-visible');
+      }, 600);
+
+      banner.addEventListener('click', function (e) {
+        var t = e.target.closest('[data-consent]');
+        if (!t) return;
+        var choice = t.getAttribute('data-consent');
+        try { localStorage.setItem(key, choice === 'accept' ? 'accepted' : 'declined'); } catch (e) {}
+        if (choice === 'accept' && typeof window.gtag === 'function') {
+          window.gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+        banner.classList.remove('is-visible');
+        setTimeout(function () { banner.hidden = true; }, 200);
+      });
+    })();
+  </script>
+)}
+
+<style is:global>
+  .consent-banner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-top: 1px solid var(--line-on-paper);
+    box-shadow: 0 -1px 0 var(--line-on-paper), 0 -8px 24px rgba(0, 0, 0, 0.04);
+    transform: translateY(8px);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .consent-banner.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .consent-inner {
+    max-width: var(--site-max);
+    margin: 0 auto;
+    padding: 14px var(--site-pad-x);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+  }
+  .consent-eb {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .consent-text {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-on-paper);
+    font-weight: 400;
+    margin: 0;
+    max-width: 64ch;
+  }
+  .consent-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: nowrap;
+  }
+  .consent-link {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--mute-on-paper);
+    border-bottom: 1px solid transparent;
+    padding: 4px 0;
+  }
+  .consent-link:hover {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+  .consent-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    font-weight: 400;
+    padding: 8px 14px;
+    border: 1px solid var(--ink-on-paper);
+    background: transparent;
+    color: var(--ink-on-paper);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .consent-btn.decline:hover {
+    background: var(--ink-on-paper);
+    color: var(--paper);
+  }
+  .consent-btn.accept {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--ink);
+  }
+  .consent-btn.accept:hover {
+    background: var(--ink-on-paper);
+    border-color: var(--ink-on-paper);
+    color: var(--paper);
+  }
+  @media (max-width: 720px) {
+    .consent-inner {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 16px var(--site-pad-x);
+    }
+    .consent-actions {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .consent-btn {
+      padding: 10px 14px;
+    }
+  }
+</style>

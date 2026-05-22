@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tr } from '../../i18n/utils';
+
+const locale = 'es' as const;
+const t = tr(locale);
+
+const updated = '2026-05-22';
+---
+
+<BaseLayout
+  title="privacidad · entrópica"
+  description="qué recolectamos en este sitio, por qué, y cómo desactivarlo."
+  locale={locale}
+>
+  <section class="hero">
+    <div class="site-wrap">
+      <div class="eyebrow">{t('consent.eyebrow')}</div>
+      <h1 class="hero-h">{t('privacy.title')}</h1>
+      <p class="hero-lede">{t('privacy.lede')}</p>
+      <div class="updated">// última actualización · {updated}</div>
+    </div>
+  </section>
+
+  <section class="body">
+    <div class="site-wrap">
+      <article class="prose">
+        <h2>la versión corta</h2>
+        <p>
+          este sitio recolecta datos de tráfico anónimos y agregados a través de google
+          analytics para saber qué páginas la gente realmente usa. nada más. no vendemos
+          datos, no mostramos anuncios, no compartimos información con terceros más allá de
+          lo que se lista abajo.
+        </p>
+        <p>
+          si rechazas el banner de consentimiento, nada de esto se carga. puedes cambiar de
+          opinión en cualquier momento borrando el almacenamiento del sitio en tu navegador
+          (el banner reaparecerá en la siguiente visita).
+        </p>
+
+        <h2>qué recolectamos, y por qué</h2>
+        <h3>1. google analytics (gtag.js)</h3>
+        <p>
+          si aceptas el banner, google analytics 4 registra: vistas de página, tiempo en
+          página, url de origen, región geográfica aproximada (país, ciudad), tipo de
+          dispositivo y navegador, y un id de visitante aleatorio para distinguir visitas
+          repetidas de nuevas. las direcciones ip se anonimizan antes de guardarse. los
+          datos se retienen 14 meses. están en los servidores de google; su aviso de
+          privacidad aplica además de este (ver
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>).
+        </p>
+        <p>
+          si rechazas, no se guardan cookies de análisis y no se envían datos
+          identificables. seguimos recibiendo un ping de "consentimiento denegado" para
+          contar la visita, pero no lleva información que te identifique.
+        </p>
+
+        <h3>2. el formulario de contacto</h3>
+        <p>
+          cuando envías el formulario, los datos (nombre, correo, empresa opcional,
+          ubicación del proyecto, tipo de proyecto, mensaje) se envían a través de
+          formspree.io a info@entropica-lab.com. formspree retiene la entrada durante la
+          duración de nuestra suscripción. su aviso de privacidad aplica (ver
+          <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a>).
+          guardamos la correspondencia en nuestra bandeja de entrada normal mientras sea
+          relevante para el proyecto, y la borramos después.
+        </p>
+
+        <h3>3. hosting del sitio</h3>
+        <p>
+          el sitio está alojado en github pages. github guarda registros estándar de
+          servidor web (ip, hora, user-agent, url solicitada) por motivos operativos y de
+          seguridad. no tenemos acceso a esos registros. su aviso de privacidad aplica (ver
+          <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">github.com/site-policy</a>).
+        </p>
+
+        <h2>lo que no hacemos</h2>
+        <ul>
+          <li>no vendemos tus datos a nadie, nunca.</li>
+          <li>no mostramos anuncios ni usamos cookies publicitarias.</li>
+          <li>no usamos rastreo entre sitios o entre dispositivos.</li>
+          <li>no corremos pixeles de remarketing (facebook, linkedin, etc.).</li>
+          <li>no usamos grabaciones de sesión ni mapas de calor.</li>
+        </ul>
+
+        <h2>tus derechos</h2>
+        <p>
+          puedes preguntarnos en cualquier momento qué datos tenemos sobre ti, pedir que
+          los corrijamos o borremos, o retirar tu consentimiento. para el formulario, eso
+          significa pedirnos que borremos el hilo de correo. para analytics, borrar las
+          cookies del navegador para este sitio elimina tu id de visitante; para una
+          solicitud completa de borrado contra los servidores de google, ver la
+          <a href="https://support.google.com/analytics/answer/9852570" target="_blank" rel="noopener">guía de borrado de datos de google</a>.
+        </p>
+        <p>
+          escribe a <a href="mailto:info@entropica-lab.com">info@entropica-lab.com</a> con
+          "privacidad" en el asunto.
+        </p>
+
+        <h2>cambios a este aviso</h2>
+        <p>
+          actualizaremos la fecha de "última actualización" en la parte superior si algo
+          cambia. los cambios materiales (agregar un nuevo servicio de terceros, por
+          ejemplo) también los señalaremos vía el banner de consentimiento.
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding: 96px 0 48px; }
+  .hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; display: inline-block; }
+  .hero-h { font-size: clamp(34px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; font-weight: 300; max-width: 24ch; text-wrap: balance; }
+  .hero-lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 60ch; margin: 0 0 24px; font-weight: 400; }
+  .updated { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
+
+  .body { padding: 32px 0 96px; }
+  .prose { max-width: 64ch; }
+  .prose h2 { font-size: 22px; font-weight: 400; letter-spacing: -0.01em; margin: 48px 0 16px; }
+  .prose h3 { font-size: 16px; font-weight: 500; margin: 32px 0 10px; }
+  .prose p { font-size: 16px; line-height: 1.7; font-weight: 400; margin: 0 0 16px; color: var(--ink-on-paper); }
+  .prose ul { font-size: 16px; line-height: 1.7; font-weight: 400; padding-left: 22px; margin: 0 0 16px; }
+  .prose li { margin-bottom: 6px; }
+  .prose a { color: inherit; border-bottom: 1px solid var(--line-on-paper-2); }
+  .prose a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+</style>

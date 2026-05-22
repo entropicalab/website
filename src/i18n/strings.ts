@@ -59,6 +59,17 @@ export const t = {
     'form.typology.placeholder': 'select one',
     'form.sent.title': 'message received.',
     'form.sent.body': "we'll get back to you within two working days.",
+
+    // consent banner
+    'consent.eyebrow': '// privacy',
+    'consent.text': 'this site uses google analytics to measure how it is used. no personal data is shared with third parties. cookies are not stored unless you accept.',
+    'consent.accept': 'accept',
+    'consent.decline': 'decline',
+    'consent.more': 'more info',
+
+    // privacy page
+    'privacy.title': 'privacy notice.',
+    'privacy.lede': "what we collect, why, and how to turn it off.",
   },
   es: {
     // nav
@@ -111,6 +122,17 @@ export const t = {
     'form.typology.placeholder': 'selecciona una opción',
     'form.sent.title': 'mensaje recibido.',
     'form.sent.body': 'te responderemos en un plazo de dos días hábiles.',
+
+    // consent banner
+    'consent.eyebrow': '// privacidad',
+    'consent.text': 'este sitio usa google analytics para medir su uso. no compartimos datos personales con terceros. no se guardan cookies a menos que aceptes.',
+    'consent.accept': 'aceptar',
+    'consent.decline': 'rechazar',
+    'consent.more': 'más información',
+
+    // privacy page
+    'privacy.title': 'aviso de privacidad.',
+    'privacy.lede': 'qué recolectamos, por qué, y cómo desactivarlo.',
   },
 } as const;
 

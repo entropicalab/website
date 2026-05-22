@@ -14,6 +14,13 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+# opt the workflow into node 24 for all bundled javascript actions.
+# silences the "actions/checkout@v4, actions/deploy-pages@v4, etc are
+# running on node 20" deprecation warnings. github will flip this default
+# on june 2 2026; this just gets us there early.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
