@@ -12,7 +12,7 @@ typology: residential
 role: architecture + energy modelling
 status: in process
 featured: true
-order: 4
+order: 3
 metric:
   value: '100'
   unit: '%'

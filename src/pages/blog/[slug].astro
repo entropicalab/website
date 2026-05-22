@@ -42,6 +42,12 @@ const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', d
         </div>
       </header>
 
+      {data.heroImage && (
+        <figure class="post-hero">
+          <img src={data.heroImage} alt={data.title} loading="eager" />
+        </figure>
+      )}
+
       <div class="post-body prose">
         <Content />
       </div>
@@ -98,6 +104,22 @@ const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', d
     align-items: center;
   }
   .post-byline .sep { color: var(--mute-on-paper-2); }
+
+  .post-hero {
+    margin: 0 0 56px;
+    padding: 0;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--paper-2);
+    border: 1px solid var(--line-on-paper);
+  }
+  .post-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
   .post-body {
     max-width: 64ch;

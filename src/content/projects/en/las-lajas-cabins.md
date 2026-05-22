@@ -3,52 +3,31 @@ title: las lajas cabins
 slug: las-lajas-cabins
 locale: en
 eyebrow: '// case study · residential'
-lede: 'a small cluster of beach cabins on the pacific coast, sized for the breeze and the salt, not the air-conditioner.'
+lede: a conceptual masterplan for a cluster of cabins in las lajas, sized for the highland tropical climate that governs the site.
 location: las lajas, panamá
 year: 'TBD'
 area: 'TBD m²'
 typology: residential
-role: architecture + envelope advisory
-status: 'TBD · in design / built'
+role: conceptual masterplan
+status: concept
 featured: false
-order: 8
+order: 11
 metric:
   value: 'TBD'
   unit: ''
-  label: 'TBD · headline metric to confirm'
-  note: 'TBD · please send the real metric and unit'
+  label: 'tropical highland masterplan · concept'
+  note: 'cabin typology and counts to be confirmed.'
 brief: |
-  the brief was a small group of beach cabins for short stays on the pacific coast,
-  where the sea breeze does most of the cooling for most of the year and the
-  envelope's job is to keep the salt out and the air moving.
+  a small cluster of cabins on a las lajas site, with a tropical highland climate that is
+  meaningfully different from the coastal pacific or the caribbean side: cooler nights,
+  drier air, and a less aggressive sun than the coast.
 
-  the temptation, as always, was to specify air-conditioning and forget the breeze.
-  the model was asked instead to predict comfort hours without mechanical cooling,
-  so the section could be sized to the wind.
+  the brief is a conceptual masterplan: cabin typology, plot logic, circulation, and
+  shared amenities, sized to the site and the climate without yet committing to material
+  specifications.
 approach: |
-  cross-ventilation was the primary cooling strategy. apertures, screens, and the
-  cabin's orientation were set against the prevailing pacific wind, and the model
-  was run with no mechanical assist to find the hours where comfort would fail.
-  ceiling fans cover those hours; air-conditioning is omitted entirely.
-
-  the materials are local, salt-tolerant, and detailed for a coastline that
-  forgives nothing.
-strategies:
-  - label: orientation
-    body: 'cabins aligned to the prevailing pacific breeze; long axes parallel to the shore.'
-    delta: 'TBD'
-  - label: apertures
-    body: 'opposing operable openings on each cabin; screens for insect and salt-spray control.'
-    delta: 'TBD'
-  - label: roof
-    body: 'continuous overhang on all four sides; ventilated cavity above the ceiling plane.'
-    delta: 'TBD'
-  - label: ventilation
-    body: 'no mechanical cooling. ceiling fans for the marginal hours. cross-purge by default.'
-    delta: 'TBD'
-resultLabel: 'TBD · please send the headline result'
-resultDelta: 'TBD'
-closingQuote: 'cabins that breathe with the coast they sit on.'
-# heroImage omitted, awaiting first photo
-# gallery omitted, awaiting photos
+  the masterplan is being developed against the highland micro-climate rather than a
+  generic tropical model. orientation and apertures favour the cooler night cycle and the
+  prevailing winds across the site; the cabin typology is sized to be cross-ventilated by
+  default, with mechanical cooling treated as a backup rather than the design driver.
 ---

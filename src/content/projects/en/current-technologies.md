@@ -3,52 +3,50 @@ title: current technologies
 slug: current-technologies
 locale: en
 eyebrow: '// case study · commercial'
-lede: a 140-square-metre office fit-out in clayton, where the existing envelope was a constraint. the work was almost entirely about daylight, and a measurable amount of it.
+lede: a small office fit-out in clayton with little access to natural light. the entire conceptual design was driven by one goal, open every space to daylight across the working day.
 location: clayton, panamá
 year: 2018
-area: 140 m²
+area: 'TBD m²'
 typology: commercial
-role: interior architecture + daylight modelling
+role: conceptual design + construction documents + daylight studies
 status: built
 featured: false
-order: 5
+order: 10
 heroImage: /projects/current-technologies/01.jpg
 metric:
-  value: '47'
-  unit: '%'
-  label: daylight access increase
-  note: useful daylight illuminance (300–3000 lx) at desk plane, measured post-occupancy
+  value: 'TBD'
+  unit: ''
+  label: 'daylight access increase · post-occupancy'
+  note: 'measured value to be confirmed from post-occupancy data.'
 brief: |
-  the office occupied a former canal-zone military building, with deep plans, low
-  ceilings, and a narrow band of north-facing windows. the brief was to make it a
-  place the team would want to spend a working day in, without rebuilding the shell.
+  current technologies occupied an office space with deep plan, low ceiling, and a narrow
+  band of north-facing windows. the previous fit-out had cluttered the glazing line and lit
+  the rest of the room with overhead fluorescents during the work day. half the floor sat
+  below useful daylight at noon, and the team felt it.
 
-  the previous fit-out had cluttered the glazing line and lit the rest of the room
-  with overhead fluorescents during the workday. the deeper problem was visible from
-  the simulation: half the floor was below 300 lux at noon.
+  the brief was to make the space a place worth spending a working day in, without
+  rebuilding the shell.
 approach: |
-  the planning move was simple: move the partitions away from the glazing, push
-  closed offices to the deepest wall, and lift the visual transmittance of the
-  inner partitions by replacing the upper third with glass. the model said that
-  reflective ceilings would buy more than translucent partitions; we did both.
+  the design move was simple: open up the entire layout to natural light. partitions were
+  moved off the glazing line, closed offices pushed to the deepest wall, and the upper
+  third of every inner partition was replaced with glass to let daylight reach the back
+  rooms. high-reflectance ceilings turn the windows into wash surfaces.
 
-  the result is a room that works on daylight from 8 to 4 most days, which is
-  most of when the office is open.
+  the result is a room that works on daylight from morning through mid-afternoon on most
+  days, which is most of when the office is open.
 strategies:
   - label: layout
-    body: open desks rotated 90° to face the windows; closed offices moved to the back wall.
-    delta: '+18%'
-  - label: ceilings
-    body: high-reflectance white finish across all ceilings; 0.85 lr paint.
-    delta: '+14%'
+    body: 'open desks rotated to face the windows; closed offices moved to the deepest wall.'
+    delta: 'TBD'
   - label: partitions
-    body: glazed upper third on inner partitions; clear vision to the back rooms.
-    delta: '+11%'
-  - label: controls
-    body: 'daylight-linked dimming on the overhead leds; off by default until 16:30.'
-    delta: '+4%'
-resultLabel: useful daylight at desk plane
-resultDelta: '+47%'
-closingQuote: a place worth turning the lights off in.
-# gallery omitted, one image only for now
+    body: 'upper third of inner partitions glazed; clear sightlines to the back of the plan.'
+    delta: 'TBD'
+  - label: ceilings
+    body: 'high-reflectance white finish across all ceilings to wash daylight deeper into the room.'
+    delta: 'TBD'
+resultLabel: 'useful daylight access'
+resultDelta: 'improved'
+closingQuote: 'a room worth turning the lights off in.'
+gallery:
+  - { src: '', tag: '// open office' }
 ---
