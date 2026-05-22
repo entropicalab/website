@@ -38,7 +38,11 @@ const projects = all.sort((a, b) => {
         {projects.map((p, i) => (
           <a class={`pcard ${i === 0 ? 'lead' : ''}`} href={localized(`/projects/${p.data.slug}`, locale)}>
             <div class="pcard-photo">
-              <span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span>
+              {p.data.heroImage ? (
+                <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />
+              ) : (
+                <span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span>
+              )}
             </div>
             <div class="pcard-meta">
               <div class="pcard-eb">{p.data.eyebrow}</div>
@@ -122,6 +126,15 @@ const projects = all.sort((a, b) => {
     background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px);
     border: 1px solid var(--line-on-paper);
     position: relative;
+    overflow: hidden;
+  }
+  .pcard-photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .pcard.lead .pcard-photo {
     aspect-ratio: 16 / 11;

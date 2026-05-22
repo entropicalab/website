@@ -35,7 +35,13 @@ const projects = all.sort((a, b) => {
       <div class="projects-grid">
         {projects.map((p, i) => (
           <a class={`pcard ${i === 0 ? 'lead' : ''}`} href={localized(`/projects/${p.data.slug}`, locale)}>
-            <div class="pcard-photo"><span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span></div>
+            <div class="pcard-photo">
+              {p.data.heroImage ? (
+                <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />
+              ) : (
+                <span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span>
+              )}
+            </div>
             <div class="pcard-meta">
               <div class="pcard-eb">{p.data.eyebrow}</div>
               <h2 class="pcard-title">{p.data.title}</h2>
@@ -69,7 +75,8 @@ const projects = all.sort((a, b) => {
   .pcard { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; padding: 48px 0; border-top: 1px solid var(--line-on-paper); color: inherit; text-decoration: none; align-items: start; transition: background 0.15s; }
   .pcard:hover { background: var(--paper-2); }
   .pcard:last-child { border-bottom: 1px solid var(--line-on-paper); }
-  .pcard-photo { aspect-ratio: 16 / 10; background: var(--paper-2); background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px); border: 1px solid var(--line-on-paper); position: relative; }
+  .pcard-photo { aspect-ratio: 16 / 10; background: var(--paper-2); background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px); border: 1px solid var(--line-on-paper); position: relative; overflow: hidden; }
+  .pcard-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .pcard.lead .pcard-photo { aspect-ratio: 16 / 11; }
   .pcard:hover .pcard-photo { border-color: var(--mute-on-paper); }
   .pcard-photo .ph-tag { position: absolute; top: 14px; left: 16px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }

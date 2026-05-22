@@ -8,6 +8,7 @@ const t = tr(locale);
 const services = [
   {
     n: '01',
+    icon: 'query_stats',
     title: 'data-informed project feasibility',
     short: 'energy is money, and money drives feasibility. the model is in the pro-forma, from the start.',
     body: 'energy models that inform buildings are part of our dna. before lines are drawn, we translate site, climate, envelope, and operations into the unit the developer or client actually speaks in: monthly cost, payback period, internal rate of return. the work that wins approval is the work that survived a real number.',
@@ -15,6 +16,7 @@ const services = [
   },
   {
     n: '02',
+    icon: 'architecture',
     title: 'concept design',
     short: 'orientation, massing, and program tested against the climate before the section is committed.',
     body: 'the cheapest move in any building is the one that happens before the lines are drawn. we run radiation, daylight, and ventilation studies on the massing in week one, so the orientation, footprint, and big shading decisions are made with evidence, not intuition.',
@@ -22,6 +24,7 @@ const services = [
   },
   {
     n: '03',
+    icon: 'dashboard_customize',
     title: 'architectural design + coordination',
     short: 'full architectural delivery, with the energy model in the conversation from day one.',
     body: 'we take projects from concept through schematic and design development as the architect of record. the energy model is updated alongside the drawing set, so every section drawn is one the building can actually carry.',
@@ -29,6 +32,7 @@ const services = [
   },
   {
     n: '04',
+    icon: 'description',
     title: 'permitting + documentation',
     short: 'construction documents that pass review and that the contractor can actually build.',
     body: 'permit drawings, technical specifications, and construction documents for panamanian and international jurisdictions. we write the documents the way they will be read, by the office processing the permit, and by the contractor estimating the build.',
@@ -36,6 +40,7 @@ const services = [
   },
   {
     n: '05',
+    icon: 'monitoring',
     title: 'energy + performance advisory',
     short: 'envelope simulation, daylight studies, and certification support, as a standalone or in-house service.',
     body: 'available as a standalone engagement for projects where the architecture is already underway. we model the envelope, daylight, ventilation, and operational energy, and we support leed and edge applications with documentation the certifying body recognises.',
@@ -71,7 +76,10 @@ const services = [
       <div class="services-list">
         {services.map((s) => (
           <article class="service-row">
-            <div class="svc-n">{s.n}</div>
+            <div class="svc-n">
+              <span class="material-symbols-outlined icon-md icon-amber svc-icon">{s.icon}</span>
+              <span class="svc-num">{s.n}</span>
+            </div>
             <div class="svc-title">{s.title}</div>
             <div class="svc-content">
               <p class="svc-short">{s.short}</p>
@@ -187,12 +195,21 @@ const services = [
     border-bottom: 1px solid var(--line-on-paper);
   }
   .svc-n {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .svc-n .svc-num {
     font-size: 32px;
     color: var(--mute-on-paper-2);
     font-feature-settings: 'tnum' 1;
     letter-spacing: -0.02em;
     font-weight: 300;
     line-height: 1;
+  }
+  .svc-n .svc-icon {
+    display: block;
   }
   .svc-title {
     font-size: 22px;

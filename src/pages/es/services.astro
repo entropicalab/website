@@ -8,6 +8,7 @@ const t = tr(locale);
 const services = [
   {
     n: '01',
+    icon: 'query_stats',
     title: 'factibilidad informada por datos',
     short: 'la energía es dinero, y el dinero impulsa la factibilidad. el modelo está en el pro-forma, desde el inicio.',
     body: 'los modelos energéticos que informan edificios son parte de nuestro adn. antes de trazar líneas, traducimos sitio, clima, envolvente y operación al lenguaje que el desarrollador o cliente realmente habla: costo mensual, periodo de pago, tasa interna de retorno. el trabajo que obtiene aprobación es el trabajo que sobrevivió un número real.',
@@ -15,6 +16,7 @@ const services = [
   },
   {
     n: '02',
+    icon: 'architecture',
     title: 'diseño conceptual',
     short: 'orientación, masa y programa puestos a prueba contra el clima antes de comprometer la sección.',
     body: 'el movimiento más barato en cualquier edificio es el que ocurre antes de trazar las líneas. corremos estudios de radiación, luz natural y ventilación sobre la masa en la primera semana, para que la orientación, la huella y las grandes decisiones de sombra se tomen con evidencia, no con intuición.',
@@ -22,6 +24,7 @@ const services = [
   },
   {
     n: '03',
+    icon: 'dashboard_customize',
     title: 'diseño + coordinación arquitectónica',
     short: 'entrega arquitectónica integral, con el modelo energético dentro de la conversación desde el primer día.',
     body: 'llevamos proyectos desde concepto pasando por esquemático y desarrollo, como arquitecto responsable. el modelo energético se actualiza junto al set de dibujos, para que cada sección dibujada sea una que el edificio realmente puede sostener.',
@@ -29,6 +32,7 @@ const services = [
   },
   {
     n: '04',
+    icon: 'description',
     title: 'permisos + documentación',
     short: 'documentos constructivos que pasan revisión y que el contratista realmente puede construir.',
     body: 'planos de permiso, especificaciones técnicas y documentos constructivos para jurisdicciones panameñas e internacionales. escribimos los documentos como serán leídos, por la oficina que procesa el permiso, y por el contratista que cotiza la obra.',
@@ -36,6 +40,7 @@ const services = [
   },
   {
     n: '05',
+    icon: 'monitoring',
     title: 'asesoría en energía y desempeño',
     short: 'simulación de envolvente, estudios de luz natural y soporte de certificación, como servicio independiente o integrado.',
     body: 'disponible como contratación independiente para proyectos donde la arquitectura ya está en marcha. modelamos envolvente, luz natural, ventilación y energía operativa, y apoyamos aplicaciones leed y edge con documentación reconocida por la entidad certificadora.',
@@ -69,7 +74,10 @@ const services = [
       <div class="services-list">
         {services.map((s) => (
           <article class="service-row">
-            <div class="svc-n">{s.n}</div>
+            <div class="svc-n">
+              <span class="material-symbols-outlined icon-md icon-amber svc-icon">{s.icon}</span>
+              <span class="svc-num">{s.n}</span>
+            </div>
             <div class="svc-title">{s.title}</div>
             <div class="svc-content">
               <p class="svc-short">{s.short}</p>
@@ -140,7 +148,9 @@ const services = [
   .services-list { display: flex; flex-direction: column; }
   .service-row { display: grid; grid-template-columns: 80px 260px 1fr; gap: 48px; padding: 48px 0; border-top: 1px solid var(--line-on-paper); align-items: start; }
   .service-row:last-child { border-bottom: 1px solid var(--line-on-paper); }
-  .svc-n { font-size: 32px; color: var(--mute-on-paper-2); font-feature-settings: 'tnum' 1; letter-spacing: -0.02em; font-weight: 300; line-height: 1; }
+  .svc-n { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .svc-n .svc-num { font-size: 32px; color: var(--mute-on-paper-2); font-feature-settings: 'tnum' 1; letter-spacing: -0.02em; font-weight: 300; line-height: 1; }
+  .svc-n .svc-icon { display: block; }
   .svc-title { font-size: 22px; line-height: 1.15; letter-spacing: -0.015em; font-weight: 300; }
   .svc-content { max-width: 56ch; display: flex; flex-direction: column; gap: 16px; }
   .svc-short { font-size: 17px; line-height: 1.5; color: var(--ink-on-paper); font-weight: 300; margin: 0; }

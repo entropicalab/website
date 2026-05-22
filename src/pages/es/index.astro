@@ -187,7 +187,11 @@ const manifesto = ['sombra', 'ventilación', 'humedad', 'durabilidad', 'masa té
         {featured.map((p, i) => (
           <a class={`proj-card ${i === 0 ? 'lead' : ''}`} href={localized(`/projects/${p.data.slug}`, locale)}>
             <div class="proj-photo">
-              <span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span>
+              {p.data.heroImage ? (
+                <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />
+              ) : (
+                <span class="ph-tag">{p.data.gallery?.[0]?.tag ?? '// 16∶9 · hero'}</span>
+              )}
             </div>
             <div class="proj-meta">
               <div class="proj-eb">{p.data.eyebrow}</div>
@@ -337,7 +341,8 @@ const manifesto = ['sombra', 'ventilación', 'humedad', 'durabilidad', 'masa té
   .proof-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
   .proj-card { display: flex; flex-direction: column; gap: 16px; color: inherit; text-decoration: none; transition: transform 0.2s; }
   .proj-card:hover { transform: translateY(-2px); }
-  .proj-photo { aspect-ratio: 4 / 3; background: var(--paper-2); background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px); border: 1px solid var(--line-on-paper); position: relative; }
+  .proj-photo { aspect-ratio: 4 / 3; background: var(--paper-2); background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px); border: 1px solid var(--line-on-paper); position: relative; overflow: hidden; }
+  .proj-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .proj-card.lead .proj-photo { aspect-ratio: 5 / 4; }
   .proj-photo .ph-tag { position: absolute; top: 14px; left: 16px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
   .proj-meta { display: flex; flex-direction: column; gap: 6px; }

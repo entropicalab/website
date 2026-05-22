@@ -124,49 +124,93 @@ const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', d
   .post-body {
     max-width: 64ch;
   }
+
+  /* h2 is a section divider with the brand's // eyebrow prefix */
   .post-body :global(h2) {
     font-size: 24px;
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    margin: 56px 0 16px;
-  }
-  .post-body :global(h3) {
-    font-size: 18px;
     font-weight: 400;
-    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 64px 0 20px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line-on-paper);
+    color: var(--ink-on-paper);
   }
+  .post-body :global(h2)::before {
+    content: '// ';
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+    margin-right: 2px;
+  }
+
+  /* h3 styled as a sub-eyebrow */
+  .post-body :global(h3) {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--mute-on-paper-2);
+    margin: 36px 0 12px;
+  }
+
+  /* body paragraphs */
   .post-body :global(p) {
     font-size: 17px;
     line-height: 1.75;
-    font-weight: 300;
+    font-weight: 400;
     margin: 0 0 18px;
     color: var(--ink-on-paper);
   }
+
+  /* the opening blockquote, treat as a pull-quote / lede */
+  .post-body :global(blockquote) {
+    border-left: 2px solid var(--amber);
+    padding: 4px 0 4px 20px;
+    margin: 0 0 32px;
+    font-size: 22px;
+    line-height: 1.35;
+    font-weight: 300;
+    letter-spacing: -0.005em;
+    color: var(--ink-on-paper);
+    font-style: normal;
+    max-width: 32ch;
+  }
+  .post-body :global(blockquote p) {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    margin: 0;
+  }
+
+  /* lists */
   .post-body :global(ul), .post-body :global(ol) {
     font-size: 17px;
     line-height: 1.7;
-    font-weight: 300;
+    font-weight: 400;
     padding-left: 22px;
     margin: 0 0 18px;
   }
   .post-body :global(li) { margin-bottom: 6px; }
+  .post-body :global(ul li)::marker { color: var(--amber); }
+
+  /* emphasis */
   .post-body :global(strong), .post-body :global(b) {
     color: var(--ink-on-paper);
     font-weight: 500;
   }
-  .post-body :global(hr) {
-    border: none;
-    border-top: 1px solid var(--line-on-paper);
-    margin: 48px 0;
-  }
-  .post-body :global(blockquote) {
-    border-left: 2px solid var(--amber);
-    padding-left: 20px;
-    margin: 24px 0;
+  .post-body :global(em), .post-body :global(i) {
     font-style: normal;
     color: var(--mute-on-paper);
   }
+
+  /* horizontal rule */
+  .post-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--line-on-paper);
+    margin: 64px 0 48px;
+  }
+
+  /* inline code */
   .post-body :global(code) {
     font-family: var(--font-mono);
     background: var(--paper-2);
@@ -174,6 +218,8 @@ const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', d
     padding: 1px 6px;
     font-size: 0.92em;
   }
+
+  /* links */
   .post-body :global(a) {
     color: inherit;
     border-bottom: 1px solid var(--line-on-paper-2);
