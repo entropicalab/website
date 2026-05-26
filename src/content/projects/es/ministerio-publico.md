@@ -10,14 +10,17 @@ area: '2,600 m²'
 typology: institutional
 role: documentación constructiva
 status: construido
-featured: true
-order: 2
+featured: false
+order: 4
 heroImage: /projects/ministerio-publico/01.jpg
 metric:
-  value: 'moa 2023'
-  unit: ''
-  label: 'mención honorífica · 2,600 m² · usd 10 m'
-  note: 'mejores obras de arquitectura panamá, 2023.'
+  value: '2,600'
+  unit: ' m²'
+  label: 'rehabilitación cívica · usd 10 m'
+  note: 'mejores obras de arquitectura panamá · mención honorífica, 2023.'
+award:
+  logo: /projects/ministerio-publico/award-moa-2023.png
+  label: 'moa panamá · 2023 · mención honorífica'
 brief: |
   rehabilitación de un edificio civil de 1958 para alojar un programa complejo de 2,600 m²
   de la unidad metropolitana del ministerio público: oficinas, áreas de atención al público

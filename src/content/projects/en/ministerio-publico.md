@@ -10,14 +10,17 @@ area: '2,600 m²'
 typology: institutional
 role: construction documents
 status: built
-featured: true
-order: 2
+featured: false
+order: 4
 heroImage: /projects/ministerio-publico/01.jpg
 metric:
-  value: 'moa 2023'
-  unit: ''
-  label: 'honorable mention · 2,600 m² · usd 10 m'
-  note: 'mejores obras de arquitectura panamá, 2023.'
+  value: '2,600'
+  unit: ' m²'
+  label: 'civic rehabilitation · usd 10 m'
+  note: 'mejores obras de arquitectura panamá · honorable mention, 2023.'
+award:
+  logo: /projects/ministerio-publico/award-moa-2023.png
+  label: 'moa panamá · 2023 · honorable mention'
 brief: |
   the rehabilitation of a 1958 civic landmark to house a complex 2,600 m² program for the
   unidad metropolitana del ministerio público: offices, public-attention areas, and

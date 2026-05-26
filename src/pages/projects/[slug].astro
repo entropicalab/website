@@ -76,6 +76,18 @@ const approachParas = (data.approach ?? '').split(/\n\s*\n/).map((p) => p.trim()
             <div class="eyebrow amber">// the proof</div>
             <h2>{data.metric.label}.</h2>
             {data.metric.note && <p class="note">{data.metric.note}</p>}
+            {data.award && (
+              <div class="award">
+                {data.award.url ? (
+                  <a href={data.award.url} target="_blank" rel="noopener">
+                    <img src={data.award.logo} alt={data.award.label} />
+                  </a>
+                ) : (
+                  <img src={data.award.logo} alt={data.award.label} />
+                )}
+                <span class="award-caption">{data.award.label}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -307,6 +319,29 @@ const approachParas = (data.approach ?? '').split(/\n\s*\n/).map((p) => p.trim()
     max-width: 22ch;
   }
   .proof-text .note { font-size: 13px; color: var(--mute-on-paper); font-weight: 300; line-height: 1.6; margin: 0; max-width: 52ch; }
+  .proof-text .award {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-on-paper);
+  }
+  .proof-text .award img {
+    height: 80px;
+    width: auto;
+    display: block;
+    flex: none;
+  }
+  .proof-text .award-caption {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper);
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 28ch;
+  }
   @media (max-width: 900px) {
     .cs-proof { padding: 64px 0; }
     .proof-grid { grid-template-columns: 1fr; gap: 24px; }

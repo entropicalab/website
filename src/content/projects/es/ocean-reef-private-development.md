@@ -6,18 +6,18 @@ eyebrow: '// estudio de caso · residencial'
 lede: un desarrollo privado de cuatro mil metros cuadrados en una isla artificial panameña. el brief pedía vista al mar desde cada cuarto, y una cuenta de aire que no castigara la petición.
 location: ocean reef, panamá
 year: 2021
-area: 'TBD m²'
+area: '4,062 m²'
 typology: residential
 role: arquitectura + simulación energética
 status: en construcción
-featured: false
-order: 5
+featured: true
+order: 2
 heroImage: /projects/ocean-reef-private-development/01.png
 metric:
-  value: 'TBD'
-  unit: ''
-  label: 'reducción de carga de enfriamiento · en construcción'
-  note: 'métrica titular por confirmar post-ocupación.'
+  value: '+62'
+  unit: '%'
+  label: aumento de acceso a luz natural
+  note: 'iluminancia útil de luz natural · vs. esquema base.'
 brief: |
   el sitio está expuesto: una isla artificial sobre la costa pacífica de panamá, con
   viento marino constante de este a oeste, sal en todo, y un brief aspiracional que pedía

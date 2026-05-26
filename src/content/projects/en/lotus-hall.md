@@ -14,10 +14,13 @@ featured: true
 order: 1
 heroImage: /projects/lotus-hall/01.png
 metric:
-  value: 'paris design awards 2024'
-  unit: ''
-  label: 'winner · cultural architecture'
-  note: 'with soba architecture (design lead). entrópica delivered the environmental design strategy.'
+  value: '-36'
+  unit: '%'
+  label: cooling load reduction
+  note: 'energy + daylight strategy by entrópica. design lead: soba architecture.'
+award:
+  logo: /projects/lotus-hall/award-paris-2024.png
+  label: 'paris design awards · 2024 · winner, cultural architecture'
 brief: |
   the zhengyi visitor center is a cultural gateway pavilion at the entrance of zhengyi historic
   town outside shanghai. the brief, set by soba architecture, asked for a public-facing

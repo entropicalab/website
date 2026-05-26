@@ -37,6 +37,14 @@ const projects = defineCollection({
     // photo handling
     heroImage: z.string().optional(),
     gallery: z.array(z.object({ src: z.string(), tag: z.string().optional() })).optional(),
+    // award badge (image path + caption) — appears next to the metric block
+    award: z
+      .object({
+        logo: z.string(), // path to badge image, e.g. /projects/lotus-hall/award-paris-2024.png
+        label: z.string(), // e.g. 'paris design awards · 2024 · cultural architecture'
+        url: z.string().optional(), // optional outbound link
+      })
+      .optional(),
     // narrative
     brief: z.string().optional(),
     approach: z.string().optional(),

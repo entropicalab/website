@@ -11,8 +11,8 @@ area: 784 m²
 typology: residential
 role: architecture + energy modelling
 status: in process
-featured: true
-order: 3
+featured: false
+order: 6
 metric:
   value: '100'
   unit: '%'

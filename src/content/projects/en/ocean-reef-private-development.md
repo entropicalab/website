@@ -6,18 +6,18 @@ eyebrow: '// case study · residential'
 lede: a four-thousand-square-metre private development on a panamanian reef island. the brief asked for sea views from every room, and a cooling bill that did not punish the asking.
 location: ocean reef, panamá
 year: 2021
-area: 'TBD m²'
+area: '4,062 m²'
 typology: residential
 role: architecture + energy simulation
 status: in construction
-featured: false
-order: 5
+featured: true
+order: 2
 heroImage: /projects/ocean-reef-private-development/01.png
 metric:
-  value: 'TBD'
-  unit: ''
-  label: 'cooling load reduction · in construction'
-  note: 'headline metric to be confirmed post-occupancy.'
+  value: '+62'
+  unit: '%'
+  label: daylight access increase
+  note: 'useful daylight illuminance · vs. baseline scheme.'
 brief: |
   the site is exposed: an artificial reef island on panamá's pacific coast, with constant
   east-to-west onshore wind, salt in everything, and an aspirational brief asking for

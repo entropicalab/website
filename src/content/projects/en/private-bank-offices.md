@@ -6,18 +6,18 @@ eyebrow: '// case study · commercial'
 lede: a regional bank branch on the dry pacific coast, redesigned so the façade carried the climate instead of the air-conditioning.
 location: chitré, panamá
 year: 2022
-area: 'TBD m²'
+area: '376 m²'
 typology: commercial
 role: architecture + envelope simulation
-status: postponed
-featured: false
-order: 7
+status: competition entry
+featured: true
+order: 3
 heroImage: /projects/private-bank-offices/01.jpg
 metric:
-  value: 'TBD'
-  unit: ''
-  label: 'radiation reduction · postponed'
-  note: 'design completed, project postponed. headline metric to be confirmed on resumption.'
+  value: '-45'
+  unit: '%'
+  label: radiation on the façade
+  note: 'incident solar flux on the west and south façades vs. unshaded baseline. competition entry.'
 brief: |
   chitré is hot, dry, and bright, closer to a sahel climate than a wet panamanian one.
   the client's brief was a calm, daylit branch open to walk-in clients, which the

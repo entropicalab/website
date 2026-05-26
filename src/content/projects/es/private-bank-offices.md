@@ -6,18 +6,18 @@ eyebrow: '// estudio de caso · comercial'
 lede: una sucursal bancaria regional en la costa pacífica seca, rediseñada para que la fachada cargara el clima en lugar del aire acondicionado.
 location: chitré, panamá
 year: 2022
-area: 'TBD m²'
+area: '376 m²'
 typology: commercial
 role: arquitectura + simulación de envolvente
-status: pospuesto
-featured: false
-order: 7
+status: concurso
+featured: true
+order: 3
 heroImage: /projects/private-bank-offices/01.jpg
 metric:
-  value: 'TBD'
-  unit: ''
-  label: 'reducción de radiación · pospuesto'
-  note: 'diseño completado, proyecto pospuesto. métrica titular por confirmar al retomarse.'
+  value: '-45'
+  unit: '%'
+  label: radiación sobre la fachada
+  note: 'flujo solar incidente en las fachadas oeste y sur vs. línea base sin sombra. concurso.'
 brief: |
   chitré es caliente, seco y brillante, más cerca de un clima saheliano que de un panamá
   húmedo. el brief del cliente era una sucursal tranquila y bien iluminada, abierta a
