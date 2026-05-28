@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
-import { getLocaleFromPath } from '../i18n/utils';
+import { getLocaleFromPath, alternateUrls } from '../i18n/utils';
 import type { Locale } from '../i18n/strings';
 
 interface Props {
@@ -19,7 +19,7 @@ const pathname = Astro.url.pathname;
 const detectedLocale = getLocaleFromPath(pathname);
 const {
   title,
-  description = 'entrópica is an energy-first architecture lab based in panamá. cool buildings in hot places.',
+  description = 'entrópica is an energy-led tropical architecture studio in panamá. we use climate science and building physics to design cool buildings in hot places.',
   locale = detectedLocale,
   ogImage = '/entropica-dark.png',
   noindex = false,
@@ -27,6 +27,13 @@ const {
 
 const fullTitle = title.includes('entrópica') ? title : `${title} · entrópica`;
 const canonical = new URL(pathname, Astro.site).toString();
+
+const alts = alternateUrls(pathname);
+const hreflang = [
+  { lang: 'es', href: new URL(alts.es, Astro.site).toString() },
+  { lang: 'en', href: new URL(alts.en, Astro.site).toString() },
+  { lang: 'x-default', href: new URL(alts.es, Astro.site).toString() },
+];
 ---
 
 <!doctype html>
@@ -38,6 +45,9 @@ const canonical = new URL(pathname, Astro.site).toString();
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
     <link rel="canonical" href={canonical} />
+    {hreflang.map((h) => (
+      <link rel="alternate" hreflang={h.lang} href={h.href} />
+    ))}
     <link rel="icon" type="image/png" href="/favicon.png" />
 
     {/* material symbols outlined — weight 300 to match brand's light feel */}

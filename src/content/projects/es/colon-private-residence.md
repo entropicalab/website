@@ -3,7 +3,7 @@ title: residencia privada · colón
 slug: colon-private-residence
 locale: es
 eyebrow: '// residencial'
-lede: una casa unifamiliar en el lado caribe de panamá, en diseño contra un objetivo net-zero. orientación, envolvente y techo se están trabajando contra el modelo mientras el proyecto está aún en diseño.
+lede: una casa unifamiliar en el lado caribe de panamá, en diseño contra un objetivo net-zero. orientación, envolvente y techo se están trabajando contra la simulación energética mientras el proyecto está aún en diseño.
 location: colón, panamá
 year: 2025
 area: '784 m²'

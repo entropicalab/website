@@ -2,6 +2,9 @@
 title: 'el espejismo del vidrio.'
 slug: glass-delusion
 locale: es
+categories: ['física edilicia']
+tags: ['fachadas', 'vidrio', 'ganancia solar']
+keywords: ['fachada de vidrio en el trópico', 'arquitectura tropical panamá', 'control solar']
 eyebrow: '// el aburrido'
 summary: desmontando la estética modernista templada con física edilicia revisada por pares. por qué una fachada de vidrio sin protección en el trópico es soporte vital, no arquitectura.
 date: 2024-11-12

@@ -2,6 +2,9 @@
 title: 'the glass delusion.'
 slug: glass-delusion
 locale: en
+categories: ['building physics']
+tags: ['façades', 'glass', 'solar gain']
+keywords: ['glass façade tropics', 'tropical architecture panama', 'solar control']
 eyebrow: '// the boring part'
 summary: dismantling the temperate-modernist glass-box aesthetic with peer-reviewed building physics. why an unprotected glass façade in the tropics is life-support, not architecture.
 date: 2024-11-12

@@ -29,6 +29,35 @@ const problems = [
 
 const manifesto = ['sombra', 'ventilación', 'humedad', 'durabilidad', 'masa térmica', 'energía'];
 
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ArchitecturalService',
+  name: 'entrópica',
+  legalName: 'watts & matter consulting, s. e.p.',
+  description: 'estudio de arquitectura tropical y bioclimática en panamá, enfocado en la energía.',
+  url: 'https://entropica-lab.com/',
+  email: 'info@entropica-lab.com',
+  telephone: '+507 6944-4740',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'ph plaza mar, paitilla',
+    addressLocality: 'ciudad de panamá',
+    addressCountry: 'PA',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 8.974904602770444,
+    longitude: -79.51278964689152,
+  },
+  hasMap: 'https://maps.app.goo.gl/v1nWCHivFs7zPgrj9',
+  sameAs: ['https://maps.app.goo.gl/v1nWCHivFs7zPgrj9'],
+  areaServed: {
+    '@type': 'Country',
+    name: 'Panama',
+  },
+  knowsLanguage: ['es', 'en'],
+};
+
 const clients = [
   {
     cat: 'inmobiliario',
@@ -54,10 +83,11 @@ const clients = [
 ---
 
 <BaseLayout
-  title="entrópica · arquitectura tropical guiada por energía"
-  description="el sol, el calor y la humedad determinan el costo energético de un proyecto. ese es nuestro punto de partida para diseñar. un estudio de arquitectura tropical en panamá."
+  title="entrópica · arquitectura tropical en panamá, guiada por energía"
+  description="entrópica es un estudio de arquitectura tropical en panamá enfocado en la energía. usamos ciencia climática para diseñar edificios frescos en lugares cálidos."
   locale={locale}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
   <section class="hero">
     <div class="site-wrap">
       <div class="hero-grid">
@@ -93,7 +123,9 @@ const clients = [
       <p class="manifesto-note">
         lo que la práctica de climas templados trata como cuestión de ingeniería, sombra,
         ventilación, humedad, energía, es para nosotros el material mismo del diseño.
-        el edificio no es un contenedor de desempeño. el desempeño es el edificio.
+        el edificio no es un contenedor de desempeño. el desempeño es el edificio. es
+        <a class="inline-link" href={localized('/blog/sustainable-architecture-panama', locale)}>arquitectura bioclimática</a>
+        pensada para el trópico.
       </p>
     </div>
   </section>
@@ -185,7 +217,7 @@ const clients = [
       <div class="services-head">
         <div class="eyebrow">// nuestra oferta</div>
         <h2 class="block-h">servicios arquitectónicos, guiados por energía.</h2>
-        <p class="block-sub">desde el concepto hasta la construcción, con el modelo energético dentro de la conversación.</p>
+        <p class="block-sub">desde el concepto hasta la construcción, con la energía como criterio de diseño desde el primer día.</p>
       </div>
 
       <div class="services-grid">

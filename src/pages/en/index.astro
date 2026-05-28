@@ -29,6 +29,35 @@ const problems = [
 
 const manifesto = ['shade', 'airflow', 'moisture', 'durability', 'thermal mass', 'energy'];
 
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ArchitecturalService',
+  name: 'entrópica',
+  legalName: 'watts & matter consulting, s. e.p.',
+  description: 'energy-led tropical and bioclimatic architecture studio in panamá, central america.',
+  url: 'https://entropica-lab.com/en/',
+  email: 'info@entropica-lab.com',
+  telephone: '+507 6944-4740',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'ph plaza mar, paitilla',
+    addressLocality: 'panama city',
+    addressCountry: 'PA',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 8.974904602770444,
+    longitude: -79.51278964689152,
+  },
+  hasMap: 'https://maps.app.goo.gl/v1nWCHivFs7zPgrj9',
+  sameAs: ['https://maps.app.goo.gl/v1nWCHivFs7zPgrj9'],
+  areaServed: {
+    '@type': 'Country',
+    name: 'Panama',
+  },
+  knowsLanguage: ['es', 'en'],
+};
+
 const clients = [
   {
     cat: 'real estate',
@@ -54,10 +83,11 @@ const clients = [
 ---
 
 <BaseLayout
-  title="entrópica · energy-led tropical architecture"
-  description="the sun, the heat, and the humidity determine the energy cost of a project. that is our starting point for design. an energy-led tropical architecture studio in panamá."
+  title="entrópica · energy-led tropical architecture studio in panamá"
+  description="entrópica is an energy-led tropical architecture studio in panamá, central america. we use climate science and building thermodynamics to design cool buildings in hot places."
   locale={locale}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
   <!-- ============ hero ============ -->
   <section class="hero">
     <div class="site-wrap">
@@ -98,6 +128,9 @@ const clients = [
         the things temperate-climate practice treats as afterthoughts, shade,
         airflow, moisture, energy, are, for us, the design material itself. the
         building is not a container for performance. the performance is the building.
+        this is
+        <a class="inline-link" href={localized('/blog/sustainable-architecture-panama', locale)}>bioclimatic architecture</a>
+        for the tropics.
       </p>
     </div>
   </section>
@@ -193,7 +226,7 @@ const clients = [
       <div class="services-head">
         <div class="eyebrow">// our offering</div>
         <h2 class="block-h">architectural services, energy-led.</h2>
-        <p class="block-sub">from concept to construction, the energy model is in the conversation.</p>
+        <p class="block-sub">from concept to construction, energy is a design criterion from day one.</p>
       </div>
 
       <div class="services-grid">

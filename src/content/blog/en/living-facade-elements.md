@@ -2,6 +2,9 @@
 title: 'living facade elements.'
 slug: living-facade-elements
 locale: en
+categories: ['speculative', 'facc']
+tags: ['façades', 'algae', 'biofacade']
+keywords: ['living façade', 'bioclimatic architecture', 'biofacade']
 eyebrow: '// facc 3.0'
 summary: a speculative design where building skins host algae instead of silicon, turning façades into urban biofactories that produce energy, biomass, and clean air.
 date: 2024-10-08

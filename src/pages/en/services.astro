@@ -10,40 +10,40 @@ const services = [
     n: '01',
     icon: 'architecture',
     title: 'concept design',
-    short: 'orientation, massing, and program tested against the climate before the section is committed.',
-    body: 'the cheapest move in any building is the one that happens before the lines are drawn. we run radiation, daylight, and ventilation studies on the massing in week one, so the orientation, footprint, and big shading decisions are made with evidence, not intuition.',
-    deliverables: ['climate-tuned massing studies', 'orientation + ventilation analysis', 'design brief written against the model'],
+    short: 'the foundational service. this is where the decisions with the most leverage over a building\'s energy get made, before the section is committed.',
+    body: 'the basic, required service and almost always the point of greatest energy leverage. we define the program around the sun and the elements of the site, and we set the energy goals along with their feasibility. orientation, footprint, and the big shading decisions are resolved with climate evidence, because the cheapest move in any building is the one that happens before the lines are drawn.',
+    deliverables: ['climate-tuned massing studies', 'program defined around sun and site', 'energy goals + feasibility'],
   },
   {
     n: '02',
     icon: 'dashboard_customize',
     title: 'architectural design + coordination',
-    short: 'full architectural delivery, with the energy model in the conversation from day one.',
-    body: 'we take projects from concept through schematic and design development as the architect of record. the energy model is updated alongside the drawing set, so every section drawn is one the building can actually carry.',
-    deliverables: ['schematic + design development sets', 'envelope + shading specifications', 'consultant coordination (mep, structure, landscape)'],
+    short: 'the construction-documents phase: materials, assemblies, and systems, coordinated to meet or beat the energy goals.',
+    body: 'the construction-drawings phase. materials, assemblies, and systems are decided here, and we hold coordination workshops with the structural, electrical, plumbing, and mechanical engineers so the project meets, or exceeds, the energy goals set at concept.',
+    deliverables: ['construction documents + specifications', 'materials, assemblies, and systems', 'coordination workshops with engineering (structural, electrical, plumbing, mechanical)'],
   },
   {
     n: '03',
     icon: 'description',
     title: 'permitting + documentation',
-    short: 'construction documents that pass review and that the contractor can actually build.',
-    body: 'permit drawings, technical specifications, and construction documents for panamanian and international jurisdictions. we write the documents the way they will be read, by the office processing the permit, and by the contractor estimating the build.',
-    deliverables: ['permit-ready drawings', 'technical specifications', 'tender + bid documentation'],
+    short: 'preliminary designs and drawings approved, backed by more than ten years of experience in the municipality of panamá and countrywide.',
+    body: 'more than ten years approving preliminary designs (anteproyecto) and miscellaneous and construction drawings in the municipality of panamá and across the country. we write the documents the way they will be read, by the office processing the permit, and by the contractor estimating the build.',
+    deliverables: ['anteproyecto for municipal review', 'miscellaneous + construction drawings', 'filing in the municipality of panamá and countrywide'],
   },
   {
     n: '04',
     icon: 'monitoring',
     title: 'energy + performance advisory',
-    short: 'envelope simulation, daylight studies, and certification support, as a standalone or in-house service.',
-    body: 'available as a standalone engagement for projects where the architecture is already underway. we model the envelope, daylight, ventilation, and operational energy, and we support leed and edge applications with documentation the certifying body recognises.',
-    deliverables: ['energy + daylight modelling (energy+, radiance, openfoam)', 'façade optimisation studies', 'leed / edge documentation support'],
+    short: 'data-based answers to energy questions, for consultancy, certification, or already-built projects.',
+    body: 'fits consultancy, certification, or already-built projects. we give data-based answers to concrete energy questions: whether to widen an opening for better ventilation, whether a more insulated façade pays for itself. we work hand in hand with product manufacturers, with architecture firms, and, among others, with a japanese urban-farm developer.',
+    deliverables: ['envelope, daylight, and energy modelling (energy+, radiance, openfoam)', 'data-based answers to design questions', 'leed / edge documentation support'],
   },
 ];
 ---
 
 <BaseLayout
-  title="services · entrópica"
-  description="full architectural services, energy-led, from feasibility through documentation, plus standalone energy and performance advisory."
+  title="services · entrópica · architects in panamá"
+  description="energy-led tropical and bioclimatic architecture services in panamá: concept design, documentation and coordination, permitting (jtia, mupa), and energy and performance advisory."
   locale={locale}
 >
   <!-- hero -->
@@ -91,8 +91,36 @@ const services = [
     </div>
   </section>
 
-  <!-- engagement model -->
+  <!-- architecture + interiors -->
   <section class="block">
+    <div class="site-wrap">
+      <div class="two-col">
+        <div class="col-eb">
+          <div class="eyebrow">// architecture + interiors</div>
+        </div>
+        <div class="col-body">
+          <h2 class="block-h">new build or existing space.</h2>
+          <div class="prose">
+            <p>
+              these services apply to architectural projects, where the envelope is still
+              to be defined, and to interior-design projects, where the envelope is fixed
+              and the work is rearranging spaces and systems to win thermal comfort with
+              what is already there. our guide on
+              <a class="inline-link" href={localized('/blog/sustainable-architecture-panama', locale)}>sustainable architecture in panamá</a>
+              explains the envelope logic behind both.
+            </p>
+            <p>
+              <a class="inline-link" href={localized('/projects/current-technologies', locale)}>current technologies</a>
+              is an interiors example: same energy logic, different starting point.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- engagement model -->
+  <section class="block alt">
     <div class="site-wrap">
       <div class="two-col">
         <div class="col-eb">
@@ -103,14 +131,19 @@ const services = [
           <div class="prose">
             <p>
               we prefer to be in the room from feasibility, the smaller the project,
-              the earlier the model earns its keep. but we also pick up envelope and
+              the earlier energy earns its keep. but we also pick up envelope and
               performance work mid-project, where the architecture is already set and
               the envelope still needs to be argued for.
             </p>
             <p>
               fees are scoped per project. retainers are available for repeat clients
               and developers with multiple sites in the pipeline. we don't take work
-              we can't model honestly, and we'll say so before the proposal lands.
+              whose performance we can't stand behind honestly, and we'll say so before
+              the proposal lands.
+            </p>
+            <p>
+              questions about scope, permitting, or certification?
+              <a class="inline-link" href={localized('/faq', locale)}>frequently asked questions</a>.
             </p>
           </div>
         </div>
@@ -125,7 +158,7 @@ const services = [
         <div class="eyebrow">// the next collaboration</div>
         <h2 class="closing-h">
           tell us about the climate and the brief.<br />
-          we'll tell you what the model wants.
+          we'll tell you what the building needs.
         </h2>
         <div class="closing-ctas">
           <a class="btn amber" href={localized('/contact', locale)}>

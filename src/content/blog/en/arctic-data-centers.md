@@ -2,6 +2,9 @@
 title: 'arctic data centers.'
 slug: arctic-data-centers
 locale: en
+categories: ['speculative', 'facc']
+tags: ['data centers', 'cooling', 'cold climate']
+keywords: ['passive cooling', 'data centers', 'climate-led design']
 eyebrow: '// facc 2.0'
 summary: what if server farms moved to the freezing north? a speculative design where cold air, snow, and seawater do the cooling work that machines do today.
 date: 2024-09-01

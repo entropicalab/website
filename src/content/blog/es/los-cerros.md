@@ -2,6 +2,9 @@
 title: 'oficinas los cerros · madrid.'
 slug: los-cerros
 locale: es
+categories: ['estudios de caso']
+tags: ['oficinas', 'bajo consumo', 'madrid']
+keywords: ['edificio de bajo consumo', 'arquitectura energética', 'eficiencia energética']
 eyebrow: '// estudios de caso que admiramos'
 summary: 'las oficinas los cerros de emase arquitectura, en madrid, llegan a 10 kwh / m² / año. una respuesta mediterránea a la misma pregunta que nos hacemos en el trópico: cuán poco puede costar operar un edificio.'
 date: 2024-12-04

@@ -2,6 +2,9 @@
 title: 'harvesting water in a drying earth.'
 slug: water-in-a-drying-earth
 locale: en
+categories: ['speculative', 'facc']
+tags: ['water', 'atmospheric harvesting', 'infrastructure']
+keywords: ['water harvesting', 'sustainable architecture', 'climate-led design']
 eyebrow: '// facc 1.0'
 summary: 'a speculative design: what if buildings became atmospheric harvesters? textile structures that condense fog, dew, and rain into storage, blurring the line between shelter and water infrastructure.'
 date: 2024-07-15

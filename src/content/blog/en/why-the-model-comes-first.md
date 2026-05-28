@@ -2,6 +2,9 @@
 title: 'why the model comes first.'
 slug: why-the-model-comes-first
 locale: en
+categories: ['method']
+tags: ['simulation', 'energy', 'design process']
+keywords: ['energy simulation', 'bioclimatic architecture panama', 'building performance']
 eyebrow: '// the boring part'
 summary: a short note on why we simulate before we draw, and why the order matters more than the software.
 date: 2026-05-01

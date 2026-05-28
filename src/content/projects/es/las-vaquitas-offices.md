@@ -21,7 +21,7 @@ brief: |
 
   no se cambió arquitectura. solo el muro.
 approach: |
-  el modelo corrió sobre la orientación y adyacencia reales del edificio, con
+  la simulación corrió sobre la orientación y adyacencia reales del edificio, con
   varios archivos climáticos. cada variante devolvió una carga de enfriamiento,
   una lectura de autonomía de luz natural y un delta indicativo de capex.
 

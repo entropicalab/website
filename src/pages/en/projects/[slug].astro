@@ -22,6 +22,8 @@ const briefParas = (data.brief ?? '').split(/\n\s*\n/).map((p) => p.trim()).filt
 const approachParas = (data.approach ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 const hasNarrative = briefParas.length > 0 || approachParas.length > 0;
 const hasProof = !!(data.metric || data.award);
+
+const heroAlt = `${data.title}, tropical architecture in ${data.location}`;
 ---
 
 <BaseLayout
@@ -49,7 +51,7 @@ const hasProof = !!(data.metric || data.award);
 
         <div class="hero-image">
           {data.heroImage ? (
-            <img src={data.heroImage} alt={data.title} />
+            <img src={data.heroImage} alt={heroAlt} />
           ) : (
             <span class="ph-tag">// 16∶9 hero · {data.location}</span>
           )}
@@ -136,7 +138,7 @@ const hasProof = !!(data.metric || data.award);
           <div class="gal-grid">
             {data.gallery.map((g, i) => (
               <div class={`gal-cell c${i + 1}`}>
-                {g.src ? <img src={g.src} alt="" /> : <span class="ph-tag">{g.tag}</span>}
+                {g.src ? <img src={g.src} alt={`${data.title}, ${data.typology}, ${data.location} · view ${i + 1}`} /> : <span class="ph-tag">{g.tag}</span>}
               </div>
             ))}
           </div>

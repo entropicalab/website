@@ -3,7 +3,7 @@ title: colón private residence
 slug: colon-private-residence
 locale: en
 eyebrow: '// residential'
-lede: a single-family house on the caribbean side of panamá, being designed against a net-zero target. orientation, envelope, and roof are being worked against the model while the project is still in design.
+lede: a single-family house on the caribbean side of panamá, being designed against a net-zero target. orientation, envelope, and roof are being worked against the energy simulation while the project is still in design.
 location: colón, panamá
 year: 2025
 area: '784 m²'

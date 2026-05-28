@@ -2,6 +2,9 @@
 title: 'centros de datos en el ártico.'
 slug: arctic-data-centers
 locale: es
+categories: ['especulativo', 'facc']
+tags: ['centros de datos', 'enfriamiento', 'clima frío']
+keywords: ['enfriamiento pasivo', 'centros de datos', 'diseño climático']
 eyebrow: '// facc 2.0'
 summary: '¿y si las granjas de servidores se mudaran al norte helado? un diseño especulativo donde aire frío, nieve y agua de mar hacen el trabajo de enfriamiento que hoy hacen las máquinas.'
 date: 2024-09-01

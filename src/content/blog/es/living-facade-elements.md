@@ -2,6 +2,9 @@
 title: 'elementos vivos de fachada.'
 slug: living-facade-elements
 locale: es
+categories: ['especulativo', 'facc']
+tags: ['fachadas', 'algas', 'biofachada']
+keywords: ['fachada viva', 'arquitectura bioclimática', 'biofachada']
 eyebrow: '// facc 3.0'
 summary: 'un diseño especulativo donde la piel del edificio aloja algas en vez de silicio, transformando fachadas en biofábricas urbanas que producen energía, biomasa y aire limpio.'
 date: 2024-10-08

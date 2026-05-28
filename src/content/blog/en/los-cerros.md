@@ -2,6 +2,9 @@
 title: 'los cerros offices · madrid.'
 slug: los-cerros
 locale: en
+categories: ['case studies']
+tags: ['offices', 'low energy', 'madrid']
+keywords: ['low-energy building', 'energy-led architecture', 'energy efficiency']
 eyebrow: '// case studies we admire'
 summary: emase arquitectura's los cerros offices in madrid hit 10 kwh / m² / year. a mediterranean answer to the same question we ask in the tropics — how little energy can a building cost to run.
 date: 2024-12-04

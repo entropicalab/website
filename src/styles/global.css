@@ -347,6 +347,16 @@ body .eyebrow.proof {
   border-color: var(--line-on-paper);
 }
 
+/* inline text link used in body copy outside .prose blocks */
+.inline-link {
+  color: inherit;
+  border-bottom: 1px solid var(--line-on-paper-2);
+}
+.inline-link:hover {
+  border-bottom-color: var(--amber);
+  color: var(--amber);
+}
+
 /* ------------------------------------------------------------
    CTA button — calm, room-mode appropriate
    ------------------------------------------------------------ */

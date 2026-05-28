@@ -2,6 +2,9 @@
 title: 'por qué el modelo va primero.'
 slug: why-the-model-comes-first
 locale: es
+categories: ['método']
+tags: ['simulación', 'energía', 'proceso de diseño']
+keywords: ['simulación energética', 'arquitectura bioclimática panamá', 'desempeño edilicio']
 eyebrow: '// el aburrido'
 summary: una nota corta sobre por qué simulamos antes de dibujar, y por qué el orden importa más que el software.
 date: 2026-05-01

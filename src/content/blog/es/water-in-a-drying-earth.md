@@ -2,6 +2,9 @@
 title: 'cosechar agua en una tierra que se seca.'
 slug: water-in-a-drying-earth
 locale: es
+categories: ['especulativo', 'facc']
+tags: ['agua', 'cosecha atmosférica', 'infraestructura']
+keywords: ['cosecha de agua', 'arquitectura sostenible', 'diseño climático']
 eyebrow: '// facc 1.0'
 summary: 'un diseño especulativo: ¿y si los edificios se volvieran cosechadores atmosféricos? estructuras textiles que condensan niebla, rocío y lluvia hacia el almacenamiento, borrando la línea entre refugio e infraestructura hídrica.'
 date: 2024-07-15

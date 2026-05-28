@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localized, tr } from '../i18n/utils';
+
+const locale = 'es' as const;
+const t = tr(locale);
+
+const faqs = [
+  {
+    q: '¿qué necesito para empezar un proyecto con entrópica?',
+    a: 'lo mínimo es una idea del programa, del sitio y del clima. no hace falta tener planos ni un terreno cerrado; mientras más temprano entramos, más fácil es que las decisiones de mayor apalancamiento energético se tomen bien. una primera conversación sobre el brief y el lugar suele ser suficiente para arrancar.',
+  },
+  {
+    q: '¿trabajan en todo panamá o solo en la ciudad de panamá?',
+    a: 'trabajamos en todo el país. josé barría tiene más de diez años aprobando anteproyectos y planos misceláneos y constructivos en el municipio de panamá y en otras jurisdicciones a nivel nacional, además de proyectos fuera de panamá.',
+  },
+  {
+    q: '¿tramitan permisos de construcción?',
+    a: 'sí. preparamos y tramitamos anteproyecto, planos misceláneos y planos constructivos para revisión municipal, con experiencia directa en el municipio de panamá y a nivel nacional. escribimos los documentos como serán leídos por la oficina que procesa el permiso y por el contratista que cotiza la obra.',
+  },
+  {
+    q: '¿cuánto cuesta construir un edificio diseñado para el clima?',
+    a: 'depende del programa, del sitio y del nivel de acabado, igual que cualquier proyecto. la diferencia es que las decisiones de orientación, sombra y envolvente que tomamos temprano suelen reducir la carga de enfriamiento y el costo de operación durante toda la vida del edificio. cotizamos honorarios por proyecto y lo conversamos antes de mandar la propuesta.',
+  },
+  {
+    q: '¿ayudan con certificaciones leed o edge?',
+    a: 'sí. apoyamos aplicaciones leed y edge con modelación de energía y luz natural, y con documentación reconocida por la entidad certificadora. también lo ofrecemos como servicio independiente para proyectos donde la arquitectura ya está en marcha.',
+  },
+  {
+    q: '¿hacen proyectos de interiores, o solo obra nueva?',
+    a: 'ambos. en obra nueva la envolvente aún está por definir; en interiores la envolvente ya está fija y el trabajo es reorganizar espacios y sistemas para ganar confort térmico con lo que hay. la misma lógica de energía aplica en los dos casos.',
+  },
+  {
+    q: '¿qué es la arquitectura bioclimática y por qué importa en panamá?',
+    a: 'es diseñar con el clima en lugar de contra él: usar orientación, sombra, ventilación y la envolvente para que el edificio sea fresco antes de encender el aire acondicionado. en un clima tropical y húmedo como el de panamá, esas decisiones definen cuánta energía gasta el edificio el resto de su vida.',
+  },
+  {
+    q: '¿necesito tener el terreno antes de hablar con ustedes?',
+    a: 'no es indispensable. si ya tienes el terreno, podemos correr estudios de orientación y sol sobre el sitio real. si todavía estás eligiendo, podemos ayudarte a leer cómo el clima y la posición afectarían al proyecto antes de comprometerte.',
+  },
+  {
+    q: '¿trabajan con otras firmas de arquitectura?',
+    a: 'sí. parte de nuestro trabajo de asesoría es de la mano de otras firmas de arquitectura y de fabricantes de productos, aportando modelación de energía y desempeño a proyectos que ya tienen un equipo de diseño.',
+  },
+  {
+    q: '¿en qué idiomas trabajan?',
+    a: 'español e inglés, tanto para la documentación como para la coordinación con clientes y consultores dentro y fuera de panamá.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<BaseLayout
+  title="preguntas frecuentes · entrópica · arquitectos en panamá"
+  description="preguntas frecuentes sobre trabajar con entrópica: permisos en el municipio de panamá, costos, certificación leed y edge, proyectos de interiores y arquitectura bioclimática en panamá."
+  locale={locale}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <section class="hero">
+    <div class="site-wrap">
+      <div class="eyebrow">// preguntas frecuentes</div>
+      <h1 class="hero-h">lo que suelen preguntarnos.</h1>
+      <p class="hero-lede">
+        permisos, costos, certificación e interiores. si tu pregunta no está aquí,
+        escríbenos y la respondemos directo.
+      </p>
+    </div>
+  </section>
+
+  <section class="faq-section">
+    <div class="site-wrap">
+      <div class="faq-list">
+        {faqs.map((f, i) => (
+          <article class="faq-row">
+            <div class="faq-ix">{String(i + 1).padStart(2, '0')}</div>
+            <div class="faq-content">
+              <h2 class="faq-q">{f.q}</h2>
+              <p class="faq-a">{f.a}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-cta">
+    <div class="site-wrap">
+      <div class="closing-inner">
+        <div class="eyebrow">// ¿otra pregunta?</div>
+        <h2 class="closing-h">cuéntanos del proyecto y del clima.</h2>
+        <div class="closing-ctas">
+          <a class="btn amber" href={localized('/contact', locale)}>
+            {t('cta.contact')}
+            <span class="arrow-tail" aria-hidden="true"></span>
+          </a>
+          <a class="contact-line" href="mailto:info@entropica-lab.com">info@entropica-lab.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding: 96px 0 56px; }
+  .hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; }
+  .hero-h { font-size: clamp(34px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; font-weight: 300; max-width: 22ch; text-wrap: balance; }
+  .hero-lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 56ch; margin: 0; font-weight: 300; }
+
+  .faq-section { padding: 24px 0 80px; }
+  .faq-list { display: flex; flex-direction: column; }
+  .faq-row { display: grid; grid-template-columns: 80px 1fr; gap: 48px; padding: 40px 0; border-top: 1px solid var(--line-on-paper); align-items: start; }
+  .faq-row:last-child { border-bottom: 1px solid var(--line-on-paper); }
+  .faq-ix { font-size: 14px; color: var(--mute-on-paper-2); font-feature-settings: 'tnum' 1; letter-spacing: 0.10em; text-transform: uppercase; padding-top: 6px; }
+  .faq-content { max-width: 64ch; display: flex; flex-direction: column; gap: 12px; }
+  .faq-q { font-size: clamp(19px, 2vw, 23px); line-height: 1.2; letter-spacing: -0.015em; font-weight: 300; margin: 0; text-wrap: balance; }
+  .faq-a { font-size: 15px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 300; margin: 0; }
+  @media (max-width: 900px) { .faq-row { grid-template-columns: 1fr; gap: 12px; } }
+
+  .closing-cta { padding: 96px 0; border-top: 1px solid var(--line-on-paper); }
+  .closing-inner { max-width: 800px; }
+  .closing-inner .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; font-weight: 400; }
+  .closing-h { font-size: clamp(28px, 3.5vw, 44px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 32px; font-weight: 300; text-wrap: balance; }
+  .closing-ctas { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .contact-line { font-size: 14px; color: var(--mute-on-paper); border-bottom: 1px solid transparent; padding: 4px 0; }
+  .contact-line:hover { color: var(--amber); border-bottom-color: var(--amber); }
+</style>

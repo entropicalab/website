@@ -21,7 +21,7 @@ brief: |
 
   no architecture was changed. only the wall.
 approach: |
-  the model ran on the building's actual orientation and adjacency, with multiple
+  the simulation ran on the building's actual orientation and adjacency, with multiple
   weather files. each variant returned a cooling load, a daylight autonomy reading,
   and an indicative capex delta.
 

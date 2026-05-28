@@ -88,6 +88,10 @@ const blog = defineCollection({
     date: z.coerce.date(),
     author: z.string().default('josé barría'),
     heroImage: z.string().optional(),
+    // info band, mirrors the project meta band
+    categories: z.array(z.string()).optional(),
+    tags: z.array(z.string()).optional(),
+    keywords: z.array(z.string()).optional(),
     draft: z.boolean().default(false),
   }),
 });

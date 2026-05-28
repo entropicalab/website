@@ -14,7 +14,15 @@ export const t = {
     'nav.services': 'services',
     'nav.about': 'about',
     'nav.journal': 'journal',
+    'nav.faq': 'faq',
     'nav.contact': 'contact',
+
+    // blog info band
+    'blog.intro': 'intro',
+    'blog.categories': 'categories',
+    'blog.tags': 'tags',
+    'blog.keywords': 'keywords',
+    'blog.published': 'published',
 
     // chrome / actions
     'cta.contact': 'reach out',
@@ -25,11 +33,11 @@ export const t = {
 
     // footer
     'footer.tagline': 'cool buildings in hot places.',
-    'footer.bio': 'entrópica is an energy-led architecture lab in panamá. we design tropical buildings the model says will work, then build them.',
+    'footer.bio': 'entrópica is an energy-led tropical architecture studio in panamá, central america. we use climate science and building physics to design cool buildings in hot places.',
     'footer.studio': 'studio',
     'footer.work': 'work',
     'footer.contact': 'contact',
-    'footer.address': 'paitilla · ciudad de panamá',
+    'footer.address': 'ph plaza mar · paitilla · panamá',
     'footer.legal': 'watts & matter consulting, s. e.p. · est. 2020',
     'footer.copyright': '© entrópica · all rights reserved',
 
@@ -77,7 +85,15 @@ export const t = {
     'nav.services': 'servicios',
     'nav.about': 'estudio',
     'nav.journal': 'apuntes',
+    'nav.faq': 'faq',
     'nav.contact': 'contacto',
+
+    // blog info band
+    'blog.intro': 'intro',
+    'blog.categories': 'categorías',
+    'blog.tags': 'etiquetas',
+    'blog.keywords': 'palabras clave',
+    'blog.published': 'publicado',
 
     // chrome / actions
     'cta.contact': 'escríbenos',
@@ -88,11 +104,11 @@ export const t = {
 
     // footer
     'footer.tagline': 'edificios frescos en lugares calurosos.',
-    'footer.bio': 'entrópica es un laboratorio de arquitectura energética en panamá. diseñamos edificios tropicales que el modelo dice que funcionarán, y los construimos.',
+    'footer.bio': 'entrópica es un estudio de arquitectura tropical en panamá enfocado en la energía. usamos ciencia climática y termodinámica del edificio para diseñar edificios frescos en lugares cálidos.',
     'footer.studio': 'estudio',
     'footer.work': 'proyectos',
     'footer.contact': 'contacto',
-    'footer.address': 'paitilla · ciudad de panamá',
+    'footer.address': 'ph plaza mar · paitilla · panamá',
     'footer.legal': 'watts & matter consulting, s. e.p. · fundada en 2020',
     'footer.copyright': '© entrópica · todos los derechos reservados',
 

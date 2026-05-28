@@ -10,40 +10,40 @@ const services = [
     n: '01',
     icon: 'architecture',
     title: 'diseño conceptual',
-    short: 'orientación, masa y programa puestos a prueba contra el clima antes de comprometer la sección.',
-    body: 'el movimiento más barato en cualquier edificio es el que ocurre antes de trazar las líneas. corremos estudios de radiación, luz natural y ventilación sobre la masa en la primera semana, para que la orientación, la huella y las grandes decisiones de sombra se tomen con evidencia, no con intuición.',
-    deliverables: ['estudios de masa ajustados al clima', 'análisis de orientación + ventilación', 'brief de diseño escrito contra el modelo'],
+    short: 'el servicio base. aquí se toman las decisiones que más mueven la energía del edificio, antes de comprometer la sección.',
+    body: 'es el servicio fundamental y, casi siempre, el de mayor apalancamiento energético. definimos el programa en función del sol y de los elementos del sitio, y fijamos las metas de energía junto con su factibilidad. la orientación, la huella y las grandes decisiones de sombra se resuelven con evidencia climática, porque el movimiento más barato de un edificio es el que ocurre antes de trazar las líneas.',
+    deliverables: ['estudios de masa ajustados al clima', 'programa definido según sol y sitio', 'metas de energía + factibilidad'],
   },
   {
     n: '02',
     icon: 'dashboard_customize',
     title: 'diseño + coordinación arquitectónica',
-    short: 'entrega arquitectónica integral, con el modelo energético dentro de la conversación desde el primer día.',
-    body: 'llevamos proyectos desde concepto pasando por esquemático y desarrollo, como arquitecto responsable. el modelo energético se actualiza junto al set de dibujos, para que cada sección dibujada sea una que el edificio realmente puede sostener.',
-    deliverables: ['esquemático + desarrollo de diseño', 'especificaciones de envolvente + sombra', 'coordinación de consultores (mep, estructural, paisaje)'],
+    short: 'la fase de documentación constructiva: materiales, ensamblajes y sistemas, coordinados para cumplir o superar las metas de energía.',
+    body: 'la fase de planos constructivos. aquí se deciden materiales, ensamblajes y sistemas, y se sostienen talleres de coordinación con los ingenieros estructural, eléctrico, sanitario y mecánico, para que el proyecto cumpla, o supere, las metas de energía fijadas en el concepto.',
+    deliverables: ['documentos constructivos + especificaciones', 'definición de materiales, ensamblajes y sistemas', 'talleres de coordinación con ingeniería (estructural, eléctrica, sanitaria, mecánica)'],
   },
   {
     n: '03',
     icon: 'description',
     title: 'permisos + documentación',
-    short: 'documentos constructivos que pasan revisión y que el contratista realmente puede construir.',
-    body: 'planos de permiso, especificaciones técnicas y documentos constructivos para jurisdicciones panameñas e internacionales. escribimos los documentos como serán leídos, por la oficina que procesa el permiso, y por el contratista que cotiza la obra.',
-    deliverables: ['planos listos para permisos', 'especificaciones técnicas', 'documentación de licitación'],
+    short: 'anteproyectos y planos aprobados, con más de diez años de experiencia en el municipio de panamá y a nivel nacional.',
+    body: 'más de diez años aprobando anteproyectos y planos misceláneos y constructivos en el municipio de panamá y en el resto del país. escribimos los documentos como serán leídos: por la oficina que procesa el permiso, y por el contratista que cotiza la obra.',
+    deliverables: ['anteproyecto para revisión municipal', 'planos misceláneos + constructivos', 'tramitación en el municipio de panamá y a nivel nacional'],
   },
   {
     n: '04',
     icon: 'monitoring',
     title: 'asesoría en energía y desempeño',
-    short: 'simulación de envolvente, estudios de luz natural y soporte de certificación, como servicio independiente o integrado.',
-    body: 'disponible como contratación independiente para proyectos donde la arquitectura ya está en marcha. modelamos envolvente, luz natural, ventilación y energía operativa, y apoyamos aplicaciones leed y edge con documentación reconocida por la entidad certificadora.',
-    deliverables: ['modelación energética + luz natural (energy+, radiance, openfoam)', 'estudios de optimización de fachada', 'soporte documental leed / edge'],
+    short: 'respuestas basadas en datos a preguntas de energía, para consultoría, certificación o proyectos ya construidos.',
+    body: 'encaja en proyectos de consultoría, de certificación o ya construidos. damos respuestas basadas en datos a preguntas concretas de energía: si conviene ampliar un vano para ventilar mejor, si una fachada más aislada se paga sola. trabajamos de la mano con fabricantes de productos, con firmas de arquitectura y, entre otros, con un desarrollador japonés de agricultura urbana.',
+    deliverables: ['modelación de envolvente, luz natural y energía (energy+, radiance, openfoam)', 'respuestas basadas en datos a preguntas de diseño', 'soporte documental leed / edge'],
   },
 ];
 ---
 
 <BaseLayout
-  title="servicios · entrópica"
-  description="servicios arquitectónicos completos, guiados por energía, desde la factibilidad hasta la documentación, además de asesoría independiente en energía y desempeño."
+  title="servicios · entrópica · arquitectos en panamá"
+  description="servicios de arquitectura tropical y bioclimática en panamá, guiados por energía: diseño conceptual, documentación y coordinación, permisos (jtia, mupa) y asesoría en energía y desempeño."
   locale={locale}
 >
   <section class="hero">
@@ -88,21 +88,51 @@ const services = [
   <section class="block">
     <div class="site-wrap">
       <div class="two-col">
+        <div class="col-eb"><div class="eyebrow">// arquitectura e interiores</div></div>
+        <div class="col-body">
+          <h2 class="block-h">obra nueva o espacio existente.</h2>
+          <div class="prose">
+            <p>
+              estos servicios aplican tanto a proyectos de arquitectura, donde la
+              envolvente aún está por definir, como a proyectos de diseño de interiores,
+              donde la envolvente ya está fija y el trabajo es reorganizar espacios y
+              sistemas para ganar confort térmico con lo que hay. nuestra guía sobre
+              <a class="inline-link" href={localized('/blog/sustainable-architecture-panama', locale)}>arquitectura sostenible en panamá</a>
+              explica la lógica de envolvente detrás de ambos.
+            </p>
+            <p>
+              <a class="inline-link" href={localized('/projects/current-technologies', locale)}>current technologies</a>
+              es un ejemplo de interiores: misma lógica de energía, distinto punto de
+              partida.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="site-wrap">
+      <div class="two-col">
         <div class="col-eb"><div class="eyebrow">// cómo trabajamos</div></div>
         <div class="col-body">
           <h2 class="block-h">temprano, pequeño y honesto.</h2>
           <div class="prose">
             <p>
               preferimos estar en la mesa desde la factibilidad, mientras más pequeño el
-              proyecto, más temprano el modelo se gana su lugar. pero también tomamos
+              proyecto, más temprano la energía se gana su lugar. pero también tomamos
               trabajos de envolvente y desempeño a media obra, donde la arquitectura ya
               está fijada y la envolvente aún necesita defenderse.
             </p>
             <p>
               los honorarios se cotizan por proyecto. tenemos retainers disponibles para
               clientes recurrentes y desarrolladores con varios proyectos en cartera. no
-              tomamos trabajos que no podamos modelar honestamente, y lo decimos antes
-              de mandar la propuesta.
+              tomamos trabajos cuyo desempeño no podamos sustentar con honestidad, y lo
+              decimos antes de mandar la propuesta.
+            </p>
+            <p>
+              ¿dudas sobre alcance, permisos o certificación?
+              <a class="inline-link" href={localized('/faq', locale)}>preguntas frecuentes</a>.
             </p>
           </div>
         </div>
@@ -116,7 +146,7 @@ const services = [
         <div class="eyebrow">// la próxima colaboración</div>
         <h2 class="closing-h">
           cuéntanos del clima y del brief.<br />
-          nosotros te decimos qué quiere el modelo.
+          nosotros te decimos qué pide el edificio.
         </h2>
         <div class="closing-ctas">
           <a class="btn amber" href={localized('/contact', locale)}>
