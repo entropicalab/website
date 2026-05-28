@@ -2,7 +2,7 @@
 title: casa tn
 slug: casa-tn
 locale: es
-eyebrow: '// estudio de caso · residencial'
+eyebrow: '// residencial'
 lede: una residencia familiar de 280 m² en chumico, organizada como dos bloques simples conectados por espacios abiertos, diseñada para ventilación cruzada y una relación fluida entre interior y exterior.
 location: chumico, panamá
 year: 2024
@@ -12,7 +12,7 @@ role: diseño conceptual + documentación constructiva + estudios de luz natural
 status: en construcción
 featured: false
 order: 9
-heroImage: /projects/casa-tn/01.jpg
+heroImage: /projects/casa-tn/01.png
 metric:
   value: 'TBD'
   unit: ''
@@ -58,5 +58,8 @@ resultLabel: 'confort por estrategias pasivas'
 resultDelta: 'TBD'
 closingQuote: 'una casa que se abre al clima donde se asienta.'
 gallery:
-  - { src: '/projects/casa-tn/02.png', tag: '// terraza' }
+  - { src: '/projects/casa-tn/02.jpg', tag: '// vista' }
+  - { src: '/projects/casa-tn/03.jpg', tag: '// vista' }
+  - { src: '/projects/casa-tn/04.jpg', tag: '// vista' }
+  - { src: '/projects/casa-tn/05.jpg', tag: '// vista' }
 ---

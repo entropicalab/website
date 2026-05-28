@@ -2,7 +2,7 @@
 title: atlantic research
 slug: atlantic-research
 locale: en
-eyebrow: '// case study · institutional'
+eyebrow: '// institutional'
 lede: a tropical research and visitor pavilion for a research institution, defined by a concrete frame, deep overhangs, and operable louvres tuned to cross-ventilation and salt-air durability.
 location: caribbean coast, panamá
 year: 2021
@@ -12,7 +12,9 @@ role: conceptual design + construction documents + daylight studies
 status: in construction
 featured: false
 order: 6
-heroImage: /projects/atlantic-research/01.jpg
+heroImage: /projects/atlantic-research/01.png
+gallery:
+  - { src: '/projects/atlantic-research/02.png', tag: '// view' }
 metric:
   value: 'TBD'
   unit: ''

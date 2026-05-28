@@ -2,7 +2,7 @@
 title: casa ih
 slug: casa-ih
 locale: es
-eyebrow: '// estudio de caso · residencial'
+eyebrow: '// residencial'
 lede: una residencia unifamiliar en la costa panameña, actualmente en construcción. composición tropical-moderna donde la vida exterior sombreada es el principio organizativo.
 location: costa pacífica, panamá
 year: 2024

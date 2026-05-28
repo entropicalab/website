@@ -2,7 +2,7 @@
 title: las lajas cabins
 slug: las-lajas-cabins
 locale: en
-eyebrow: '// case study · residential'
+eyebrow: '// residential'
 lede: a conceptual masterplan for a cluster of cabins in las lajas, sized for the highland tropical climate that governs the site.
 location: las lajas, panamá
 year: 'TBD'

@@ -2,7 +2,7 @@
 title: private bank offices
 slug: private-bank-offices
 locale: en
-eyebrow: '// case study · commercial'
+eyebrow: '// commercial'
 lede: a regional bank branch on the dry pacific coast, redesigned so the façade carried the climate instead of the air-conditioning.
 location: chitré, panamá
 year: 2022

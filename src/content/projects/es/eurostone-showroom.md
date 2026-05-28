@@ -2,7 +2,7 @@
 title: eurostone showroom
 slug: eurostone-showroom
 locale: es
-eyebrow: '// estudio de caso · comercial'
+eyebrow: '// comercial'
 lede: 'un concepto interior guiado por la luz natural para el showroom de eurostone, donde el brief era: todo en piedra, iluminado con honestidad.'
 location: ciudad de panamá, panamá
 year: 2019

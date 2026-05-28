@@ -2,7 +2,7 @@
 title: ministerio público
 slug: ministerio-publico
 locale: en
-eyebrow: '// case study · institutional'
+eyebrow: '// institutional'
 lede: rehabilitating a 1958 civic landmark for the unidad metropolitana del ministerio público, an institutional brief whose design value had to come from inside the existing envelope.
 location: ciudad de panamá, panamá
 year: 2020
@@ -13,11 +13,6 @@ status: built
 featured: false
 order: 4
 heroImage: /projects/ministerio-publico/01.jpg
-metric:
-  value: '2,600'
-  unit: ' m²'
-  label: 'civic rehabilitation · usd 10 m'
-  note: 'mejores obras de arquitectura panamá · honorable mention, 2023.'
 award:
   logo: /projects/ministerio-publico/award-moa-2023.png
   label: 'moa panamá · 2023 · honorable mention'
@@ -60,5 +55,9 @@ resultLabel: 'mejores obras de arquitectura panamá'
 resultDelta: 'honorable mention · 2023'
 closingQuote: 'a civic landmark, restored from the inside.'
 gallery:
-  - { src: '/projects/ministerio-publico/02.jpg', tag: '// detail · façade · photo · j. barría' }
+  - { src: '/projects/ministerio-publico/02.jpg', tag: '// façade · photo · j. barría' }
+  - { src: '/projects/ministerio-publico/03-luchau.jpg', tag: '// interior · photo · c. luchau' }
+  - { src: '/projects/ministerio-publico/04-luchau.jpg', tag: '// interior · photo · c. luchau' }
+  - { src: '/projects/ministerio-publico/05-barria.jpg', tag: '// detail · photo · j. barría' }
+  - { src: '/projects/ministerio-publico/06-barria.jpg', tag: '// detail · photo · j. barría' }
 ---

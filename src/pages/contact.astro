@@ -2,41 +2,38 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { tr } from '../i18n/utils';
 
-const locale = 'en' as const;
+const locale = 'es' as const;
 const t = tr(locale);
 
-// formspree endpoint, user must replace this id with their own after
-// signing up at https://formspree.io and configuring info@entropica-lab.com
-// as the destination. swap `xkoerobb` for the real form id (e.g. "xqkrweol").
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xkoerobb';
 
 const typologies = [
   { v: '', l: t('form.typology.placeholder') },
-  { v: 'residential', l: t('typology.residential') },
-  { v: 'commercial', l: t('typology.commercial') },
-  { v: 'institutional', l: t('typology.institutional') },
-  { v: 'mixed-use', l: t('typology.mixedUse') },
-  { v: 'other', l: 'other' },
+  { v: 'residencial', l: t('typology.residential') },
+  { v: 'comercial', l: t('typology.commercial') },
+  { v: 'institucional', l: t('typology.institutional') },
+  { v: 'uso mixto', l: t('typology.mixedUse') },
+  { v: 'otro', l: 'otro' },
 ];
 
 const sent = Astro.url.searchParams.get('sent') === '1';
 ---
 
 <BaseLayout
-  title="contact · entrópica"
-  description="reach out, and let's make cool buildings in hot places. paitilla, ciudad de panamá. info@entropica-lab.com · +507 6944-4740."
+  title="contacto · entrópica"
+  description="escríbenos, y hagamos edificios frescos en lugares calurosos. paitilla, ciudad de panamá. info@entropica-lab.com · +507 6944-4740."
   locale={locale}
 >
   <section class="contact-hero">
     <div class="site-wrap">
-      <div class="eyebrow">// 2026 ▸ open for new projects</div>
+      <div class="eyebrow">// 2026 ▸ aceptamos nuevos proyectos</div>
       <h1 class="hero-h">
-        reach out, and let's make<br />
-        cool buildings in hot places.
+        escríbenos, y hagamos juntos<br />
+        edificios frescos en lugares calurosos.
       </h1>
       <p class="hero-lede">
-        tell us about the project and the climate. we usually reply within two working
-        days. for press, speaking, or general questions, email is the fastest path.
+        cuéntanos del proyecto y del clima. solemos responder en dos días hábiles.
+        para prensa, charlas o preguntas generales, el correo es el camino más rápido.
       </p>
     </div>
   </section>
@@ -47,10 +44,10 @@ const sent = Astro.url.searchParams.get('sent') === '1';
         <div class="form-col">
           {sent ? (
             <div class="sent">
-              <div class="eyebrow amber">// message received</div>
+              <div class="eyebrow amber">// mensaje recibido</div>
               <h2>{t('form.sent.title')}</h2>
               <p>{t('form.sent.body')}</p>
-              <a class="btn" href="/">← home</a>
+              <a class="btn" href="/es">← inicio</a>
             </div>
           ) : (
             <form class="contact-form" action={FORMSPREE_ENDPOINT} method="POST">
@@ -71,7 +68,7 @@ const sent = Astro.url.searchParams.get('sent') === '1';
 
               <div class="field">
                 <label for="location">{t('form.location')}</label>
-                <input id="location" name="location" type="text" placeholder="city, country" />
+                <input id="location" name="location" type="text" placeholder="ciudad, país" />
               </div>
 
               <div class="field full">
@@ -88,11 +85,11 @@ const sent = Astro.url.searchParams.get('sent') === '1';
                 <textarea id="brief" name="brief" rows="6" required></textarea>
               </div>
 
-              <input type="hidden" name="_subject" value="entropica-lab.com · new contact form submission" />
-              <input type="hidden" name="_next" value="/contact?sent=1" />
+              <input type="hidden" name="_subject" value="entropica-lab.com · nuevo mensaje del formulario" />
+              <input type="hidden" name="_next" value="/es/contact?sent=1" />
 
               <div class="honeypot" aria-hidden="true">
-                <label>do not fill this field</label>
+                <label>no llenes este campo</label>
                 <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
               </div>
 
@@ -108,7 +105,7 @@ const sent = Astro.url.searchParams.get('sent') === '1';
 
         <aside class="info-col">
           <div class="info-block">
-            <div class="eyebrow">// studio</div>
+            <div class="eyebrow">// estudio</div>
             <p>
               entrópica<br />
               paitilla · ciudad de panamá<br />
@@ -117,7 +114,7 @@ const sent = Astro.url.searchParams.get('sent') === '1';
           </div>
 
           <div class="info-block">
-            <div class="eyebrow">// direct</div>
+            <div class="eyebrow">// directo</div>
             <ul>
               <li><a class="info-link" href="mailto:info@entropica-lab.com">info@entropica-lab.com</a></li>
               <li><a class="info-link" href="https://wa.me/50769444740" target="_blank" rel="noopener">whatsapp · +507 6944-4740</a></li>
@@ -126,18 +123,18 @@ const sent = Astro.url.searchParams.get('sent') === '1';
           </div>
 
           <div class="info-block">
-            <div class="eyebrow">// office hours</div>
+            <div class="eyebrow">// horario</div>
             <p class="muted">
-              monday, friday<br />
+              lunes, viernes<br />
               09:00, 18:00 est (utc -5)
             </p>
           </div>
 
           <div class="info-block">
-            <div class="eyebrow">// for press</div>
+            <div class="eyebrow">// prensa</div>
             <p class="muted">
-              high-resolution images and project facts are available on request.<br />
-              write to <a class="info-link" href="mailto:info@entropica-lab.com">info@entropica-lab.com</a> with "press" in the subject line.
+              imágenes en alta resolución y datos de proyecto disponibles bajo solicitud.<br />
+              escribe a <a class="info-link" href="mailto:info@entropica-lab.com">info@entropica-lab.com</a> con "prensa" en el asunto.
             </p>
           </div>
         </aside>
@@ -148,92 +145,25 @@ const sent = Astro.url.searchParams.get('sent') === '1';
 
 <style>
   .contact-hero { padding: 96px 0 56px; }
-  .contact-hero .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    font-weight: 400;
-  }
-  .hero-h {
-    font-size: clamp(32px, 4.5vw, 56px);
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    margin: 0 0 28px;
-    font-weight: 300;
-    text-wrap: balance;
-  }
-  .hero-lede {
-    font-size: clamp(16px, 1.4vw, 19px);
-    line-height: 1.6;
-    color: var(--mute-on-paper);
-    max-width: 60ch;
-    margin: 0;
-    font-weight: 300;
-  }
+  .contact-hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; }
+  .hero-h { font-size: clamp(32px, 4.5vw, 56px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; font-weight: 300; text-wrap: balance; }
+  .hero-lede { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 60ch; margin: 0; font-weight: 300; }
 
   .contact-body { padding: 24px 0 96px; }
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    gap: 80px;
-  }
-  @media (max-width: 900px) {
-    .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-  }
+  .contact-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 80px; }
+  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 48px; } }
 
   .form-col { max-width: 640px; }
-
-  .sent {
-    padding: 32px;
-    border: 1px solid var(--line-on-paper);
-    background: var(--paper-2);
-  }
-  .sent .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 16px; display: inline-block;
-  }
+  .sent { padding: 32px; border: 1px solid var(--line-on-paper); background: var(--paper-2); }
+  .sent .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; display: inline-block; }
   .sent h2 { font-size: 26px; font-weight: 300; letter-spacing: -0.015em; margin: 0 0 12px; }
   .sent p { font-size: 16px; color: var(--mute-on-paper); font-weight: 300; margin: 0 0 24px; line-height: 1.6; }
 
-  .info-col {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    padding-top: 12px;
-  }
-  .info-block .eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-    margin-bottom: 10px;
-    display: inline-block;
-  }
-  .info-block p {
-    font-size: 14px;
-    line-height: 1.65;
-    font-weight: 300;
-    margin: 0;
-  }
+  .info-col { display: flex; flex-direction: column; gap: 32px; padding-top: 12px; }
+  .info-block .eyebrow { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 10px; display: inline-block; }
+  .info-block p { font-size: 14px; line-height: 1.65; font-weight: 300; margin: 0; }
   .info-block .muted { color: var(--mute-on-paper); }
-  .info-block ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 14px;
-    font-weight: 300;
-  }
-  .info-link {
-    color: var(--ink-on-paper);
-    border-bottom: 1px solid var(--line-on-paper-2);
-  }
-  .info-link:hover {
-    color: var(--amber);
-    border-bottom-color: var(--amber);
-  }
+  .info-block ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; font-size: 14px; font-weight: 300; }
+  .info-link { color: var(--ink-on-paper); border-bottom: 1px solid var(--line-on-paper-2); }
+  .info-link:hover { color: var(--amber); border-bottom-color: var(--amber); }
 </style>

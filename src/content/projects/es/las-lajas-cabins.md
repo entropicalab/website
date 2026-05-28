@@ -2,7 +2,7 @@
 title: cabañas las lajas
 slug: las-lajas-cabins
 locale: es
-eyebrow: '// estudio de caso · residencial'
+eyebrow: '// residencial'
 lede: un masterplan conceptual para un conjunto de cabañas en las lajas, dimensionadas para el clima tropical de tierras altas que gobierna el sitio.
 location: las lajas, panamá
 year: 'TBD'

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { localized, tr } from '../i18n/utils';
 
-const locale = 'en' as const;
+const locale = 'es' as const;
 const t = tr(locale);
 
 const allProjects = await getCollection('projects', ({ data }) => data.locale === locale);
@@ -12,66 +12,64 @@ const featured = allProjects
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
 const services = [
-  { eyebrow: '// 01', title: 'data-informed project feasibility', icon: 'query_stats', body: 'energy is money, and money drives feasibility. early energy models translate climate, envelope, and operations into the unit the pro-forma speaks.' },
-  { eyebrow: '// 02', title: 'concept design', icon: 'architecture', body: 'orientation, massing, and program tested against the climate before the section is committed.' },
-  { eyebrow: '// 03', title: 'architectural design + coordination', icon: 'dashboard_customize', body: 'full architectural delivery, including complementary engineering disciplines.' },
-  { eyebrow: '// 04', title: 'permitting + documentation', icon: 'description', body: 'construction documents that pass review and that the contractor can actually build.' },
-  { eyebrow: '// 05', title: 'energy + performance advisory', icon: 'monitoring', body: 'envelope simulation, daylight studies, leed / edge support, as a standalone or in-house service.' },
+  { eyebrow: '// 01', title: 'diseño conceptual', icon: 'architecture', body: 'orientación, volumetría y programa puestos a prueba contra el clima antes de comprometer la sección.' },
+  { eyebrow: '// 02', title: 'diseño + coordinación arquitectónica', icon: 'dashboard_customize', body: 'entrega arquitectónica integral, incluyendo ingenierías complementarias.' },
+  { eyebrow: '// 03', title: 'permisos + documentación', icon: 'description', body: 'documentos constructivos que pasan revisión y que el contratista realmente puede construir.' },
+  { eyebrow: '// 04', title: 'asesoría en energía y desempeño', icon: 'monitoring', body: 'simulación de envolvente, estudios de luz natural, soporte leed / edge, como servicio independiente o integrado.' },
 ];
 
 const problems = [
-  { p: 'high energy use', s: 'solar control, envelope strategy, and system alignment.', icon: 'bolt' },
-  { p: 'overheating + comfort complaints', s: 'shading, air movement, passive cooling strategies.', icon: 'device_thermostat' },
-  { p: 'humidity + indoor air issues', s: 'moisture load management and detailing for durability.', icon: 'humidity_mid' },
-  { p: 'coastal exposure + corrosion', s: 'material selection and protective detailing.', icon: 'waves' },
-  { p: 'poor daylight or glare', s: 'daylight shaping and controlled solar access.', icon: 'wb_sunny' },
-  { p: 'costly maintenance', s: 'simpler systems and durable assemblies.', icon: 'build' },
+  { p: 'alto consumo energético', s: 'control solar, estrategia de envolvente, alineación de sistemas.', icon: 'bolt' },
+  { p: 'sobrecalentamiento + quejas de confort', s: 'sombra, movimiento de aire, enfriamiento pasivo.', icon: 'device_thermostat' },
+  { p: 'humedad + calidad de aire interior', s: 'manejo de carga latente y detallado para durabilidad.', icon: 'humidity_mid' },
+  { p: 'exposición costera + corrosión', s: 'selección de materiales y detalles constructivos.', icon: 'waves' },
+  { p: 'poca luz natural o reflejos', s: 'modelado de luz natural y acceso solar controlado.', icon: 'wb_sunny' },
+  { p: 'mantenimientos costosos', s: 'sistemas más simples y ensambles duraderos.', icon: 'build' },
 ];
 
-const manifesto = ['shade', 'airflow', 'moisture', 'durability', 'thermal mass', 'energy'];
+const manifesto = ['sombra', 'ventilación', 'humedad', 'durabilidad', 'masa térmica', 'energía'];
 
 const clients = [
   {
-    cat: 'real estate',
+    cat: 'inmobiliario',
     items: ['promotora azul rubí', 'linton bay', 'regor assets'],
   },
   {
-    cat: 'commercial',
-    items: ['global bank', 'festieventos', 'jolly roger diving', 'atn polaris', 'servicios carlos', 'estrella azul', 'us pharmacy group', 'kart 21', 'esa flaca rica', 'eurostone', 'current technologies', 'agrupetrol'],
+    cat: 'comercial',
+    items: ['global bank', 'festieventos', 'jolly roger diving', 'atn polaris', 'servicios carlos', 'estrella azul', 'us pharmacy group', 'kart 21', 'eurostone', 'current technologies', 'agrupetrol'],
   },
   {
-    cat: 'hospitality',
-    items: ['donde josé', 'fonda lo que hay', 'durán coffee select', 'wall st. bar and lounge', 'lung fung', 'dainer 16', 'hostales selina'],
+    cat: 'hospitalidad',
+    items: ['donde josé', 'fonda lo que hay', 'durán coffee select', 'wall st. bar and lounge', 'lung fung', 'dainer 16', 'hostales selina', 'esa flaca rica'],
   },
   {
-    cat: 'institutional',
+    cat: 'institucional',
     items: ['wirtschaftsuniversität wien', 'santuario nacional', 'anep', 'universidad de panamá', 'municipio de san miguelito', 'ministerio público'],
   },
   {
-    cat: 'consulting',
+    cat: 'consultoría',
     items: ['soba design', 'rancho grande', 'george moreno & partners', 'labhaus studio', 'forza creativa', 'sousa design architects boston'],
   },
 ];
 ---
 
 <BaseLayout
-  title="entrópica · energy-led tropical architecture"
-  description="the sun, the heat, and the humidity determine the energy cost of a project. that is our starting point for design. an energy-led tropical architecture studio in panamá."
+  title="entrópica · arquitectura tropical guiada por energía"
+  description="el sol, el calor y la humedad determinan el costo energético de un proyecto. ese es nuestro punto de partida para diseñar. un estudio de arquitectura tropical en panamá."
   locale={locale}
 >
-  <!-- ============ hero ============ -->
   <section class="hero">
     <div class="site-wrap">
       <div class="hero-grid">
-        <div class="hero-eb">// tropical architecture studio · est. 2020</div>
+        <div class="hero-eb">// estudio de arquitectura tropical · fundada en 2020</div>
         <h1 class="hero-h">
-          energy-led tropical<br />
-          architecture.
+          arquitectura tropical<br />
+          guiada por energía.
         </h1>
         <p class="hero-lede">
-          entrópica is a tropical architecture studio in panamá. the sun, the heat,
-          and the humidity determine the energy cost of a project. that is our starting
-          point for design.
+          entrópica es un estudio de arquitectura tropical en panamá. el sol, el calor y
+          la humedad determinan el costo energético de un proyecto. ese es nuestro punto
+          de partida para diseñar.
         </p>
         <div class="hero-ctas">
           <a class="btn amber" href={localized('/projects', locale)}>
@@ -80,36 +78,31 @@ const clients = [
           </a>
           <a class="btn" href={localized('/contact', locale)}>{t('cta.contact')}</a>
         </div>
-        <div class="hero-where">// panamá · kunshan · the caribbean · the dry pacific coast</div>
       </div>
     </div>
   </section>
 
-  <!-- ============ manifesto strip (KEEP) ============ -->
   <section class="manifesto-strip">
     <div class="site-wrap">
-      <div class="manifesto-eb">// performance is design material</div>
+      <div class="manifesto-eb">// el desempeño es material de diseño</div>
       <div class="manifesto-grid">
         {manifesto.map((word) => (
-          <div class="manifesto-cell">
-            {word} <span class="amber">is architecture.</span>
-          </div>
+          <div class="manifesto-cell">{word} <span class="amber">es arquitectura.</span></div>
         ))}
       </div>
       <p class="manifesto-note">
-        the things temperate-climate practice treats as afterthoughts, shade,
-        airflow, moisture, energy, are, for us, the design material itself. the
-        building is not a container for performance. the performance is the building.
+        lo que la práctica de climas templados trata como cuestión de ingeniería, sombra,
+        ventilación, humedad, energía, es para nosotros el material mismo del diseño.
+        el edificio no es un contenedor de desempeño. el desempeño es el edificio.
       </p>
     </div>
   </section>
 
-  <!-- ============ what does that mean? · measurable upside ============ -->
   <section class="block measurable">
     <div class="site-wrap">
       <div class="measurable-head">
-        <div class="eyebrow">// what does that mean?</div>
-        <h2 class="block-h">designing from the climate has measurable results.</h2>
+        <div class="eyebrow">// ¿qué significa eso?</div>
+        <h2 class="block-h">diseñar partiendo por el clima tiene resultados medibles.</h2>
       </div>
 
       <div class="measurable-grid">
@@ -118,10 +111,12 @@ const clients = [
             <div class="m-card-photo">
               {p.data.heroImage && <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />}
             </div>
-            <div class="m-card-metric">
-              <span class="m-num">{p.data.metric.value}<span class="m-unit">{p.data.metric.unit}</span></span>
-              <span class="m-label">{p.data.metric.label}</span>
-            </div>
+            {p.data.metric && (
+              <div class="m-card-metric">
+                <span class="m-num">{p.data.metric.value}<span class="m-unit">{p.data.metric.unit}</span></span>
+                <span class="m-label">{p.data.metric.label}</span>
+              </div>
+            )}
             <div class="m-card-info">
               <div class="m-title">{p.data.title}</div>
               <div class="m-meta">
@@ -144,19 +139,18 @@ const clients = [
     </div>
   </section>
 
-  <!-- ============ what does that mean? · measurable downside ============ -->
   <section class="block downside alt">
     <div class="site-wrap">
       <div class="downside-grid">
         <div class="downside-left">
-          <div class="eyebrow">// what does that mean?</div>
-          <h2 class="block-h">ignoring the climate has measurable results too.</h2>
+          <div class="eyebrow">// ¿qué significa eso?</div>
+          <h2 class="block-h">ignorar el clima también tiene resultados medibles.</h2>
         </div>
         <div class="downside-right">
           <div class="big-stat">
-            <span class="big-num">40<span class="dash">–</span>60<span class="big-unit">%</span></span>
-            <p class="big-stat-line">of a building's operating cost is cooling.<sup>*</sup></p>
-            <p class="big-stat-prompt">what if it were half of that, or less?</p>
+            <span class="big-num">30<span class="dash">–</span>50<span class="big-unit">%</span></span>
+            <p class="big-stat-line">más en costos operativos durante la vida del edificio.<sup>*</sup></p>
+            <p class="big-stat-prompt">¿cuánto preferirías no pagar?</p>
             <p class="big-stat-source"><sup>*</sup> ashrae · iea cooling report, 2024.</p>
           </div>
         </div>
@@ -164,12 +158,11 @@ const clients = [
     </div>
   </section>
 
-  <!-- ============ how do we do it? ============ -->
   <section class="block howdoit">
     <div class="site-wrap">
       <div class="howdoit-head">
-        <div class="eyebrow">// how do we do it?</div>
-        <h2 class="block-h">we design with energy simulations, to avoid:</h2>
+        <div class="eyebrow">// ¿cómo lo logramos?</div>
+        <h2 class="block-h">diseñamos con simulaciones energéticas, para evitar:</h2>
       </div>
       <div class="problems-grid">
         {problems.map((p) => (
@@ -181,19 +174,18 @@ const clients = [
         ))}
       </div>
       <p class="howdoit-punch">
-        because you wouldn't build without knowing how the building will look, even just from
-        a render. <span class="amber-text">same thing, but for energy.</span>
+        porque no construirías sin saber cómo va a lucir el edificio, aunque sea un render,
+        ¿cierto? <span class="amber-text">lo mismo, pero para energía.</span>
       </p>
     </div>
   </section>
 
-  <!-- ============ our offering ============ -->
   <section class="block services alt">
     <div class="site-wrap">
       <div class="services-head">
-        <div class="eyebrow">// our offering</div>
-        <h2 class="block-h">architectural services, energy-led.</h2>
-        <p class="block-sub">from concept to construction, the energy model is in the conversation.</p>
+        <div class="eyebrow">// nuestra oferta</div>
+        <h2 class="block-h">servicios arquitectónicos, guiados por energía.</h2>
+        <p class="block-sub">desde el concepto hasta la construcción, con el modelo energético dentro de la conversación.</p>
       </div>
 
       <div class="services-grid">
@@ -208,17 +200,16 @@ const clients = [
       </div>
 
       <div class="services-foot">
-        <a class="btn" href={localized('/services', locale)}>more on services</a>
+        <a class="btn" href={localized('/services', locale)}>más sobre servicios</a>
       </div>
     </div>
   </section>
 
-  <!-- ============ our experience ============ -->
   <section class="block experience">
     <div class="site-wrap">
       <div class="experience-head">
-        <div class="eyebrow">// our experience</div>
-        <h2 class="block-h">some of the clients we've earned.</h2>
+        <div class="eyebrow">// nuestra experiencia</div>
+        <h2 class="block-h">algunos de nuestros clientes satisfechos.</h2>
       </div>
       <div class="clients-grid">
         {clients.map((c) => (
@@ -233,7 +224,6 @@ const clients = [
     </div>
   </section>
 
-  <!-- ============ founder ============ -->
   <section class="block founder alt">
     <div class="site-wrap">
       <div class="founder-grid">
@@ -241,22 +231,23 @@ const clients = [
           <img src="/jose.png" alt="josé barría" />
         </div>
         <div class="founder-body">
-          <div class="eyebrow">// founder</div>
+          <div class="eyebrow">// fundador</div>
           <h2 class="block-h">josé barría.</h2>
           <p class="founder-lede">
-            registered architect and founder of entrópica, a studio guided by energy
-            performance in tropical climates.
+            arquitecto registrado y fundador de entrópica, un estudio guiado por
+            desempeño energético en climas tropicales.
           </p>
           <p class="founder-body-p">
-            his work spans the americas, asia, africa, and europe. he taught and researched
-            at the panamá green building council in 2013, co-founded pentagrama estudio de
-            diseño in 2015, and in 2018 co-founded acta, panamá's first sustainable
-            innovation zone. since 2026, he is part of mat, the tropical architecture
-            movement. outside entrópica, he is a partner at trimpacta, the corporate side
-            of the same problem: water footprint, carbon, and sustainability reporting.
+            su trabajo abarca américa, asia, áfrica y europa. enseñó e investigó en el
+            panamá green building council en 2013, co-fundó pentagrama estudio de diseño
+            en 2015, y en 2018 co-fundó acta, la primera zona de innovación sostenible
+            de panamá. desde el 2026 forma parte de mat, el movimiento de arquitectura
+            tropical. fuera de entrópica, es socio en trimpacta, consultora que atiende
+            el lado corporativo del mismo problema: huella hídrica, carbono y reportes
+            de sostenibilidad.
           </p>
           <a class="btn" href={localized('/about', locale)}>
-            more about the studio
+            más sobre el estudio
             <span class="arrow-tail" aria-hidden="true"></span>
           </a>
         </div>
@@ -264,14 +255,13 @@ const clients = [
     </div>
   </section>
 
-  <!-- ============ let's get to work ============ -->
   <section class="closing-cta">
     <div class="site-wrap">
       <div class="closing-inner">
-        <div class="eyebrow">// let's get to work</div>
+        <div class="eyebrow">// manos a la obra</div>
         <h2 class="closing-h">
-          let's make cool buildings<br />
-          in this hot city.
+          hagamos edificios frescos<br />
+          en esta ciudad calurosa.
         </h2>
         <div class="closing-ctas">
           <a class="btn amber" href={localized('/contact', locale)}>
@@ -287,86 +277,22 @@ const clients = [
 </BaseLayout>
 
 <style>
-  /* ============ hero ============ */
   .hero { padding: 120px 0 96px; }
   .hero-grid { display: grid; gap: 32px; max-width: 980px; }
-  .hero-eb {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-  }
-  .hero-h {
-    font-size: clamp(40px, 6vw, 76px);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    margin: 0;
-    font-weight: 300;
-    text-wrap: balance;
-  }
-  .hero-lede {
-    font-size: clamp(17px, 1.6vw, 20px);
-    line-height: 1.55;
-    color: var(--mute-on-paper);
-    max-width: 60ch;
-    margin: 0;
-    font-weight: 400;
-  }
-  .hero-ctas {
-    display: flex;
-    gap: 12px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-  }
-  .hero-where {
-    margin-top: 32px;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-  }
+  .hero-eb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
+  .hero-h { font-size: clamp(40px, 6vw, 76px); line-height: 0.98; letter-spacing: -0.03em; margin: 0; font-weight: 300; text-wrap: balance; }
+  .hero-lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; color: var(--mute-on-paper); max-width: 60ch; margin: 0; font-weight: 400; }
+  .hero-ctas { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .hero-where { margin-top: 32px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
 
-  /* ============ manifesto strip ============ */
-  .manifesto-strip {
-    padding: 56px 0 72px;
-    border-top: 1px solid var(--line-on-paper);
-  }
-  .manifesto-eb {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-    margin-bottom: 24px;
-  }
-  .manifesto-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--line-on-paper);
-    border-bottom: 1px solid var(--line-on-paper);
-  }
-  .manifesto-cell {
-    padding: 22px 24px;
-    font-size: clamp(18px, 1.8vw, 22px);
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    font-weight: 300;
-    border-right: 1px solid var(--line-on-paper);
-    border-bottom: 1px solid var(--line-on-paper);
-  }
+  .manifesto-strip { padding: 56px 0 72px; border-top: 1px solid var(--line-on-paper); }
+  .manifesto-eb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; margin-bottom: 24px; }
+  .manifesto-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-on-paper); border-bottom: 1px solid var(--line-on-paper); }
+  .manifesto-cell { padding: 22px 24px; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.2; letter-spacing: -0.01em; font-weight: 300; border-right: 1px solid var(--line-on-paper); border-bottom: 1px solid var(--line-on-paper); }
   .manifesto-cell:nth-child(3n) { border-right: none; }
   .manifesto-cell:nth-last-child(-n+3) { border-bottom: none; }
   .manifesto-cell .amber { color: var(--amber); }
-  .manifesto-note {
-    margin-top: 20px;
-    font-size: 14px;
-    line-height: 1.65;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-    max-width: 64ch;
-  }
+  .manifesto-note { margin-top: 20px; font-size: 14px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 400; max-width: 64ch; }
   @media (max-width: 720px) {
     .manifesto-grid { grid-template-columns: 1fr 1fr; }
     .manifesto-cell:nth-child(3n) { border-right: 1px solid var(--line-on-paper); }
@@ -375,356 +301,87 @@ const clients = [
     .manifesto-cell:nth-last-child(-n+2) { border-bottom: none; }
   }
 
-  /* ============ generic block ============ */
   .block { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
   .block.alt { background: var(--paper-2); }
-  .block-h {
-    font-size: clamp(28px, 3.4vw, 40px);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin: 0 0 24px;
-    font-weight: 300;
-    max-width: 26ch;
-    text-wrap: balance;
-  }
-  .block-sub {
-    font-size: 17px;
-    line-height: 1.55;
-    color: var(--mute-on-paper);
-    margin: 0;
-    max-width: 56ch;
-    font-weight: 400;
-  }
+  .block-h { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 24px; font-weight: 300; max-width: 26ch; text-wrap: balance; }
+  .block-sub { font-size: 17px; line-height: 1.55; color: var(--mute-on-paper); margin: 0; max-width: 56ch; font-weight: 400; }
 
-  /* ============ measurable upside (3 metric cards) ============ */
   .measurable-head { margin-bottom: 56px; }
-  .measurable-head .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 16px;
-  }
-  .measurable-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .measurable-card {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    color: inherit;
-    text-decoration: none;
-    transition: transform 0.2s;
-  }
+  .measurable-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
+  .measurable-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .measurable-card { display: flex; flex-direction: column; gap: 18px; color: inherit; text-decoration: none; transition: transform 0.2s; }
   .measurable-card:hover { transform: translateY(-2px); }
-  .m-card-photo {
-    aspect-ratio: 4 / 3;
-    background: var(--paper-2);
-    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px);
-    border: 1px solid var(--line-on-paper);
-    position: relative;
-    overflow: hidden;
-  }
+  .m-card-photo { aspect-ratio: 4 / 3; background: var(--paper-2); background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 12px, transparent 12px 24px); border: 1px solid var(--line-on-paper); position: relative; overflow: hidden; }
   .m-card-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .m-card-metric {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding-top: 4px;
-    border-top: 1px solid var(--line-on-paper);
-    padding-top: 16px;
-  }
-  .m-num {
-    font-size: clamp(40px, 4.5vw, 56px);
-    color: var(--amber);
-    font-feature-settings: 'tnum' 1, 'lnum' 1;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    font-weight: 300;
-  }
+  .m-card-metric { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid var(--line-on-paper); }
+  .m-num { font-size: clamp(40px, 4.5vw, 56px); color: var(--amber); font-feature-settings: 'tnum' 1, 'lnum' 1; letter-spacing: -0.03em; line-height: 1; font-weight: 300; }
   .m-unit { font-size: 0.55em; vertical-align: top; margin-left: 1px; }
-  .m-label {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-  }
+  .m-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
   .m-card-info { display: flex; flex-direction: column; gap: 4px; }
-  .m-title {
-    font-size: 18px;
-    line-height: 1.2;
-    font-weight: 400;
-  }
-  .m-meta {
-    font-size: 11px;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-    line-height: 1.55;
-  }
+  .m-title { font-size: 18px; line-height: 1.2; font-weight: 400; }
+  .m-meta { font-size: 11px; color: var(--mute-on-paper); font-weight: 400; line-height: 1.55; }
   .m-meta .sep { color: var(--mute-on-paper-2); margin: 0 6px; }
   .measurable-foot { margin-top: 48px; }
+  @media (max-width: 900px) { .measurable-grid { grid-template-columns: 1fr; gap: 40px; } }
 
-  @media (max-width: 900px) {
-    .measurable-grid { grid-template-columns: 1fr; gap: 40px; }
-  }
-
-  /* ============ measurable downside (40-60% stat) ============ */
-  .downside-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 80px;
-    align-items: center;
-  }
-  .downside-left .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 16px;
-  }
+  .downside-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: center; }
+  .downside-left .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
   .big-stat { display: flex; flex-direction: column; gap: 18px; }
-  .big-num {
-    font-size: clamp(72px, 12vw, 160px);
-    color: var(--amber);
-    font-feature-settings: 'tnum' 1, 'lnum' 1;
-    letter-spacing: -0.04em;
-    line-height: 0.9;
-    font-weight: 300;
-    display: inline-block;
-  }
-  .big-num .dash {
-    font-size: 0.6em;
-    color: var(--mute-on-paper);
-    margin: 0 0.05em;
-    vertical-align: middle;
-  }
+  .big-num { font-size: clamp(72px, 12vw, 160px); color: var(--amber); font-feature-settings: 'tnum' 1, 'lnum' 1; letter-spacing: -0.04em; line-height: 0.9; font-weight: 300; display: inline-block; }
+  .big-num .dash { font-size: 0.6em; color: var(--ink-on-paper); margin: 0 0.05em; vertical-align: middle; font-weight: 400; }
   .big-num .big-unit { font-size: 0.4em; vertical-align: top; margin-left: 4px; }
-  .big-stat-line {
-    font-size: clamp(18px, 2vw, 24px);
-    line-height: 1.3;
-    margin: 0;
-    color: var(--ink-on-paper);
-    font-weight: 400;
-    max-width: 32ch;
-  }
-  .big-stat-prompt {
-    font-size: clamp(16px, 1.6vw, 19px);
-    line-height: 1.4;
-    margin: 0;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-    font-style: italic;
-  }
-  .big-stat-source {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-    margin: 8px 0 0;
-  }
-  @media (max-width: 900px) {
-    .downside-grid { grid-template-columns: 1fr; gap: 32px; }
-  }
+  .big-stat-line { font-size: clamp(18px, 2vw, 24px); line-height: 1.3; margin: 0; color: var(--ink-on-paper); font-weight: 400; max-width: 32ch; }
+  .big-stat-prompt { font-size: clamp(16px, 1.6vw, 19px); line-height: 1.4; margin: 0; color: var(--mute-on-paper); font-weight: 400; font-style: italic; }
+  .big-stat-source { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin: 8px 0 0; }
+  @media (max-width: 900px) { .downside-grid { grid-template-columns: 1fr; gap: 32px; } }
 
-  /* ============ how do we do it? ============ */
   .howdoit-head { margin-bottom: 48px; }
-  .howdoit-head .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 16px;
-  }
-  .howdoit-punch {
-    margin-top: 40px;
-    font-size: clamp(18px, 1.8vw, 22px);
-    line-height: 1.45;
-    font-weight: 300;
-    color: var(--ink-on-paper);
-    max-width: 64ch;
-  }
+  .howdoit-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
+  .howdoit-punch { margin-top: 40px; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.45; font-weight: 300; color: var(--ink-on-paper); max-width: 64ch; }
   .howdoit-punch .amber-text { color: var(--amber); }
 
-  /* ============ problems strip ============ */
-  .problems-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .problem {
-    padding: 24px 28px;
-    background: var(--paper);
-    border: 1px solid var(--line-on-paper);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .problems-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .problem { padding: 24px 28px; background: var(--paper); border: 1px solid var(--line-on-paper); display: flex; flex-direction: column; gap: 8px; }
   .prob-icon { margin-bottom: 6px; }
-  .prob-name {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--ink-on-paper);
-  }
-  .prob-soln {
-    font-size: 14px;
-    color: var(--mute-on-paper);
-    line-height: 1.6;
-    font-weight: 400;
-  }
+  .prob-name { font-size: 16px; font-weight: 500; color: var(--ink-on-paper); }
+  .prob-soln { font-size: 14px; color: var(--mute-on-paper); line-height: 1.6; font-weight: 400; }
   @media (max-width: 900px) { .problems-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 540px) { .problems-grid { grid-template-columns: 1fr; } }
 
-  /* ============ services ============ */
   .services-head { margin-bottom: 48px; }
-  .services-head .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 16px;
-  }
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
-  }
-  .svc {
-    background: var(--paper);
-    border: 1px solid var(--line-on-paper);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .services-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
+  .services-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .svc { background: var(--paper); border: 1px solid var(--line-on-paper); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
   .svc-icon { margin-bottom: 4px; }
-  .svc-eb {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-  }
-  .svc-title {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.2;
-    margin: 0;
-  }
-  .svc-body {
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-    margin: 0;
-  }
+  .svc-eb { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
+  .svc-title { font-size: 16px; font-weight: 400; line-height: 1.2; margin: 0; }
+  .svc-body { font-size: 13px; line-height: 1.55; color: var(--mute-on-paper); font-weight: 400; margin: 0; }
   .services-foot { margin-top: 40px; }
   @media (max-width: 1100px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
 
-  /* ============ experience (client list) ============ */
   .experience-head { margin-bottom: 48px; }
-  .experience-head .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 16px;
-  }
-  .clients-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 32px;
-  }
+  .experience-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
+  .clients-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; }
   .client-col { display: flex; flex-direction: column; gap: 16px; }
-  .client-cat {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--line-on-paper);
-  }
-  .client-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--ink-on-paper);
-    font-weight: 400;
-  }
-  @media (max-width: 1100px) {
-    .clients-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 540px) {
-    .clients-grid { grid-template-columns: 1fr; }
-  }
+  .client-cat { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; padding-bottom: 12px; border-bottom: 1px solid var(--line-on-paper); }
+  .client-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 1.55; color: var(--ink-on-paper); font-weight: 400; }
+  @media (max-width: 1100px) { .clients-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .clients-grid { grid-template-columns: 1fr; } }
 
-  /* ============ founder ============ */
-  .founder-grid {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 56px;
-    align-items: start;
-  }
-  .founder-portrait img {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    background: var(--paper);
-    border: 1px solid var(--line-on-paper);
-    display: block;
-  }
-  .founder-body .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 16px;
-  }
-  .founder-lede {
-    font-size: 19px;
-    line-height: 1.5;
-    font-weight: 400;
-    color: var(--ink-on-paper);
-    margin: 0 0 20px;
-    max-width: 56ch;
-  }
-  .founder-body-p {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--mute-on-paper);
-    font-weight: 400;
-    max-width: 64ch;
-    margin: 0 0 28px;
-  }
-  @media (max-width: 900px) {
-    .founder-grid { grid-template-columns: 1fr; gap: 24px; }
-    .founder-portrait img { max-width: 280px; }
-  }
+  .founder-grid { display: grid; grid-template-columns: 280px 1fr; gap: 56px; align-items: start; }
+  .founder-portrait img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: var(--paper); border: 1px solid var(--line-on-paper); display: block; }
+  .founder-body .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
+  .founder-lede { font-size: 19px; line-height: 1.5; font-weight: 400; color: var(--ink-on-paper); margin: 0 0 20px; max-width: 56ch; }
+  .founder-body-p { font-size: 15px; line-height: 1.7; color: var(--mute-on-paper); font-weight: 400; max-width: 64ch; margin: 0 0 28px; }
+  @media (max-width: 900px) { .founder-grid { grid-template-columns: 1fr; gap: 24px; } .founder-portrait img { max-width: 280px; } }
 
-  /* ============ closing CTA ============ */
-  .closing-cta {
-    padding: 120px 0;
-    border-top: 1px solid var(--line-on-paper);
-  }
+  .closing-cta { padding: 120px 0; border-top: 1px solid var(--line-on-paper); }
   .closing-inner { max-width: 800px; }
-  .closing-inner .eyebrow {
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    font-weight: 400; margin-bottom: 24px;
-  }
-  .closing-h {
-    font-size: clamp(36px, 5vw, 64px);
-    line-height: 1.0;
-    letter-spacing: -0.03em;
-    margin: 0 0 32px;
-    font-weight: 300;
-    text-wrap: balance;
-  }
-  .closing-ctas {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px 28px;
-  }
-  .contact-line {
-    font-size: 14px;
-    color: var(--mute-on-paper);
-    border-bottom: 1px solid transparent;
-    padding: 4px 0;
-  }
+  .closing-inner .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 24px; }
+  .closing-h { font-size: clamp(36px, 5vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin: 0 0 32px; font-weight: 300; text-wrap: balance; }
+  .closing-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+  .contact-line { font-size: 14px; color: var(--mute-on-paper); border-bottom: 1px solid transparent; padding: 4px 0; }
   .contact-line:hover { color: var(--amber); border-bottom-color: var(--amber); }
-  @media (max-width: 900px) {
-    .closing-cta { padding: 64px 0; }
-  }
+  @media (max-width: 900px) { .closing-cta { padding: 64px 0; } }
 </style>

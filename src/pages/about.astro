@@ -2,120 +2,87 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { localized, tr } from '../i18n/utils';
 
-const locale = 'en' as const;
+const locale = 'es' as const;
 const t = tr(locale);
 
 const work = [
-  {
-    role: 'partner',
-    org: 'trimpacta',
-    period: '2024-present',
-    body: 'data-driven sustainability consulting for businesses and corporations. sustainability reports, water footprint, carbon accounting.',
-  },
-  {
-    role: 'founder',
-    org: 'entrópica',
-    period: '2020-present',
-    body: 'energy-first design studio. building performance simulations (energy+, openfoam, radiance), façade optimisation, daylight modelling. clients include developers, ngos, and multinational firms.',
-  },
-  {
-    role: 'co-founder',
-    org: 'acta sustainable innovation zone',
-    period: '2018-2021',
-    body: 'led sustainable planning strategies; coordinated and designed public space recovery projects; promoted sustainability-oriented city policy.',
-  },
-  {
-    role: 'junior architect',
-    org: 'erdy mchenry architecture · philadelphia, pa',
-    period: '2017-2018',
-    body: "design development and environmental analysis for mixed-use and institutional projects, including vanguard campus west's $76mm neptune building.",
-  },
-  {
-    role: 'co-founder · design principal',
-    org: 'pentagrama',
-    period: '2013-2015 · 2018-2023',
-    body: 'directed award-winning architectural projects (residential, commercial, institutional). managed design delivery, consultant coordination, and construction oversight.',
-  },
-  {
-    role: 'research intern',
-    org: 'panamá green building council',
-    period: '2013',
-    body: 'sustainability benchmarking, policy research, and early adoption of building performance tools in panamá.',
-  },
+  { role: 'socio', org: 'trimpacta', period: '2024-presente', body: 'consultoría de sostenibilidad basada en datos para empresas y corporaciones. reportes de sostenibilidad, huella hídrica y contabilidad de carbono.' },
+  { role: 'fundador', org: 'entrópica', period: '2020-presente', body: 'estudio de diseño centrado en energía. simulaciones de desempeño (energy+, openfoam, radiance), optimización de fachada, modelado de luz natural. clientes: desarrolladores, ongs y firmas multinacionales.' },
+  { role: 'co-fundador', org: 'acta sustainable innovation zone', period: '2018-2021', body: 'lideró estrategias de planificación sostenible; coordinó y diseñó proyectos de recuperación de espacio público; promovió políticas urbanas orientadas a la sostenibilidad.' },
+  { role: 'arquitecto junior', org: 'erdy mchenry architecture · philadelphia, pa', period: '2017-2018', body: 'desarrollo de diseño y análisis ambiental para proyectos institucionales y de uso mixto, incluyendo el edificio neptune de vanguard campus west ($76mm).' },
+  { role: 'co-fundador · director de diseño', org: 'pentagrama', period: '2013-2015 · 2018-2023', body: 'dirigió proyectos arquitectónicos premiados (residenciales, comerciales, institucionales). manejó entrega de diseño, coordinación de consultores y supervisión de obra.' },
+  { role: 'investigador', org: 'panamá green building council', period: '2013', body: 'benchmarking de sostenibilidad, investigación de políticas y adopción temprana de herramientas de simulación en panamá.' },
 ];
 
 const honors = [
-  { year: '2024', name: 'dna · design awards paris', detail: 'winner, cultural architecture' },
-  { year: '2023', name: 'moa panamá', detail: 'honorable mention' },
+  { year: '2024', name: 'dna · design awards paris', detail: 'ganador, arquitectura cultural' },
+  { year: '2023', name: 'moa panamá', detail: 'mención honorífica' },
 ];
 ---
 
 <BaseLayout
-  title="about · entrópica"
-  description="entrópica is the work of josé barría, registered architect, master of environmental building design (upenn). energy-led architecture for tropical climates."
+  title="estudio · entrópica"
+  description="entrópica es el trabajo de josé barría, arquitecto registrado, máster en environmental building design (upenn). arquitectura energética para climas tropicales."
   locale={locale}
 >
-  <!-- ============ hero ============ -->
   <section class="hero">
     <div class="site-wrap">
-      <div class="eyebrow">// the studio</div>
+      <div class="eyebrow">// el estudio</div>
       <h1 class="hero-h">
-        a small lab, asking the model<br />
-        before drawing the section.
+        un laboratorio pequeño, que le pregunta<br />
+        al modelo antes de dibujar la sección.
       </h1>
       <p class="hero-lede">
-        entrópica is the architectural and energy-modelling practice of josé barría, a
-        registered architect based in panamá, with a master of environmental building design
-        from the university of pennsylvania. the practice operates as a lab, deliberately
-        small, with the model treated as a working tool from before day one.
+        entrópica es la práctica arquitectónica y de modelación energética de josé barría
+       , arquitecto registrado en panamá, con un máster en environmental building design
+        de la universidad de pensilvania. el estudio opera como un laboratorio,
+        deliberadamente pequeño, con el modelo como herramienta de trabajo desde antes
+        del primer día.
       </p>
     </div>
   </section>
 
-  <!-- ============ portrait + bio ============ -->
   <section class="bio">
     <div class="site-wrap">
       <div class="bio-grid">
         <div class="portrait">
           <img src="/jose.png" alt="josé barría" />
           <div class="portrait-caption">
-            <div class="eyebrow">// leadership</div>
+            <div class="eyebrow">// dirección</div>
             <div class="name">josé barría</div>
-            <div class="role">founder · architect · simulation lead</div>
+            <div class="role">fundador · arquitecto · simulación</div>
           </div>
         </div>
         <div class="bio-text prose">
           <p class="lede">
-            jose is a registered architect and founder of entrópica, an architectural
-            practice focused on energy-led building design in tropical climates.
+            josé es arquitecto registrado y fundador de entrópica, una práctica
+            arquitectónica centrada en el diseño energético para climas tropicales.
           </p>
           <p>
-            his experience spans panamá and the united states, across residential,
-            commercial, and institutional work, with a consistent focus on
-            climate-responsive design and building performance. he has worked at design
-            firms in philadelphia and panamá, taught and researched at the panamá green
-            building council, and co-founded an early sustainable-design practice that
-            laid the technical ground for entrópica.
+            su experiencia abarca panamá y los estados unidos, en proyectos residenciales,
+            comerciales e institucionales, siempre con un foco en diseño responsivo al
+            clima y desempeño edilicio. ha trabajado en estudios en philadelphia y
+            panamá, investigó en el panamá green building council, y co-fundó una
+            práctica temprana de diseño sostenible que sentó la base técnica para
+            entrópica.
           </p>
           <p>
-            outside entrópica he is a partner at trimpacta, a sustainability-consulting
-            practice that handles the corporate side of the same problem, water
-            footprints, carbon accounting, and sustainability reporting for businesses
-            that want the work done honestly.
+            fuera de entrópica es socio de trimpacta, una consultora de sostenibilidad
+            que aborda el lado corporativo del mismo problema, huella hídrica,
+            contabilidad de carbono, y reportes para empresas que quieren el trabajo
+            hecho honestamente.
           </p>
 
-          <h2>education</h2>
+          <h2>educación</h2>
           <ul>
-            <li><b>master of environmental building design</b>, university of pennsylvania (2017)</li>
-            <li><b>bachelor of architecture</b>, isthmus, panamá (2014)</li>
+            <li><b>máster en environmental building design</b>, universidad de pensilvania (2017)</li>
+            <li><b>licenciatura en arquitectura</b>, isthmus, panamá (2014)</li>
           </ul>
 
-          <h2>honors</h2>
+          <h2>distinciones</h2>
           <ul>
             {honors.map((h) => (
-              <li>
-                <b>{h.name}</b>, {h.detail} <span class="muted">({h.year})</span>
-              </li>
+              <li><b>{h.name}</b>, {h.detail} <span class="muted">({h.year})</span></li>
             ))}
           </ul>
         </div>
@@ -123,12 +90,11 @@ const honors = [
     </div>
   </section>
 
-  <!-- ============ work history ============ -->
   <section class="block">
     <div class="site-wrap">
       <div class="proof-head">
-        <div class="eyebrow">// the work, before this work</div>
-        <h2 class="block-h">selected experience.</h2>
+        <div class="eyebrow">// el trabajo, antes de este trabajo</div>
+        <h2 class="block-h">experiencia seleccionada.</h2>
       </div>
 
       <div class="cv-stack">
@@ -146,24 +112,23 @@ const honors = [
     </div>
   </section>
 
-  <!-- ============ why so much rain ============ -->
   <section class="block">
     <div class="site-wrap">
       <div class="two-col">
-        <div class="col-eb"><div class="eyebrow">// why so much rain?</div></div>
+        <div class="col-eb"><div class="eyebrow">// ¿por qué tanta lluvia?</div></div>
         <div class="col-body">
-          <h2 class="block-h">because climate is where the building starts.</h2>
+          <h2 class="block-h">porque el clima es donde empieza el edificio.</h2>
           <div class="prose">
             <p>
-              we often present our projects in rainy or overcast conditions on purpose. it
-              is a reminder that the climate is the starting point, not a backdrop.
-              performance begins with understanding the environmental realities a building
-              will face: weather, light, and seasonal change shape comfort, energy use, and
-              long-term resilience.
+              presentamos nuestros proyectos en condiciones lluviosas o nubladas a
+              propósito. es un recordatorio de que el clima es el punto de partida, no un
+              telón de fondo. el desempeño empieza por entender las realidades ambientales
+              que el edificio va a enfrentar: clima, luz y cambio estacional moldean el
+              confort, el uso energético y la resiliencia de largo plazo.
             </p>
             <p>
-              by showing our designs in their true climatic context, we make a single
-              point: beauty and efficiency are inseparable from place.
+              al mostrar nuestros diseños en su verdadero contexto climático, hacemos un
+              punto único: belleza y eficiencia son inseparables del lugar.
             </p>
           </div>
         </div>
@@ -171,41 +136,39 @@ const honors = [
     </div>
   </section>
 
-  <!-- ============ philosophy strip ============ -->
   <section class="block alt">
     <div class="site-wrap">
       <div class="philosophy-grid">
         <div>
-          <div class="eyebrow">// principle 01</div>
-          <h3 class="phil-h">passive first.</h3>
-          <p class="phil-body">orientation, shading, insulation, glazing, optimised before any system is sized.</p>
+          <div class="eyebrow">// principio 01</div>
+          <h3 class="phil-h">primero pasivo.</h3>
+          <p class="phil-body">orientación, sombra, aislamiento, vidrio, optimizados antes de dimensionar cualquier sistema.</p>
         </div>
         <div>
-          <div class="eyebrow">// principle 02</div>
-          <h3 class="phil-h">simulate before drawing.</h3>
-          <p class="phil-body">small models, asked early, beat one big model asked at the end.</p>
+          <div class="eyebrow">// principio 02</div>
+          <h3 class="phil-h">simular antes de dibujar.</h3>
+          <p class="phil-body">modelos pequeños, hechos temprano, le ganan a un modelo grande hecho al final.</p>
         </div>
         <div>
-          <div class="eyebrow">// principle 03</div>
-          <h3 class="phil-h">measure the move.</h3>
-          <p class="phil-body">every claim has a number behind it, in the same units the client pays in.</p>
+          <div class="eyebrow">// principio 03</div>
+          <h3 class="phil-h">medir el movimiento.</h3>
+          <p class="phil-body">cada afirmación tiene un número detrás, en las mismas unidades en que el cliente paga.</p>
         </div>
         <div>
-          <div class="eyebrow">// principle 04</div>
-          <h3 class="phil-h">stay specific.</h3>
-          <p class="phil-body">tropical means tropical. imported standards don't survive contact with panamá.</p>
+          <div class="eyebrow">// principio 04</div>
+          <h3 class="phil-h">ser específico.</h3>
+          <p class="phil-body">tropical significa tropical. los estándares importados no sobreviven el contacto con panamá.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ CTA ============ -->
   <section class="closing-cta">
     <div class="site-wrap">
       <div class="closing-inner">
         <h2 class="closing-h">
-          if any of this sounds like the project you're working on,<br />
-          we should talk.
+          si esto se parece al proyecto que tienes en mente,<br />
+          deberíamos hablar.
         </h2>
         <div class="closing-ctas">
           <a class="btn amber" href={localized('/contact', locale)}>
@@ -220,243 +183,49 @@ const honors = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding: 96px 0 64px;
-  }
-  .hero .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    font-weight: 400;
-  }
-  .hero-h {
-    font-size: clamp(34px, 5vw, 60px);
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    margin: 0 0 28px;
-    font-weight: 300;
-    max-width: 22ch;
-    text-wrap: balance;
-  }
-  .hero-lede {
-    font-size: clamp(17px, 1.4vw, 19px);
-    line-height: 1.6;
-    color: var(--mute-on-paper);
-    max-width: 64ch;
-    margin: 0;
-    font-weight: 300;
-  }
+  .hero { padding: 96px 0 64px; }
+  .hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; }
+  .hero-h { font-size: clamp(34px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; font-weight: 300; max-width: 22ch; text-wrap: balance; }
+  .hero-lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 64ch; margin: 0; font-weight: 300; }
 
-  .bio {
-    padding: 72px 0;
-    border-top: 1px solid var(--line-on-paper);
-  }
-  .bio-grid {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 64px;
-  }
-  .portrait img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    background: var(--paper-2);
-    border: 1px solid var(--line-on-paper);
-    display: block;
-  }
-  .portrait-caption {
-    margin-top: 16px;
-  }
-  .portrait-caption .eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-bottom: 6px;
-  }
-  .portrait-caption .name {
-    font-size: 20px;
-    letter-spacing: -0.01em;
-    font-weight: 300;
-  }
-  .portrait-caption .role {
-    font-size: 12px;
-    color: var(--mute-on-paper);
-    margin-top: 4px;
-    font-weight: 300;
-  }
+  .bio { padding: 72px 0; border-top: 1px solid var(--line-on-paper); }
+  .bio-grid { display: grid; grid-template-columns: 320px 1fr; gap: 64px; }
+  .portrait img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; background: var(--paper-2); border: 1px solid var(--line-on-paper); display: block; }
+  .portrait-caption { margin-top: 16px; }
+  .portrait-caption .eyebrow { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 6px; }
+  .portrait-caption .name { font-size: 20px; letter-spacing: -0.01em; font-weight: 300; }
+  .portrait-caption .role { font-size: 12px; color: var(--mute-on-paper); margin-top: 4px; font-weight: 300; }
+  .bio-text { max-width: 64ch; }
+  .bio-text .lede { font-size: 22px; line-height: 1.4; font-weight: 300; color: var(--ink-on-paper); margin-bottom: 24px; }
+  .bio-text h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mute-on-paper-2); font-weight: 400; margin-top: 40px; margin-bottom: 12px; }
+  .bio-text .muted { color: var(--mute-on-paper); }
+  @media (max-width: 900px) { .bio-grid { grid-template-columns: 1fr; gap: 32px; } .portrait img { max-width: 360px; } }
 
-  .bio-text {
-    max-width: 64ch;
-  }
-  .bio-text .lede {
-    font-size: 22px;
-    line-height: 1.4;
-    font-weight: 300;
-    color: var(--ink-on-paper);
-    margin-bottom: 24px;
-  }
-  .bio-text h2 {
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-    margin-top: 40px;
-    margin-bottom: 12px;
-  }
-  .bio-text .muted {
-    color: var(--mute-on-paper);
-  }
-
-  @media (max-width: 900px) {
-    .bio-grid {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-    .portrait img {
-      max-width: 360px;
-    }
-  }
-
-  /* cv stack */
-  .block {
-    padding: 80px 0;
-    border-top: 1px solid var(--line-on-paper);
-  }
-  .block.alt {
-    background: var(--paper-2);
-  }
-  .proof-head {
-    margin-bottom: 48px;
-  }
-  .proof-head .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-bottom: 16px;
-  }
-  .block-h {
-    font-size: clamp(26px, 3vw, 38px);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin: 0;
-    font-weight: 300;
-    max-width: 24ch;
-    text-wrap: balance;
-  }
-  .cv-stack {
-    display: grid;
-    gap: 0;
-  }
-  .cv-row {
-    display: grid;
-    grid-template-columns: 180px 280px 1fr;
-    gap: 32px;
-    align-items: baseline;
-    padding: 22px 0;
-    border-top: 1px solid var(--line-on-paper);
-  }
+  .block { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .block.alt { background: var(--paper-2); }
+  .proof-head { margin-bottom: 48px; }
+  .proof-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
+  .block-h { font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight: 300; max-width: 24ch; text-wrap: balance; }
+  .cv-stack { display: grid; gap: 0; }
+  .cv-row { display: grid; grid-template-columns: 180px 280px 1fr; gap: 32px; align-items: baseline; padding: 22px 0; border-top: 1px solid var(--line-on-paper); }
   /* no border-bottom on last cv-row, the following .block adds its own border-top */
-  .cv-period {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-  }
-  .cv-role {
-    font-size: 16px;
-    font-weight: 400;
-  }
-  .cv-org {
-    font-size: 12px;
-    color: var(--mute-on-paper);
-    margin-top: 4px;
-    font-weight: 300;
-  }
-  .cv-body {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--mute-on-paper);
-    font-weight: 300;
-    max-width: 52ch;
-  }
-  @media (max-width: 900px) {
-    .cv-row {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-  }
+  .cv-period { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
+  .cv-role { font-size: 16px; font-weight: 400; }
+  .cv-org { font-size: 12px; color: var(--mute-on-paper); margin-top: 4px; font-weight: 300; }
+  .cv-body { font-size: 14px; line-height: 1.6; color: var(--mute-on-paper); font-weight: 300; max-width: 52ch; }
+  @media (max-width: 900px) { .cv-row { grid-template-columns: 1fr; gap: 8px; } }
 
-  .philosophy-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-  }
-  .philosophy-grid > div .eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-bottom: 10px;
-  }
-  .phil-h {
-    font-size: 19px;
-    font-weight: 400;
-    margin: 0 0 8px;
-  }
-  .phil-body {
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--mute-on-paper);
-    font-weight: 300;
-    margin: 0;
-  }
-  @media (max-width: 900px) {
-    .philosophy-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-  }
-  @media (max-width: 540px) {
-    .philosophy-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+  .philosophy-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .philosophy-grid > div .eyebrow { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 10px; }
+  .phil-h { font-size: 19px; font-weight: 400; margin: 0 0 8px; }
+  .phil-body { font-size: 14px; line-height: 1.55; color: var(--mute-on-paper); font-weight: 300; margin: 0; }
+  @media (max-width: 900px) { .philosophy-grid { grid-template-columns: 1fr 1fr; gap: 24px; } }
+  @media (max-width: 540px) { .philosophy-grid { grid-template-columns: 1fr; } }
 
-  .closing-cta {
-    padding: 96px 0;
-    border-top: 1px solid var(--line-on-paper);
-  }
-  .closing-inner {
-    max-width: 800px;
-  }
-  .closing-h {
-    font-size: clamp(28px, 3.5vw, 44px);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin: 0 0 32px;
-    font-weight: 300;
-    text-wrap: balance;
-  }
-  .closing-ctas {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .contact-line {
-    font-size: 14px;
-    color: var(--mute-on-paper);
-    border-bottom: 1px solid transparent;
-    padding: 4px 0;
-  }
-  .contact-line:hover {
-    color: var(--amber);
-    border-bottom-color: var(--amber);
-  }
+  .closing-cta { padding: 96px 0; border-top: 1px solid var(--line-on-paper); }
+  .closing-inner { max-width: 800px; }
+  .closing-h { font-size: clamp(28px, 3.5vw, 44px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 32px; font-weight: 300; text-wrap: balance; }
+  .closing-ctas { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .contact-line { font-size: 14px; color: var(--mute-on-paper); border-bottom: 1px solid transparent; padding: 4px 0; }
+  .contact-line:hover { color: var(--amber); border-bottom-color: var(--amber); }
 </style>

@@ -2,11 +2,11 @@
 title: lotus hall
 slug: lotus-hall
 locale: en
-eyebrow: '// case study · institutional'
+eyebrow: '// institutional'
 lede: 'the zhengyi visitor center: a cultural-gateway pavilion shaped by the geometry of a lotus leaf, designed against the cooling, daylight, and stormwater loads of a humid subtropical climate.'
 location: kunshan, china
 year: 2020
-area: 'TBD m²'
+area: '4,585 m²'
 typology: institutional
 role: daylight studies + energy modeling + façade specification
 status: concept
@@ -64,5 +64,7 @@ resultLabel: 'cultural architecture · paris design awards 2024'
 resultDelta: 'winner'
 closingQuote: 'a building where the metaphor and the section agree.'
 gallery:
-  - { src: '', tag: '// detail · roof form' }
+  - { src: '/projects/lotus-hall/02.jpg', tag: '// view' }
+  - { src: '/projects/lotus-hall/03.jpg', tag: '// view' }
+  - { src: '/projects/lotus-hall/04.jpg', tag: '// view' }
 ---

@@ -2,7 +2,7 @@
 title: eurostone showroom
 slug: eurostone-showroom
 locale: en
-eyebrow: '// case study · commercial'
+eyebrow: '// commercial'
 lede: 'a daylight-led interior concept for the eurostone showroom, where the brief was simple — everything in stone, lit honestly.'
 location: ciudad de panamá, panamá
 year: 2019

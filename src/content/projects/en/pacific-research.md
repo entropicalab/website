@@ -2,62 +2,46 @@
 title: pacific research
 slug: pacific-research
 locale: en
-eyebrow: '// case study · institutional'
-lede: 'a comprehensive design package for a marine education and research center on the pacific coast of panamá: visitor infrastructure, exhibits, and public space updated for a climate that does not forgive shortcuts.'
+eyebrow: '// institutional'
+lede: 'a comprehensive design package for a marine education and research site on the pacific coast of panamá. open-air exhibits, visitor infrastructure, and public space rebuilt for a climate that does not forgive shortcuts.'
 location: pacific coast, panamá
 year: 2025
-area: 'TBD m²'
 typology: institutional
-role: full-scope architecture + daylight studies
+role: architecture + exhibits + public realm
 status: concept
 featured: false
-order: 2
+order: 4
 heroImage: /projects/pacific-research/01.png
-metric:
-  value: 'TBD'
-  unit: ''
-  label: 'visitor infrastructure renovation · in design'
-  note: 'salt, sun, and constant marine humidity drove every material and detail decision.'
 brief: |
   on the pacific entrance of the panama canal, a long-standing marine education and
   research site needed a comprehensive design package to modernize its visitor
-  infrastructure while preserving the open-air, tropical character that gives it value.
+  infrastructure while preserving the open-air, tropical character that gives the
+  site its value.
 
-  the scope included a new guard booth, ticket center and front entrance, along with the
-  renovation of gazebos, plazas, restrooms, and interpretive exhibits — including the
-  freshwater and coastal fish pools. design priorities focused on accessibility, climate
-  resilience, and energy efficiency, ensuring the facilities can withstand the high
-  salinity and humidity of the environment while providing a safe and comfortable visitor
-  experience.
+  the scope was the public realm and the exhibits, not the conditioned interiors.
+  new guard booth, ticket center, and front entrance; renovation of gazebos, plazas,
+  restrooms, and the freshwater and coastal touch pools. salt, sun, and constant
+  marine humidity drove every material and detail decision.
 approach: |
-  the model was used to negotiate the trade between sealed climate envelopes for
-  exhibits and instrumentation, and porous public circulation that lets the site read as
-  an outdoor experience. the conditioned spaces sit behind a buffered envelope with
-  controlled aperture; the circulation, plazas, and break-out spaces are open, shaded,
-  cross-ventilated, and built from materials selected for the salt regime.
+  the project's job was to make the site easier to use without softening it. open-air
+  exhibits and circulation kept their porosity to the climate; only the necessary
+  service points and washrooms were enclosed.
 
-  interventions included structural upgrades to exhibit enclosures, shaded outdoor
-  gathering spaces, permeable hardscaping, and integration of native landscaping to
-  strengthen biodiversity. the result is a renewed visitor experience that blends
-  science, education, and architecture, durable and sustainable facilities that will
-  continue serving public environmental education for decades to come.
+  the material palette was kept tight on purpose: aluminum and concrete only.
+  both age well under salt-air and uv, both can be specified and inspected with
+  honest tolerances, and both let the architecture step back so the marine
+  environment can stay the protagonist.
 strategies:
-  - label: envelope
-    body: 'sealed climate envelope around exhibits and instrumentation; ventilated circulation around them.'
-    delta: 'TBD'
+  - label: open-air exhibits
+    body: 'the freshwater and coastal touch pools and surrounding gathering spaces stay open to the climate; shaded but not enclosed.'
   - label: materials
-    body: 'marine-grade steel, dense local stone, treated tropical hardwood; selected for the salt regime.'
-    delta: 'TBD'
+    body: 'aluminum and concrete only, selected for the salt-air regime and for honest, inspectable detailing.'
   - label: shading
-    body: 'shaded outdoor gathering spaces; permeable hardscaping to manage sun and rain together.'
-    delta: 'TBD'
+    body: 'shaded outdoor gathering spaces with permeable hardscaping to manage sun and rain together.'
   - label: landscape
     body: 'native planting integration to strengthen site biodiversity and act as a passive shading layer.'
-    delta: 'TBD'
-resultLabel: 'visitor infrastructure renewal'
-resultDelta: 'in design'
-closingQuote: 'a building that lets the climate in where it belongs, and out where it does not.'
+closingQuote: 'a public space that does not pretend the climate is not there.'
 gallery:
-  - { src: '', tag: '// the plaza' }
-  - { src: '', tag: '// freshwater pools' }
+  - { src: '/projects/pacific-research/02.png', tag: '// view' }
+  - { src: '/projects/pacific-research/03.png', tag: '// view' }
 ---

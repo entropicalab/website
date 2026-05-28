@@ -2,7 +2,7 @@
 title: casa ih
 slug: casa-ih
 locale: en
-eyebrow: '// case study · residential'
+eyebrow: '// residential'
 lede: a single-family residence on the panamanian coast, currently in construction. tropical-modern composition with shaded outdoor living as the organising principle.
 location: pacific coast, panamá
 year: 2024

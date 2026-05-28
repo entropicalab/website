@@ -2,7 +2,7 @@
 title: atlantic research
 slug: atlantic-research
 locale: es
-eyebrow: '// estudio de caso · institucional'
+eyebrow: '// institucional'
 lede: un pabellón tropical de investigación y visitantes para una institución de investigación, definido por un marco de concreto, aleros profundos y louvers operables ajustados para ventilación cruzada y durabilidad ante el aire salino.
 location: costa caribe, panamá
 year: 2021
@@ -12,7 +12,9 @@ role: diseño conceptual + documentación constructiva + estudios de luz natural
 status: en construcción
 featured: false
 order: 6
-heroImage: /projects/atlantic-research/01.jpg
+heroImage: /projects/atlantic-research/01.png
+gallery:
+  - { src: '/projects/atlantic-research/02.png', tag: '// vista' }
 metric:
   value: 'TBD'
   unit: ''

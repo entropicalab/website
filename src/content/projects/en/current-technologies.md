@@ -2,7 +2,7 @@
 title: current technologies
 slug: current-technologies
 locale: en
-eyebrow: '// case study · commercial'
+eyebrow: '// commercial'
 lede: a small office fit-out in clayton with little access to natural light. the entire conceptual design was driven by one goal, open every space to daylight across the working day.
 location: clayton, panamá
 year: 2018
@@ -48,5 +48,5 @@ resultLabel: 'useful daylight access'
 resultDelta: 'improved'
 closingQuote: 'a room worth turning the lights off in.'
 gallery:
-  - { src: '', tag: '// open office' }
+  - { src: '/projects/current-technologies/process.gif', tag: '// the design process' }
 ---

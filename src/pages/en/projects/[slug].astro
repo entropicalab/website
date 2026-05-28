@@ -1,0 +1,413 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { localized, tr } from '../../../i18n/utils';
+
+const locale = 'en' as const;
+const t = tr(locale);
+
+export async function getStaticPaths() {
+  const all = await getCollection('projects', ({ data }) => data.locale === 'en');
+  return all.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const briefParas = (data.brief ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const approachParas = (data.approach ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const hasNarrative = briefParas.length > 0 || approachParas.length > 0;
+const hasProof = !!(data.metric || data.award);
+---
+
+<BaseLayout
+  title={`${data.title} · entrópica`}
+  description={data.lede}
+  locale={locale}
+>
+  <article class="cs">
+    <div class="site-wrap">
+      <div class="crumb">
+        <a href={localized('/projects', locale)}>{t('cta.back')} {t('nav.work')}</a>
+        <span class="sep">·</span>
+        <span class="muted">project</span>
+      </div>
+    </div>
+
+    <!-- hero -->
+    <section class="cs-hero">
+      <div class="site-wrap">
+        <div class="hero-top">
+          <div class="eyebrow amber">{data.eyebrow ?? `// ${data.typology}`}</div>
+          <h1 class="cs-h1">{data.title}.</h1>
+          <p class="cs-lede">{data.lede}</p>
+        </div>
+
+        <div class="hero-image">
+          {data.heroImage ? (
+            <img src={data.heroImage} alt={data.title} />
+          ) : (
+            <span class="ph-tag">// 16∶9 hero · {data.location}</span>
+          )}
+        </div>
+
+        <div class="cs-meta">
+          <div><div class="k">{t('meta.location')}</div><div class="v">{data.location}</div></div>
+          <div><div class="k">{t('meta.year')}</div><div class="v">{data.year}</div></div>
+          {data.area && data.area !== 'TBD m²' && (<div><div class="k">{t('meta.area')}</div><div class="v">{data.area}</div></div>)}
+          <div><div class="k">{t('meta.typology')}</div><div class="v">{data.typology}</div></div>
+          {data.status && (<div><div class="k">{t('meta.status')}</div><div class="v">{data.status}</div></div>)}
+          {data.role && (<div><div class="k">{t('meta.role')}</div><div class="v">{data.role}</div></div>)}
+        </div>
+      </div>
+    </section>
+
+    <!-- proof (only renders if there's a real metric or award) -->
+    {hasProof && (
+      <section class="cs-proof">
+        <div class="site-wrap">
+          <div class="proof-grid">
+            {data.metric && (
+              <div class="proof-num">
+                <span class="big">{data.metric.value}<span class="unit">{data.metric.unit}</span></span>
+              </div>
+            )}
+            <div class="proof-text">
+              <div class="eyebrow amber">// the proof</div>
+              {data.metric && <h2>{data.metric.label}.</h2>}
+              {!data.metric && data.award && <h2>{data.award.label}.</h2>}
+              {data.metric?.note && <p class="note">{data.metric.note}</p>}
+              {data.award && (
+                <div class="award">
+                  {data.award.url ? (
+                    <a href={data.award.url} target="_blank" rel="noopener">
+                      <img src={data.award.logo} alt={data.award.label} />
+                    </a>
+                  ) : (
+                    <img src={data.award.logo} alt={data.award.label} />
+                  )}
+                  {data.metric && <span class="award-caption">{data.award.label}</span>}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- narrative · brief + approach combined, two columns when both exist -->
+    {hasNarrative && (
+      <section class="cs-narrative">
+        <div class="site-wrap">
+          <div class="narr-grid">
+            <div class="narr-side">
+              <div class="eyebrow">// the project</div>
+              <h2 class="narr-h">brief, approach, outcome.</h2>
+            </div>
+            <div class="narr-body">
+              <div class="narr-cols">
+                {briefParas.length > 0 && (
+                  <div class="narr-col">
+                    <div class="narr-eb">// brief</div>
+                    {briefParas.map((p) => (<p>{p}</p>))}
+                  </div>
+                )}
+                {approachParas.length > 0 && (
+                  <div class="narr-col">
+                    <div class="narr-eb">// approach</div>
+                    {approachParas.map((p) => (<p>{p}</p>))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- gallery -->
+    {data.gallery && data.gallery.length > 0 && (
+      <section class="cs-gallery">
+        <div class="site-wrap">
+          <div class="gal-grid">
+            {data.gallery.map((g, i) => (
+              <div class={`gal-cell c${i + 1}`}>
+                {g.src ? <img src={g.src} alt="" /> : <span class="ph-tag">{g.tag}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- strategy list — names only, no deltas, no result row -->
+    {data.strategies && data.strategies.length > 0 && (
+      <section class="cs-strategies">
+        <div class="site-wrap">
+          <div class="strat-head">
+            <div class="eyebrow">// design moves</div>
+            <h2 class="narr-h">the decisions that shaped it.</h2>
+          </div>
+          <div class="strat-stack">
+            {data.strategies.map((s, i) => (
+              <div class="strat-row">
+                <div class="ix">{String(i + 1).padStart(2, '0')}</div>
+                <div class="lbl">{s.label}</div>
+                <div class="body">{s.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- closing -->
+    {data.closingQuote && (
+      <section class="cs-closing">
+        <div class="site-wrap">
+          <blockquote>{data.closingQuote}</blockquote>
+        </div>
+      </section>
+    )}
+
+    <!-- MDX body (if any) -->
+    <div class="site-wrap mdx-body">
+      <Content />
+    </div>
+
+    <!-- next CTA -->
+    <section class="cs-cta">
+      <div class="site-wrap">
+        <a class="btn" href={localized('/projects', locale)}>{t('cta.back')} {t('nav.work')}</a>
+        <a class="btn amber" href={localized('/contact', locale)}>
+          {t('cta.contact')}
+          <span class="arrow-tail" aria-hidden="true"></span>
+        </a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .cs { padding-top: 24px; }
+
+  .crumb {
+    padding: 8px 0 24px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--mute-on-paper);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .crumb a { color: var(--mute-on-paper); border-bottom: 1px solid transparent; }
+  .crumb a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .crumb .sep { color: var(--mute-on-paper-2); }
+  .crumb .muted { color: var(--mute-on-paper-2); text-transform: uppercase; letter-spacing: 0.12em; }
+
+  .cs-hero { padding: 16px 0 40px; }
+  .hero-top {
+    max-width: 920px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .hero-top .eyebrow {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400;
+  }
+  .cs-h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin: 0;
+    font-weight: 300;
+    text-wrap: balance;
+  }
+  .cs-lede {
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.5;
+    color: var(--mute-on-paper);
+    max-width: 56ch;
+    margin: 0;
+    font-weight: 400;
+  }
+  .hero-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 14px, transparent 14px 28px);
+    border: 1px solid var(--line-on-paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-image .ph-tag {
+    position: absolute; top: 20px; left: 24px;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mute-on-paper-2); font-weight: 400;
+  }
+
+  .cs-meta {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
+    padding: 24px 0;
+    margin-top: 24px;
+    border-top: 1px solid var(--line-on-paper);
+    border-bottom: 1px solid var(--line-on-paper);
+  }
+  .cs-meta .k { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); margin-bottom: 6px; font-weight: 400; }
+  .cs-meta .v { font-size: 13px; font-weight: 400; }
+  @media (max-width: 900px) { .cs-meta { grid-template-columns: 1fr 1fr; gap: 16px; } }
+
+  .cs-proof { padding: 72px 0; }
+  .proof-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .proof-num .big {
+    font-size: clamp(80px, 14vw, 160px);
+    color: var(--amber);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    font-feature-settings: 'tnum' 1, 'lnum' 1;
+    font-weight: 300;
+    display: inline-block;
+  }
+  .proof-num .big .unit {
+    font-size: 0.3em;
+    vertical-align: top;
+    margin-left: 4px;
+  }
+  .proof-text .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 14px; display: inline-block; }
+  .proof-text h2 {
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px;
+    font-weight: 400;
+    max-width: 24ch;
+  }
+  .proof-text .note { font-size: 13px; color: var(--mute-on-paper); font-weight: 400; line-height: 1.6; margin: 0; max-width: 52ch; }
+  .proof-text .award {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-on-paper);
+  }
+  .proof-text .award img { height: 80px; width: auto; display: block; flex: none; }
+  .proof-text .award-caption { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; line-height: 1.5; max-width: 28ch; }
+  @media (max-width: 900px) {
+    .cs-proof { padding: 48px 0; }
+    .proof-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .cs-narrative { padding: 56px 0; border-top: 1px solid var(--line-on-paper); }
+  .narr-grid { display: grid; grid-template-columns: 220px 1fr; gap: 64px; }
+  .narr-side .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; }
+  .narr-h { font-size: clamp(20px, 2.2vw, 26px); line-height: 1.18; letter-spacing: -0.015em; margin: 0; font-weight: 400; max-width: 18ch; text-wrap: balance; }
+  .narr-body { font-size: 15px; }
+  .narr-cols {
+    columns: 2;
+    column-gap: 48px;
+  }
+  .narr-col { break-inside: avoid; margin-bottom: 24px; }
+  .narr-eb { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 8px; }
+  .narr-body p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-on-paper);
+    font-weight: 400;
+    margin: 0 0 14px;
+  }
+  @media (max-width: 900px) {
+    .narr-grid { grid-template-columns: 1fr; gap: 16px; }
+    .narr-cols { columns: 1; }
+  }
+
+  .cs-gallery { padding: 56px 0; border-top: 1px solid var(--line-on-paper); }
+  .gal-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    min-height: 560px;
+  }
+  .gal-cell {
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 14px, transparent 14px 28px);
+    border: 1px solid var(--line-on-paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .gal-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .gal-cell .ph-tag {
+    position: absolute; top: 14px; left: 16px;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mute-on-paper-2); font-weight: 400;
+  }
+  .gal-cell.c1 { grid-row: 1 / 3; }
+  @media (max-width: 900px) {
+    .gal-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; min-height: 0; }
+    .gal-cell.c1 { grid-row: auto; }
+  }
+
+  .cs-strategies { padding: 56px 0; border-top: 1px solid var(--line-on-paper); }
+  .strat-head { margin-bottom: 32px; }
+  .strat-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; display: inline-block; }
+  .strat-stack { display: grid; gap: 0; }
+  .strat-row {
+    display: grid;
+    grid-template-columns: 60px 200px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-top: 1px solid var(--line-on-paper);
+    font-weight: 400;
+  }
+  .strat-row:last-child { border-bottom: 1px solid var(--line-on-paper); }
+  .strat-row .ix { font-size: 14px; color: var(--mute-on-paper-2); font-feature-settings: 'tnum' 1; letter-spacing: 0.10em; text-transform: uppercase; }
+  .strat-row .lbl { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
+  .strat-row .body { font-size: 15px; line-height: 1.5; max-width: 60ch; }
+  @media (max-width: 900px) {
+    .strat-row { grid-template-columns: 1fr; gap: 6px; padding: 16px 0; }
+  }
+
+  .cs-closing { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .cs-closing blockquote {
+    font-size: clamp(22px, 2.8vw, 32px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0;
+    font-weight: 300;
+    max-width: 40ch;
+    text-wrap: balance;
+    border-left: 2px solid var(--amber);
+    padding-left: 24px;
+  }
+
+  .mdx-body { margin-top: 24px; }
+  .mdx-body :global(p) { font-size: 15px; line-height: 1.65; font-weight: 400; max-width: 64ch; margin: 0 0 14px; }
+
+  .cs-cta {
+    padding: 56px 0;
+    border-top: 1px solid var(--line-on-paper);
+    display: flex;
+    justify-content: center;
+  }
+  .cs-cta .site-wrap {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+</style>

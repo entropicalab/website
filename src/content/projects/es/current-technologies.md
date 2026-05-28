@@ -2,7 +2,7 @@
 title: current technologies
 slug: current-technologies
 locale: es
-eyebrow: '// estudio de caso · comercial'
+eyebrow: '// comercial'
 lede: una remodelación de oficina en clayton con poco acceso a luz natural. todo el diseño conceptual se condujo con una sola meta, abrir cada espacio a la luz natural durante toda la jornada.
 location: clayton, panamá
 year: 2018
@@ -49,5 +49,5 @@ resultLabel: 'acceso útil a luz natural'
 resultDelta: 'mejorado'
 closingQuote: 'un cuarto donde vale la pena apagar las luces.'
 gallery:
-  - { src: '', tag: '// oficina abierta' }
+  - { src: '/projects/current-technologies/process.gif', tag: '// el proceso de diseño' }
 ---

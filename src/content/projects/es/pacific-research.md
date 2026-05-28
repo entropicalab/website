@@ -2,64 +2,46 @@
 title: pacific research
 slug: pacific-research
 locale: es
-eyebrow: '// estudio de caso · institucional'
-lede: 'un paquete integral de diseño para un centro de educación e investigación marina en la costa pacífica de panamá: infraestructura de visitantes, exhibiciones y espacio público actualizados para un clima que no perdona atajos.'
+eyebrow: '// institucional'
+lede: 'un paquete integral de diseño para un sitio de educación e investigación marina en la costa pacífica de panamá. exhibiciones al aire libre, infraestructura de visitantes y espacio público rehechos para un clima que no perdona atajos.'
 location: costa pacífica, panamá
 year: 2025
-area: 'TBD m²'
 typology: institutional
-role: arquitectura integral + estudios de luz natural
+role: arquitectura + exhibiciones + espacio público
 status: concepto
 featured: false
-order: 2
+order: 4
 heroImage: /projects/pacific-research/01.png
-metric:
-  value: 'TBD'
-  unit: ''
-  label: 'renovación de infraestructura de visitantes · en diseño'
-  note: 'sal, sol y humedad marina constante guiaron cada decisión de material y detalle.'
 brief: |
-  en la entrada pacífica del canal de panamá, un centro de educación e investigación
-  marina necesitaba un paquete integral de diseño para modernizar su infraestructura de
-  visitantes preservando el carácter tropical y abierto que le da valor.
+  en la entrada pacífica del canal de panamá, un sitio de educación e investigación
+  marina necesitaba un paquete integral de diseño para modernizar su infraestructura
+  de visitantes preservando el carácter tropical y abierto que le da valor.
 
-  el alcance incluyó una nueva caseta de seguridad, taquilla y entrada principal, junto
-  con la renovación de gazebos, plazas, baños y exhibiciones interpretativas, incluyendo
-  los estanques de peces de agua dulce y costeros. las prioridades de diseño se enfocaron
-  en accesibilidad, resiliencia climática y eficiencia energética, asegurando que las
-  instalaciones puedan soportar la alta salinidad y humedad del entorno mientras brindan
-  una experiencia segura y cómoda al visitante.
+  el alcance fue el espacio público y las exhibiciones, no los interiores
+  condicionados. nueva caseta de seguridad, taquilla y entrada principal;
+  renovación de gazebos, plazas, baños, y los estanques táctiles de agua dulce y
+  costera. la sal, el sol y la humedad marina constante guiaron cada decisión de
+  material y detalle.
 approach: |
-  el modelo se usó para negociar el balance entre envolventes climáticas selladas para
-  exhibiciones e instrumentación, y circulación pública porosa que permite que el sitio
-  se lea como experiencia exterior. los espacios condicionados están detrás de una
-  envolvente amortiguada con apertura controlada; la circulación, plazas y áreas comunes
-  están abiertas, sombreadas, ventiladas y construidas con materiales seleccionados para
-  el régimen de sal.
+  el trabajo del proyecto fue hacer el sitio más fácil de usar sin suavizarlo. las
+  exhibiciones al aire libre y la circulación mantuvieron su porosidad al clima;
+  solo los puntos de servicio y baños necesarios se cerraron.
 
-  las intervenciones incluyeron mejoras estructurales a los recintos de exhibición,
-  espacios exteriores sombreados de reunión, pavimento permeable e integración de
-  paisajismo nativo para reforzar la biodiversidad. el resultado es una experiencia de
-  visitante renovada que combina ciencia, educación y arquitectura, instalaciones
-  duraderas y sostenibles que seguirán sirviendo a la educación ambiental pública por
-  décadas.
+  la paleta material se mantuvo ajustada a propósito: solo aluminio y concreto.
+  ambos envejecen bien bajo aire salino y rayos uv, ambos se pueden especificar
+  e inspeccionar con tolerancias honestas, y ambos dejan que la arquitectura se
+  haga a un lado para que el entorno marino siga siendo el protagonista.
 strategies:
-  - label: envolvente
-    body: 'envolvente climática sellada alrededor de exhibiciones e instrumentación; circulación ventilada a su alrededor.'
-    delta: 'TBD'
+  - label: exhibiciones al aire libre
+    body: 'los estanques táctiles de agua dulce y costera y las áreas de reunión circundantes se mantienen abiertos al clima; sombreados pero no encerrados.'
   - label: materiales
-    body: 'acero marino, piedra local densa, madera tropical tratada; seleccionados para el régimen de sal.'
-    delta: 'TBD'
+    body: 'solo aluminio y concreto, seleccionados para el régimen de aire salino y por detallado honesto e inspeccionable.'
   - label: sombra
-    body: 'espacios exteriores sombreados de reunión; pavimento permeable para gestionar sol y lluvia juntos.'
-    delta: 'TBD'
-  - label: paisajismo
+    body: 'áreas exteriores sombreadas de reunión con pavimento permeable para gestionar sol y lluvia juntos.'
+  - label: paisaje
     body: 'integración de plantas nativas para reforzar biodiversidad y actuar como capa pasiva de sombra.'
-    delta: 'TBD'
-resultLabel: 'renovación de infraestructura de visitantes'
-resultDelta: 'en diseño'
-closingQuote: 'un edificio que deja entrar el clima donde corresponde, y salir donde no.'
+closingQuote: 'un espacio público que no pretende que el clima no esté ahí.'
 gallery:
-  - { src: '', tag: '// la plaza' }
-  - { src: '', tag: '// estanques de agua dulce' }
+  - { src: '/projects/pacific-research/02.png', tag: '// vista' }
+  - { src: '/projects/pacific-research/03.png', tag: '// vista' }
 ---

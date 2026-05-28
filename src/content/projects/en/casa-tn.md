@@ -2,7 +2,7 @@
 title: casa tn
 slug: casa-tn
 locale: en
-eyebrow: '// case study · residential'
+eyebrow: '// residential'
 lede: a 280 m² family residence in chumico, organised as two simple blocks connected by open spaces, designed for cross-ventilation and a fluid relationship between indoor and outdoor living.
 location: chumico, panamá
 year: 2024
@@ -12,7 +12,7 @@ role: conceptual design + construction documents + daylight studies
 status: in construction
 featured: false
 order: 9
-heroImage: /projects/casa-tn/01.jpg
+heroImage: /projects/casa-tn/01.png
 metric:
   value: 'TBD'
   unit: ''
@@ -58,5 +58,8 @@ resultLabel: 'comfort from passive strategies'
 resultDelta: 'TBD'
 closingQuote: 'a house that opens itself to the climate it sits in.'
 gallery:
-  - { src: '/projects/casa-tn/02.png', tag: '// terrace' }
+  - { src: '/projects/casa-tn/02.jpg', tag: '// view' }
+  - { src: '/projects/casa-tn/03.jpg', tag: '// view' }
+  - { src: '/projects/casa-tn/04.jpg', tag: '// view' }
+  - { src: '/projects/casa-tn/05.jpg', tag: '// view' }
 ---

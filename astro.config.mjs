@@ -9,8 +9,8 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [mdx(), sitemap()],
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'es'],
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
     routing: {
       prefixDefaultLocale: false,
       redirectToDefaultLocale: false,

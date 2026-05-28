@@ -2,7 +2,7 @@
 title: oficinas privadas de banca
 slug: private-bank-offices
 locale: es
-eyebrow: '// estudio de caso · comercial'
+eyebrow: '// comercial'
 lede: una sucursal bancaria regional en la costa pacífica seca, rediseñada para que la fachada cargara el clima en lugar del aire acondicionado.
 location: chitré, panamá
 year: 2022

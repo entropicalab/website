@@ -2,75 +2,65 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { localized, tr } from '../i18n/utils';
 
-const locale = 'en' as const;
+const locale = 'es' as const;
 const t = tr(locale);
 
 const services = [
   {
     n: '01',
-    icon: 'query_stats',
-    title: 'data-informed project feasibility',
-    short: 'energy is money, and money drives feasibility. the model is in the pro-forma, from the start.',
-    body: 'energy models that inform buildings are part of our dna. before lines are drawn, we translate site, climate, envelope, and operations into the unit the developer or client actually speaks in: monthly cost, payback period, internal rate of return. the work that wins approval is the work that survived a real number.',
-    deliverables: ['climate + operations cost model', 'envelope scenarios with capex / opex deltas', 'feasibility memo written for the pro-forma'],
+    icon: 'architecture',
+    title: 'diseño conceptual',
+    short: 'orientación, masa y programa puestos a prueba contra el clima antes de comprometer la sección.',
+    body: 'el movimiento más barato en cualquier edificio es el que ocurre antes de trazar las líneas. corremos estudios de radiación, luz natural y ventilación sobre la masa en la primera semana, para que la orientación, la huella y las grandes decisiones de sombra se tomen con evidencia, no con intuición.',
+    deliverables: ['estudios de masa ajustados al clima', 'análisis de orientación + ventilación', 'brief de diseño escrito contra el modelo'],
   },
   {
     n: '02',
-    icon: 'architecture',
-    title: 'concept design',
-    short: 'orientation, massing, and program tested against the climate before the section is committed.',
-    body: 'the cheapest move in any building is the one that happens before the lines are drawn. we run radiation, daylight, and ventilation studies on the massing in week one, so the orientation, footprint, and big shading decisions are made with evidence, not intuition.',
-    deliverables: ['climate-tuned massing studies', 'orientation + ventilation analysis', 'design brief written against the model'],
+    icon: 'dashboard_customize',
+    title: 'diseño + coordinación arquitectónica',
+    short: 'entrega arquitectónica integral, con el modelo energético dentro de la conversación desde el primer día.',
+    body: 'llevamos proyectos desde concepto pasando por esquemático y desarrollo, como arquitecto responsable. el modelo energético se actualiza junto al set de dibujos, para que cada sección dibujada sea una que el edificio realmente puede sostener.',
+    deliverables: ['esquemático + desarrollo de diseño', 'especificaciones de envolvente + sombra', 'coordinación de consultores (mep, estructural, paisaje)'],
   },
   {
     n: '03',
-    icon: 'dashboard_customize',
-    title: 'architectural design + coordination',
-    short: 'full architectural delivery, with the energy model in the conversation from day one.',
-    body: 'we take projects from concept through schematic and design development as the architect of record. the energy model is updated alongside the drawing set, so every section drawn is one the building can actually carry.',
-    deliverables: ['schematic + design development sets', 'envelope + shading specifications', 'consultant coordination (mep, structure, landscape)'],
+    icon: 'description',
+    title: 'permisos + documentación',
+    short: 'documentos constructivos que pasan revisión y que el contratista realmente puede construir.',
+    body: 'planos de permiso, especificaciones técnicas y documentos constructivos para jurisdicciones panameñas e internacionales. escribimos los documentos como serán leídos, por la oficina que procesa el permiso, y por el contratista que cotiza la obra.',
+    deliverables: ['planos listos para permisos', 'especificaciones técnicas', 'documentación de licitación'],
   },
   {
     n: '04',
-    icon: 'description',
-    title: 'permitting + documentation',
-    short: 'construction documents that pass review and that the contractor can actually build.',
-    body: 'permit drawings, technical specifications, and construction documents for panamanian and international jurisdictions. we write the documents the way they will be read, by the office processing the permit, and by the contractor estimating the build.',
-    deliverables: ['permit-ready drawings', 'technical specifications', 'tender + bid documentation'],
-  },
-  {
-    n: '05',
     icon: 'monitoring',
-    title: 'energy + performance advisory',
-    short: 'envelope simulation, daylight studies, and certification support, as a standalone or in-house service.',
-    body: 'available as a standalone engagement for projects where the architecture is already underway. we model the envelope, daylight, ventilation, and operational energy, and we support leed and edge applications with documentation the certifying body recognises.',
-    deliverables: ['energy + daylight modelling (energy+, radiance, openfoam)', 'façade optimisation studies', 'leed / edge documentation support'],
+    title: 'asesoría en energía y desempeño',
+    short: 'simulación de envolvente, estudios de luz natural y soporte de certificación, como servicio independiente o integrado.',
+    body: 'disponible como contratación independiente para proyectos donde la arquitectura ya está en marcha. modelamos envolvente, luz natural, ventilación y energía operativa, y apoyamos aplicaciones leed y edge con documentación reconocida por la entidad certificadora.',
+    deliverables: ['modelación energética + luz natural (energy+, radiance, openfoam)', 'estudios de optimización de fachada', 'soporte documental leed / edge'],
   },
 ];
 ---
 
 <BaseLayout
-  title="services · entrópica"
-  description="full architectural services, energy-led, from feasibility through documentation, plus standalone energy and performance advisory."
+  title="servicios · entrópica"
+  description="servicios arquitectónicos completos, guiados por energía, desde la factibilidad hasta la documentación, además de asesoría independiente en energía y desempeño."
   locale={locale}
 >
-  <!-- hero -->
   <section class="hero">
     <div class="site-wrap">
-      <div class="eyebrow">// services</div>
+      <div class="eyebrow">// servicios</div>
       <h1 class="hero-h">
-        full architectural services,<br />
-        energy-led.
+        servicios arquitectónicos completos,<br />
+        guiados por energía.
       </h1>
       <p class="hero-lede">
-        from concept to construction. energy and operational performance guide
-        every design decision, not as a separate workstream, but as the same
-        conversation the section is being drawn in.
+        desde el concepto hasta la construcción. el desempeño energético y operativo
+        guían cada decisión de diseño, no como una línea de trabajo aparte, sino dentro
+        de la misma conversación en la que se dibuja la sección.
       </p>
     </div>
   </section>
 
-  <!-- services list -->
   <section class="services-section">
     <div class="site-wrap">
       <div class="services-list">
@@ -85,12 +75,8 @@ const services = [
               <p class="svc-short">{s.short}</p>
               <p class="svc-body">{s.body}</p>
               <div class="svc-deliverables">
-                <div class="dv-eb">// deliverables</div>
-                <ul>
-                  {s.deliverables.map((d) => (
-                    <li>{d}</li>
-                  ))}
-                </ul>
+                <div class="dv-eb">// entregables</div>
+                <ul>{s.deliverables.map((d) => <li>{d}</li>)}</ul>
               </div>
             </div>
           </article>
@@ -99,26 +85,24 @@ const services = [
     </div>
   </section>
 
-  <!-- engagement model -->
   <section class="block">
     <div class="site-wrap">
       <div class="two-col">
-        <div class="col-eb">
-          <div class="eyebrow">// how we work</div>
-        </div>
+        <div class="col-eb"><div class="eyebrow">// cómo trabajamos</div></div>
         <div class="col-body">
-          <h2 class="block-h">engaged early, engaged small, engaged honestly.</h2>
+          <h2 class="block-h">temprano, pequeño y honesto.</h2>
           <div class="prose">
             <p>
-              we prefer to be in the room from feasibility, the smaller the project,
-              the earlier the model earns its keep. but we also pick up envelope and
-              performance work mid-project, where the architecture is already set and
-              the envelope still needs to be argued for.
+              preferimos estar en la mesa desde la factibilidad, mientras más pequeño el
+              proyecto, más temprano el modelo se gana su lugar. pero también tomamos
+              trabajos de envolvente y desempeño a media obra, donde la arquitectura ya
+              está fijada y la envolvente aún necesita defenderse.
             </p>
             <p>
-              fees are scoped per project. retainers are available for repeat clients
-              and developers with multiple sites in the pipeline. we don't take work
-              we can't model honestly, and we'll say so before the proposal lands.
+              los honorarios se cotizan por proyecto. tenemos retainers disponibles para
+              clientes recurrentes y desarrolladores con varios proyectos en cartera. no
+              tomamos trabajos que no podamos modelar honestamente, y lo decimos antes
+              de mandar la propuesta.
             </p>
           </div>
         </div>
@@ -126,14 +110,13 @@ const services = [
     </div>
   </section>
 
-  <!-- closing CTA -->
   <section class="closing-cta">
     <div class="site-wrap">
       <div class="closing-inner">
-        <div class="eyebrow">// the next collaboration</div>
+        <div class="eyebrow">// la próxima colaboración</div>
         <h2 class="closing-h">
-          tell us about the climate and the brief.<br />
-          we'll tell you what the model wants.
+          cuéntanos del clima y del brief.<br />
+          nosotros te decimos qué quiere el modelo.
         </h2>
         <div class="closing-ctas">
           <a class="btn amber" href={localized('/contact', locale)}>
@@ -148,245 +131,48 @@ const services = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding: 96px 0 64px;
-  }
-  .hero .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    font-weight: 400;
-  }
-  .hero-h {
-    font-size: clamp(34px, 5vw, 60px);
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    margin: 0 0 28px;
-    font-weight: 300;
-    max-width: 18ch;
-    text-wrap: balance;
-  }
-  .hero-lede {
-    font-size: clamp(17px, 1.4vw, 19px);
-    line-height: 1.6;
-    color: var(--mute-on-paper);
-    max-width: 60ch;
-    margin: 0;
-    font-weight: 300;
-  }
+  .hero { padding: 96px 0 64px; }
+  .hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; }
+  .hero-h { font-size: clamp(34px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; font-weight: 300; max-width: 22ch; text-wrap: balance; }
+  .hero-lede { font-size: clamp(17px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 60ch; margin: 0; font-weight: 300; }
 
-  .services-section {
-    padding: 24px 0 80px;
-  }
-  .services-list {
-    display: flex;
-    flex-direction: column;
-  }
-  .service-row {
-    display: grid;
-    grid-template-columns: 80px 260px 1fr;
-    gap: 48px;
-    padding: 48px 0;
-    border-top: 1px solid var(--line-on-paper);
-    align-items: start;
-  }
-  .service-row:last-child {
-    border-bottom: 1px solid var(--line-on-paper);
-  }
-  .svc-n {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  .svc-n .svc-num {
-    font-size: 32px;
-    color: var(--mute-on-paper-2);
-    font-feature-settings: 'tnum' 1;
-    letter-spacing: -0.02em;
-    font-weight: 300;
-    line-height: 1;
-  }
-  .svc-n .svc-icon {
-    display: block;
-  }
-  .svc-title {
-    font-size: 22px;
-    line-height: 1.15;
-    letter-spacing: -0.015em;
-    font-weight: 300;
-  }
-  .svc-content {
-    max-width: 56ch;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .svc-short {
-    font-size: 17px;
-    line-height: 1.5;
-    color: var(--ink-on-paper);
-    font-weight: 300;
-    margin: 0;
-  }
-  .svc-body {
-    font-size: 14px;
-    line-height: 1.65;
-    color: var(--mute-on-paper);
-    font-weight: 300;
-    margin: 0;
-  }
-  .svc-deliverables {
-    margin-top: 8px;
-  }
-  .dv-eb {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mute-on-paper-2);
-    font-weight: 400;
-    margin-bottom: 8px;
-  }
-  .svc-deliverables ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 13px;
-    color: var(--mute-on-paper);
-    font-weight: 300;
-  }
-  .svc-deliverables li::before {
-    content: '› ';
-    color: var(--amber);
-    margin-right: 4px;
-  }
+  .services-section { padding: 24px 0 80px; }
+  .services-list { display: flex; flex-direction: column; }
+  .service-row { display: grid; grid-template-columns: 80px 260px 1fr; gap: 48px; padding: 48px 0; border-top: 1px solid var(--line-on-paper); align-items: start; }
+  .service-row:last-child { border-bottom: 1px solid var(--line-on-paper); }
+  .svc-n { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .svc-n .svc-num { font-size: 32px; color: var(--mute-on-paper-2); font-feature-settings: 'tnum' 1; letter-spacing: -0.02em; font-weight: 300; line-height: 1; }
+  .svc-n .svc-icon { display: block; }
+  .svc-title { font-size: 22px; line-height: 1.15; letter-spacing: -0.015em; font-weight: 300; }
+  .svc-content { max-width: 56ch; display: flex; flex-direction: column; gap: 16px; }
+  .svc-short { font-size: 17px; line-height: 1.5; color: var(--ink-on-paper); font-weight: 300; margin: 0; }
+  .svc-body { font-size: 14px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 300; margin: 0; }
+  .svc-deliverables { margin-top: 8px; }
+  .dv-eb { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 8px; }
+  .svc-deliverables ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--mute-on-paper); font-weight: 300; }
+  .svc-deliverables li::before { content: '› '; color: var(--amber); margin-right: 4px; }
+  @media (max-width: 900px) { .service-row { grid-template-columns: 1fr; gap: 12px; } .svc-n { font-size: 22px; } }
 
-  @media (max-width: 900px) {
-    .service-row {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-    .svc-n {
-      font-size: 22px;
-    }
-  }
+  .block { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .block.alt { background: var(--paper-2); }
+  .proof-head { margin-bottom: 48px; }
+  .proof-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
+  .block-h { font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 24px; font-weight: 300; max-width: 26ch; text-wrap: balance; }
+  .problems-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .problem { padding: 24px 28px; background: var(--paper); border: 1px solid var(--line-on-paper); display: flex; flex-direction: column; gap: 8px; }
+  .prob-name { font-size: 16px; font-weight: 400; color: var(--ink-on-paper); }
+  .prob-soln { font-size: 14px; color: var(--mute-on-paper); line-height: 1.6; font-weight: 300; }
+  @media (max-width: 700px) { .problems-grid { grid-template-columns: 1fr; } }
 
-  .block {
-    padding: 80px 0;
-    border-top: 1px solid var(--line-on-paper);
-  }
-  .block.alt {
-    background: var(--paper-2);
-  }
-  .proof-head {
-    margin-bottom: 48px;
-  }
-  .proof-head .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-bottom: 16px;
-  }
-  .block-h {
-    font-size: clamp(26px, 3vw, 38px);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin: 0 0 24px;
-    font-weight: 300;
-    max-width: 26ch;
-    text-wrap: balance;
-  }
+  .two-col { display: grid; grid-template-columns: 240px 1fr; gap: 80px; }
+  .col-eb .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; padding-top: 4px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; gap: 24px; } }
 
-  .problems-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-  .problem {
-    padding: 24px 28px;
-    background: var(--paper);
-    border: 1px solid var(--line-on-paper);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .prob-name {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--ink-on-paper);
-  }
-  .prob-soln {
-    font-size: 14px;
-    color: var(--mute-on-paper);
-    line-height: 1.6;
-    font-weight: 300;
-  }
-  @media (max-width: 700px) {
-    .problems-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .two-col {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 80px;
-  }
-  .col-eb .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 400;
-    padding-top: 4px;
-  }
-  @media (max-width: 900px) {
-    .two-col {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-  }
-
-  .closing-cta {
-    padding: 96px 0;
-    border-top: 1px solid var(--line-on-paper);
-  }
-  .closing-inner {
-    max-width: 800px;
-  }
-  .closing-inner .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    font-weight: 400;
-  }
-  .closing-h {
-    font-size: clamp(28px, 3.5vw, 44px);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin: 0 0 32px;
-    font-weight: 300;
-    text-wrap: balance;
-  }
-  .closing-ctas {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .contact-line {
-    font-size: 14px;
-    color: var(--mute-on-paper);
-    border-bottom: 1px solid transparent;
-    padding: 4px 0;
-  }
-  .contact-line:hover {
-    color: var(--amber);
-    border-bottom-color: var(--amber);
-  }
+  .closing-cta { padding: 96px 0; border-top: 1px solid var(--line-on-paper); }
+  .closing-inner { max-width: 800px; }
+  .closing-inner .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; font-weight: 400; }
+  .closing-h { font-size: clamp(28px, 3.5vw, 44px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 32px; font-weight: 300; text-wrap: balance; }
+  .closing-ctas { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .contact-line { font-size: 14px; color: var(--mute-on-paper); border-bottom: 1px solid transparent; padding: 4px 0; }
+  .contact-line:hover { color: var(--amber); border-bottom-color: var(--amber); }
 </style>

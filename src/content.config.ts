@@ -23,17 +23,20 @@ const projects = defineCollection({
     location: z.string(),
     // year can be a number, a year range, or 'TBD' for new drafts
     year: z.union([z.number(), z.string()]),
-    area: z.string(),
+    area: z.string().optional(),
     typology: z.enum(['residential', 'commercial', 'institutional', 'mixed-use']),
     role: z.string().optional(),
     status: z.string().optional(),
-    // hero metric (single number that earned the project)
-    metric: z.object({
-      value: z.string(), // e.g. "36.6" or ">48.5"
-      unit: z.string().optional(), // e.g. "%"
-      label: z.string(), // e.g. "cooling load reduction"
-      note: z.string().optional(),
-    }),
+    // hero metric (single number that earned the project) — optional;
+    // omit entirely for projects where there's no defensible proof to show.
+    metric: z
+      .object({
+        value: z.string(),
+        unit: z.string().optional(),
+        label: z.string(),
+        note: z.string().optional(),
+      })
+      .optional(),
     // photo handling
     heroImage: z.string().optional(),
     gallery: z.array(z.object({ src: z.string(), tag: z.string().optional() })).optional(),
