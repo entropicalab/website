@@ -14,10 +14,10 @@ featured: false
 order: 10
 heroImage: /projects/current-technologies/01.jpg
 metric:
-  value: 'TBD'
+  value: 'construido'
   unit: ''
-  label: 'aumento de acceso a luz natural · post-ocupación'
-  note: 'valor medido por confirmar con datos post-ocupación.'
+  label: 'intervención guiada por luz natural · medición pendiente'
+  note: 'la intervención se guió por el acceso a luz natural durante la jornada; la cifra post-ocupación aún no se publica.'
 brief: |
   current technologies ocupaba un espacio de oficinas con planta profunda, cielos bajos y
   una banda angosta de ventanas al norte. la remodelación anterior había saturado la línea

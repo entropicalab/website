@@ -14,10 +14,10 @@ featured: false
 order: 9
 heroImage: /projects/casa-tn/01.png
 metric:
-  value: 'TBD'
+  value: 'en obra'
   unit: ''
-  label: 'objetivo de enfriamiento pasivo · en construcción'
-  note: 'confort por estrategias pasivas; sistemas mecánicos como respaldo.'
+  label: 'objetivo de confort pasivo · medición al completar'
+  note: 'confort por estrategias pasivas; sistemas mecánicos como respaldo. el edificio está en construcción; el estudio de confort se reporta una vez ocupado.'
 brief: |
   casa tn es una residencia familiar de 280 m² en chumico, una comunidad tranquila frente
   al pacífico. el diseño responde a la solicitud de una casa abierta y flexible que pueda

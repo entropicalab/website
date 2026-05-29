@@ -23,7 +23,7 @@ const hasProof = !!(data.metric || data.award);
 const heroAlt = `${data.title}, arquitectura tropical en ${data.location}`;
 ---
 
-<BaseLayout title={`${data.title} · entrópica`} description={data.lede} locale={locale}>
+<BaseLayout title={`${data.title} · entrópica`} description={data.lede} locale={locale} ogImage={data.heroImage}>
   <article class="cs">
     <div class="site-wrap">
       <div class="crumb">
@@ -45,7 +45,7 @@ const heroAlt = `${data.title}, arquitectura tropical en ${data.location}`;
         </div>
         <div class="cs-meta">
           <div><div class="k">{t('meta.location')}</div><div class="v">{data.location}</div></div>
-          <div><div class="k">{t('meta.year')}</div><div class="v">{data.year}</div></div>
+          {data.year && data.year !== 'TBD' && (<div><div class="k">{t('meta.year')}</div><div class="v">{data.year}</div></div>)}
           {data.area && data.area !== 'TBD m²' && (<div><div class="k">{t('meta.area')}</div><div class="v">{data.area}</div></div>)}
           <div><div class="k">{t('meta.typology')}</div><div class="v">{data.typology}</div></div>
           {data.status && (<div><div class="k">{t('meta.status')}</div><div class="v">{data.status}</div></div>)}

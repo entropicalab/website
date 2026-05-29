@@ -14,7 +14,7 @@ featured: false
 order: 14
 heroImage: /projects/eurostone-showroom/01.png
 metric:
-  value: 'TBD'
+  value: 'concept'
   unit: ''
   label: 'daylight study · concept'
   note: 'interior concept emphasising material honesty under controlled daylight.'

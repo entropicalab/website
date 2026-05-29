@@ -14,10 +14,10 @@ featured: false
 order: 12
 heroImage: /projects/casa-ih/01.png
 metric:
-  value: 'TBD'
+  value: 'en obra'
   unit: ''
-  label: 'en construcción'
-  note: 'el alcance detallado se publicará al completarse el proyecto.'
+  label: 'objetivo de confort · medición al completar'
+  note: 'el edificio está en construcción; el alcance detallado y el estudio de confort se publican al completarse.'
 brief: |
   una residencia familiar en la costa panameña, actualmente en construcción. la casa sigue
   una composición tropical-moderna donde la vida exterior sombreada se trata como principio

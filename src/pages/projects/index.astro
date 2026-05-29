@@ -48,8 +48,8 @@ const projects = all.sort((a, b) => {
               <p class="pcard-lede">{p.data.lede}</p>
               <div class="pcard-info">
                 <div><span class="k">ubicación</span><span class="v">{p.data.location}</span></div>
-                <div><span class="k">año</span><span class="v">{p.data.year}</span></div>
-                <div><span class="k">área</span><span class="v">{p.data.area}</span></div>
+                {p.data.year && p.data.year !== 'TBD' && (<div><span class="k">año</span><span class="v">{p.data.year}</span></div>)}
+                {p.data.area && p.data.area !== 'TBD m²' && (<div><span class="k">área</span><span class="v">{p.data.area}</span></div>)}
                 <div><span class="k">tipología</span><span class="v">{p.data.typology}</span></div>
               </div>
               {p.data.metric && (

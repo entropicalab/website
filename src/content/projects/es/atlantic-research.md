@@ -16,10 +16,10 @@ heroImage: /projects/atlantic-research/01.png
 gallery:
   - { src: '/projects/atlantic-research/02.png', tag: '// vista' }
 metric:
-  value: 'TBD'
+  value: 'en obra'
   unit: ''
-  label: 'objetivo de enfriamiento pasivo · en construcción'
-  note: 'clima tropical marino; métrica titular por confirmar post-ocupación.'
+  label: 'objetivo de enfriamiento pasivo · medición al completar'
+  note: 'clima tropical marino; el edificio está en construcción y la métrica titular se reporta post-ocupación.'
 brief: |
   un centro tropical de investigación y visitantes diseñado para una institución de
   investigación reconocida. la arquitectura refleja claridad, ritmo y restricción,

@@ -17,7 +17,7 @@ const { Content } = await render(entry);
 const fmt = new Intl.DateTimeFormat('es-PA', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title={`${data.title} · entrópica apuntes`} description={data.summary} locale={locale}>
+<BaseLayout title={`${data.title} · entrópica apuntes`} description={data.summary} locale={locale} ogImage={data.heroImage}>
   <article class="post">
     <div class="site-wrap">
       <div class="crumb">

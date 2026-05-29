@@ -14,7 +14,7 @@ featured: false
 order: 14
 heroImage: /projects/eurostone-showroom/01.png
 metric:
-  value: 'TBD'
+  value: 'concepto'
   unit: ''
   label: 'estudio de luz natural · concepto'
   note: 'concepto interior que enfatiza honestidad material bajo luz natural controlada.'

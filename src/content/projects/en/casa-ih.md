@@ -14,10 +14,10 @@ featured: false
 order: 12
 heroImage: /projects/casa-ih/01.png
 metric:
-  value: 'TBD'
+  value: 'in progress'
   unit: ''
-  label: 'in construction'
-  note: 'detailed scope to be published once the project completes.'
+  label: 'comfort target · measured on completion'
+  note: 'the building is in construction; detailed scope and the comfort study are published once it completes.'
 brief: |
   a family residence on the panamanian coast, currently in construction. the house follows
   a tropical-modern composition in which shaded outdoor living is treated as the organising

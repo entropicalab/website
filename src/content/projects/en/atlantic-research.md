@@ -16,10 +16,10 @@ heroImage: /projects/atlantic-research/01.png
 gallery:
   - { src: '/projects/atlantic-research/02.png', tag: '// view' }
 metric:
-  value: 'TBD'
+  value: 'in progress'
   unit: ''
-  label: 'passive cooling target · in construction'
-  note: 'tropical marine climate; headline metric to be confirmed post-occupancy.'
+  label: 'passive cooling target · measured on completion'
+  note: 'tropical marine climate; the building is in construction and the headline metric is reported post-occupancy.'
 brief: |
   a tropical research and visitor facility designed for a renowned research institution.
   the architecture reflects clarity, rhythm, and restraint, balancing environmental

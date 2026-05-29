@@ -13,7 +13,7 @@ status: concepto
 featured: false
 order: 11
 metric:
-  value: 'TBD'
+  value: 'concepto'
   unit: ''
   label: 'masterplan tropical de altura · concepto'
   note: 'tipología de cabañas y cantidades por confirmar.'

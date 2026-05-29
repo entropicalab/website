@@ -14,10 +14,10 @@ featured: false
 order: 9
 heroImage: /projects/casa-tn/01.png
 metric:
-  value: 'TBD'
+  value: 'in progress'
   unit: ''
-  label: 'passive cooling target · in construction'
-  note: 'comfort from passive strategies; mechanical systems as backup.'
+  label: 'passive-comfort target · measured on completion'
+  note: 'comfort from passive strategies; mechanical systems as backup. the building is in construction; the comfort study is reported once it is occupied.'
 brief: |
   casa tn is a 280 m² family residence in chumico, a quiet beachside community facing the
   pacific. the design responds to a request for a flexible open house that can welcome

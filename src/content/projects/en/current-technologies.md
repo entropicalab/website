@@ -14,10 +14,10 @@ featured: false
 order: 10
 heroImage: /projects/current-technologies/01.jpg
 metric:
-  value: 'TBD'
+  value: 'built'
   unit: ''
-  label: 'daylight access increase · post-occupancy'
-  note: 'measured value to be confirmed from post-occupancy data.'
+  label: 'daylight-led fit-out · measured value pending'
+  note: 'the fit-out was driven by daylight access across the working day; the post-occupancy figure is not yet published.'
 brief: |
   current technologies occupied an office space with deep plan, low ceiling, and a narrow
   band of north-facing windows. the previous fit-out had cluttered the glazing line and lit

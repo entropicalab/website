@@ -13,7 +13,7 @@ status: concept
 featured: false
 order: 11
 metric:
-  value: 'TBD'
+  value: 'concept'
   unit: ''
   label: 'tropical highland masterplan · concept'
   note: 'cabin typology and counts to be confirmed.'
