@@ -41,4 +41,7 @@ strategies:
 resultLabel: 'composición interior guiada por luz natural'
 resultDelta: 'concepto'
 closingQuote: 'un showroom para el material mismo.'
+gallery:
+  - { src: '/projects/eurostone-showroom/02.png', tag: '// vista' }
+  - { src: '/projects/eurostone-showroom/03.png', tag: '// vista' }
 ---

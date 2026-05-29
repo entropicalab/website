@@ -40,4 +40,7 @@ strategies:
 resultLabel: 'daylight-led interior composition'
 resultDelta: 'concept'
 closingQuote: 'a showroom for the material itself.'
+gallery:
+  - { src: '/projects/eurostone-showroom/02.png', tag: '// view' }
+  - { src: '/projects/eurostone-showroom/03.png', tag: '// view' }
 ---

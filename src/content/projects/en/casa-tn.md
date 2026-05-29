@@ -59,7 +59,7 @@ resultDelta: 'TBD'
 closingQuote: 'a house that opens itself to the climate it sits in.'
 gallery:
   - { src: '/projects/casa-tn/02.jpg', tag: '// view' }
-  - { src: '/projects/casa-tn/03.jpg', tag: '// view' }
-  - { src: '/projects/casa-tn/04.jpg', tag: '// view' }
-  - { src: '/projects/casa-tn/05.jpg', tag: '// view' }
+  - { src: '/projects/casa-tn/03.png', tag: '// view' }
+  - { src: '/projects/casa-tn/04.png', tag: '// view' }
+  - { src: '/projects/casa-tn/05.png', tag: '// view' }
 ---

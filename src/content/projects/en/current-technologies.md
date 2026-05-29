@@ -48,5 +48,6 @@ resultLabel: 'useful daylight access'
 resultDelta: 'improved'
 closingQuote: 'a room worth turning the lights off in.'
 gallery:
+  - { src: '/projects/current-technologies/02.png', tag: '// view' }
   - { src: '/projects/current-technologies/process.gif', tag: '// the design process' }
 ---

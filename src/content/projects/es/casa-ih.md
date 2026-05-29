@@ -25,4 +25,6 @@ brief: |
 approach: |
   más detalle de este proyecto se publicará cuando la construcción avance y la intención
   de diseño sea legible en forma construida.
+gallery:
+  - { src: '/projects/casa-ih/02.png', tag: '// vista' }
 ---

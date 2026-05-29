@@ -59,7 +59,7 @@ resultDelta: 'TBD'
 closingQuote: 'una casa que se abre al clima donde se asienta.'
 gallery:
   - { src: '/projects/casa-tn/02.jpg', tag: '// vista' }
-  - { src: '/projects/casa-tn/03.jpg', tag: '// vista' }
-  - { src: '/projects/casa-tn/04.jpg', tag: '// vista' }
-  - { src: '/projects/casa-tn/05.jpg', tag: '// vista' }
+  - { src: '/projects/casa-tn/03.png', tag: '// vista' }
+  - { src: '/projects/casa-tn/04.png', tag: '// vista' }
+  - { src: '/projects/casa-tn/05.png', tag: '// vista' }
 ---

@@ -49,5 +49,6 @@ resultLabel: 'acceso útil a luz natural'
 resultDelta: 'mejorado'
 closingQuote: 'un cuarto donde vale la pena apagar las luces.'
 gallery:
+  - { src: '/projects/current-technologies/02.png', tag: '// vista' }
   - { src: '/projects/current-technologies/process.gif', tag: '// el proceso de diseño' }
 ---

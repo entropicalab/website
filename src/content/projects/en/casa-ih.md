@@ -25,4 +25,6 @@ brief: |
 approach: |
   more detail on this project will be published as construction completes and the design
   intent becomes legible in built form.
+gallery:
+  - { src: '/projects/casa-ih/02.png', tag: '// view' }
 ---
