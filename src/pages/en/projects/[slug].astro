@@ -21,9 +21,21 @@ const { Content } = await render(entry);
 const briefParas = (data.brief ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 const approachParas = (data.approach ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 const hasNarrative = briefParas.length > 0 || approachParas.length > 0;
-const hasProof = !!(data.metric || data.award);
+const phaseValues = new Set(['concepto', 'concept', 'en obra', 'in progress', 'construido', 'built']);
+const hasProof = !!(data.award || (data.metric && !phaseValues.has(String(data.metric.value))));
 
 const heroAlt = `${data.title}, tropical architecture in ${data.location}`;
+
+const projectSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ArchitecturalService',
+  name: data.title,
+  description: data.lede,
+  ...(data.heroImage ? { image: new URL(data.heroImage, Astro.site).toString() } : {}),
+  provider: { '@type': 'Organization', name: 'entrópica', url: 'https://entropica-lab.com' },
+  areaServed: data.location,
+  ...(data.year && data.year !== 'TBD' ? { dateCreated: String(data.year) } : {}),
+};
 ---
 
 <BaseLayout
@@ -32,6 +44,7 @@ const heroAlt = `${data.title}, tropical architecture in ${data.location}`;
   locale={locale}
   ogImage={data.heroImage}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(projectSchema)} />
   <article class="cs">
     <div class="site-wrap">
       <div class="crumb">

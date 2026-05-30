@@ -12,8 +12,8 @@ export const t = {
     // nav
     'nav.work': 'work',
     'nav.services': 'services',
-    'nav.about': 'about',
-    'nav.journal': 'journal',
+    'nav.about': 'about us',
+    'nav.journal': 'resources',
     'nav.faq': 'faq',
     'nav.contact': 'contact',
 
@@ -83,8 +83,8 @@ export const t = {
     // nav
     'nav.work': 'proyectos',
     'nav.services': 'servicios',
-    'nav.about': 'estudio',
-    'nav.journal': 'apuntes',
+    'nav.about': 'nosotros',
+    'nav.journal': 'recursos',
     'nav.faq': 'faq',
     'nav.contact': 'contacto',
 
@@ -104,7 +104,7 @@ export const t = {
 
     // footer
     'footer.tagline': 'edificios frescos en lugares calurosos.',
-    'footer.bio': 'entrópica es un estudio de arquitectura tropical en panamá enfocado en la energía. usamos ciencia climática y termodinámica del edificio para diseñar edificios frescos en lugares cálidos.',
+    'footer.bio': 'entrópica es un estudio de arquitectura tropical en panamá enfocado en la energía. usamos ciencia climática y termodinámica para diseñar edificios frescos en lugares cálidos.',
     'footer.studio': 'estudio',
     'footer.work': 'proyectos',
     'footer.contact': 'contacto',

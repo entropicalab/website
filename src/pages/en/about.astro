@@ -48,26 +48,42 @@ const honors = [
   { year: '2024', name: 'dna · design awards paris', detail: 'winner, cultural architecture' },
   { year: '2023', name: 'moa panamá', detail: 'honorable mention' },
 ];
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'josé barría',
+  url: 'https://entropica-lab.com/en/about',
+  jobTitle: 'architect · founder',
+  worksFor: { '@type': 'Organization', name: 'entrópica', url: 'https://entropica-lab.com' },
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'university of pennsylvania' },
+    { '@type': 'CollegeOrUniversity', name: 'isthmus', address: { '@type': 'PostalAddress', addressCountry: 'PA' } },
+  ],
+  knowsAbout: ['tropical architecture', 'energy simulation', 'bioclimatic design', 'panamá'],
+};
 ---
 
 <BaseLayout
-  title="about · entrópica · tropical climate architect in panamá"
+  title="about us · entrópica · tropical climate architect in panamá"
   description="entrópica is the work of josé barría, registered architect (jtia) and master of environmental building design (upenn). energy-led tropical architecture in panamá, republic of panama."
   locale={locale}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   <!-- ============ hero ============ -->
   <section class="hero">
     <div class="site-wrap">
-      <div class="eyebrow">// the studio</div>
+      <div class="eyebrow">// about us</div>
       <h1 class="hero-h">
-        a small lab, asking the climate<br />
-        before drawing the section.
+        somewhere between a design studio<br />
+        and a lab.
       </h1>
       <p class="hero-lede">
-        entrópica is the architectural and energy-modelling practice of josé barría, a
-        registered architect based in panamá, with a master of environmental building design
-        from the university of pennsylvania. the practice operates as a lab, deliberately
-        small, with the model treated as a working tool from before day one.
+        entrópica is the work of josé barría, a registered architect in panamá with a
+        master of environmental building design from the university of pennsylvania.
+        we exist somewhere between a design studio and a lab, looking for the sensible
+        way to design in our changing climate. we use energy modelling as a tool from
+        the very first drawing.
       </p>
     </div>
   </section>
@@ -86,8 +102,7 @@ const honors = [
         </div>
         <div class="bio-text prose">
           <p class="lede">
-            jose is a registered architect and founder of entrópica, an architectural
-            practice focused on energy-led building design in tropical climates.
+            josé is the registered architect and founder of entrópica.
           </p>
           <p>
             his experience spans panamá and the united states, across residential,

@@ -15,9 +15,22 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content } = await render(entry);
 const fmt = new Intl.DateTimeFormat('es-PA', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.summary,
+  datePublished: data.date.toISOString(),
+  author: { '@type': 'Person', name: data.author ?? 'josé barría', url: 'https://entropica-lab.com/about' },
+  publisher: { '@type': 'Organization', name: 'entrópica', url: 'https://entropica-lab.com' },
+  ...(data.heroImage ? { image: new URL(data.heroImage, Astro.site).toString() } : {}),
+  inLanguage: 'es',
+};
 ---
 
 <BaseLayout title={`${data.title} · entrópica apuntes`} description={data.summary} locale={locale} ogImage={data.heroImage}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <article class="post">
     <div class="site-wrap">
       <div class="crumb">
