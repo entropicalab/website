@@ -11,4 +11,5 @@ status: coming soon
 featured: false
 comingSoon: true
 order: 15
+heroImage: /projects/okinawa-urban-farms/01.png
 ---
