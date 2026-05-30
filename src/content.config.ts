@@ -65,6 +65,7 @@ const projects = defineCollection({
     resultDelta: z.string().optional(),
     closingQuote: z.string().optional(),
     featured: z.boolean().default(false),
+    comingSoon: z.boolean().default(false),
     order: z.number().optional(),
   }),
 });
