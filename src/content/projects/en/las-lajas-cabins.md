@@ -12,6 +12,10 @@ role: conceptual masterplan
 status: concept
 featured: false
 order: 11
+heroImage: /projects/las-lajas-cabins/01.png
+gallery:
+  - { src: '/projects/las-lajas-cabins/02.png', tag: '// view' }
+  - { src: '/projects/las-lajas-cabins/03.png', tag: '// view' }
 metric:
   value: 'concept'
   unit: ''
