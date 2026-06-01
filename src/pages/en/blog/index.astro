@@ -11,7 +11,7 @@ const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', d
 
 // Map categories to filter topics
 function getTopic(categories: string[] = []): string {
-  if (categories.some((c) => c === 'guide' || c === 'guides')) return 'guides';
+  if (categories.some((c) => c === 'guide' || c === 'guides' || c === 'building physics' || c === 'method')) return 'guides';
   if (categories.some((c) => c === 'case study' || c === 'case studies')) return 'case-studies';
   if (categories.some((c) => c === 'speculative' || c === 'facc')) return 'climate-futures';
   return '';

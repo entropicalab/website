@@ -3,26 +3,22 @@ title: oficinas las vaquitas
 slug: las-vaquitas-offices
 locale: es
 eyebrow: '// comercial'
-lede: un estudio de fachada y envolvente para un edificio de oficinas privado en el corredor de vía españa, comparando variantes de vidrio y sombra para informar una decisión de envolvente antes de construir.
+lede: 'diseño de fachada y envolvente para un edificio de oficinas privado en el corredor de vía españa: selección de vidrio, profundidad de sombra y estrategia de envolvente, validados contra simulación energética.'
 location: domingo díaz, panamá
 year: 2022
 area: '1,600 m²'
 typology: commercial
-role: simulación de fachada + especificación de envolvente
+role: diseño de fachada + especificación de envolvente
 status: pospuesto
 featured: false
 order: 8
 heroImage: /projects/las-vaquitas-offices/01.png
 brief: |
   el desarrollador ya tenía un cascarón estructural diseñado y una decisión de
-  compra de fachada abierta. el brief era un estudio de simulación pagado para
-  comparar variantes razonables de envolvente, profundidades de sombra contra
-  especificaciones de vidrio, y recomendar una para construcción.
-
-  no se cambió arquitectura. solo el muro.
+  compra de fachada abierta. el brief era el diseño de la fachada: comparar variantes razonables de vidrio y
+  sombra, y recomendar una para construcción.
 approach: |
-  la simulación corrió sobre la orientación y adyacencia reales del edificio, con
-  varios archivos climáticos. cada variante devolvió una carga de enfriamiento,
+  la simulación corrió sobre la orientación y adyacencia reales del edificio. cada variante devolvió una carga de enfriamiento,
   una lectura de autonomía de luz natural y un delta indicativo de capex.
 
   la recomendación favoreció una profundidad de sombra intermedia con el vidrio

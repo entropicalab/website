@@ -23,10 +23,6 @@ brief: |
   restrooms, and the freshwater and coastal touch pools. salt, sun, and constant
   marine humidity drove every material and detail decision.
 approach: |
-  the project's job was to make the site easier to use without softening it. open-air
-  exhibits and circulation kept their porosity to the climate; only the necessary
-  service points and washrooms were enclosed.
-
   the material palette was kept tight on purpose: aluminum and concrete only.
   both age well under salt-air and uv, both can be specified and inspected with
   honest tolerances, and both let the architecture step back so the marine

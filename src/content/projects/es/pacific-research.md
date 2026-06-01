@@ -23,10 +23,6 @@ brief: |
   costera. la sal, el sol y la humedad marina constante guiaron cada decisión de
   material y detalle.
 approach: |
-  el trabajo del proyecto fue hacer el sitio más fácil de usar sin suavizarlo. las
-  exhibiciones al aire libre y la circulación mantuvieron su porosidad al clima;
-  solo los puntos de servicio y baños necesarios se cerraron.
-
   la paleta material se mantuvo ajustada a propósito: solo aluminio y concreto.
   ambos envejecen bien bajo aire salino y rayos uv, ambos se pueden especificar
   e inspeccionar con tolerancias honestas, y ambos dejan que la arquitectura se

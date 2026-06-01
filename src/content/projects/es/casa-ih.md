@@ -8,7 +8,7 @@ location: costa pacífica, panamá
 year: 2024
 area: 'TBD m²'
 typology: residential
-role: diseño conceptual + documentación constructiva
+role: diseño conceptual + planos constructivos
 status: en construcción
 featured: false
 order: 12

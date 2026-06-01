@@ -24,8 +24,6 @@ approach: |
   predominante del noreste. el techo se convirtió en un solo plano voladizo,
   sombreando la cara sur y cargando un arreglo fotovoltaico en su superficie
   superior.
-
-  este es un proyecto en diseño. los números se firmarán mientras se construye.
 strategies:
   - label: orientación
     body: eje largo este-oeste; caras cortas al este y oeste minimizadas; norte y sur extendidos.
@@ -33,7 +31,5 @@ strategies:
     body: plano voladizo continuo, profundo al sur; arreglo pv en la cara superior dimensionado al consumo anual proyectado.
   - label: envolvente
     body: bloque de arcilla local con rainscreen ventilado; aislamiento profundo en techo.
-  - label: ventilación
-    body: sección cruzada entre aperturas al noreste y chimenea al sur; ventiladores de techo en toda la casa.
 closingQuote: 'una casa que pide menos, para que los paneles puedan darle todo.'
 ---

@@ -12,7 +12,7 @@ const featured = allProjects
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
 const services = [
-  { eyebrow: '// 01', title: 'diseño conceptual', icon: 'architecture', body: 'orientación, volumetría y programa puestos a prueba contra el clima antes de comprometer la sección.' },
+  { eyebrow: '// 01', title: 'diseño conceptual', icon: 'architecture', body: 'orientación, volumetría y programa puestos a prueba contra el clima antes de comprometer el diseño.' },
   { eyebrow: '// 02', title: 'diseño + coordinación arquitectónica', icon: 'dashboard_customize', body: 'entrega arquitectónica integral, incluyendo ingenierías complementarias.' },
   { eyebrow: '// 03', title: 'permisos + documentación', icon: 'description', body: 'documentos constructivos que pasan revisión y que el contratista realmente puede construir.' },
   { eyebrow: '// 04', title: 'asesoría en energía y desempeño', icon: 'monitoring', body: 'simulación de envolvente, estudios de luz natural, soporte leed / edge, como servicio independiente o integrado.' },
@@ -27,7 +27,7 @@ const problems = [
   { p: 'mantenimientos costosos', s: 'sistemas más simples y ensambles duraderos.', icon: 'build' },
 ];
 
-const manifesto = ['sombra', 'ventilación', 'humedad', 'durabilidad', 'masa térmica', 'energía'];
+const manifesto = ['sombra', 'ventilación', 'humedad', 'durabilidad', 'vegetación', 'energía'];
 
 const businessSchema = {
   '@context': 'https://schema.org',
@@ -183,7 +183,6 @@ const clients = [
           <div class="big-stat">
             <span class="big-num">30<span class="dash">–</span>50<span class="big-unit">%</span></span>
             <p class="big-stat-line">más en costos operativos durante la vida del edificio.<sup>*</sup></p>
-            <p class="big-stat-prompt">¿cuánto preferirías no pagar?</p>
             <p class="big-stat-source"><sup>*</sup> ashrae · iea cooling report, 2024.</p>
           </div>
         </div>

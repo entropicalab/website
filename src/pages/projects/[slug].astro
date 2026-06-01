@@ -62,7 +62,13 @@ const projectSchema = {
           {data.area && data.area !== 'TBD m²' && (<div><div class="k">{t('meta.area')}</div><div class="v">{data.area}</div></div>)}
           <div><div class="k">{t('meta.typology')}</div><div class="v">{data.typology}</div></div>
           {data.status && (<div><div class="k">{t('meta.status')}</div><div class="v">{data.status}</div></div>)}
-          {data.role && (<div><div class="k">{t('meta.role')}</div><div class="v">{data.role}</div></div>)}
+          {data.role && (
+            <div>
+              <div class="k">{t('meta.role')}</div>
+              <div class="v">{data.role}</div>
+              {data.roleNote && <div class="v-note">{data.roleNote}</div>}
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -131,7 +137,12 @@ const projectSchema = {
         <div class="site-wrap">
           <div class="gal-grid">
             {data.gallery.map((g, i) => (
-              <div class={`gal-cell c${i + 1}`}>{g.src ? <img src={g.src} alt={`${data.title}, ${data.typology}, ${data.location} · vista ${i + 1}`} /> : <span class="ph-tag">{g.tag}</span>}</div>
+              <div class={`gal-cell c${i + 1}`} data-tag={g.tag ?? ''}>
+                {g.src
+                  ? <img src={g.src} alt={`${data.title}, ${data.typology}, ${data.location} · vista ${i + 1}`} class="lb-trigger" />
+                  : <span class="ph-tag">{g.tag}</span>
+                }
+              </div>
             ))}
           </div>
         </div>
@@ -178,6 +189,13 @@ const projectSchema = {
       </div>
     </section>
   </article>
+
+  <!-- lightbox overlay -->
+  <div id="lb" role="dialog" aria-modal="true" aria-label="image viewer">
+    <button id="lb-close" aria-label="cerrar">×</button>
+    <img id="lb-img" src="" alt="" />
+    <p id="lb-cap"></p>
+  </div>
 </BaseLayout>
 
 <style>
@@ -200,6 +218,7 @@ const projectSchema = {
   .cs-meta { display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; padding: 24px 0; margin-top: 24px; border-top: 1px solid var(--line-on-paper); border-bottom: 1px solid var(--line-on-paper); }
   .cs-meta .k { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); margin-bottom: 6px; font-weight: 400; }
   .cs-meta .v { font-size: 13px; font-weight: 400; }
+  .cs-meta .v-note { font-size: 11px; color: var(--mute-on-paper); font-weight: 300; margin-top: 3px; }
   @media (max-width: 900px) { .cs-meta { grid-template-columns: 1fr 1fr; gap: 16px; } }
 
   .cs-proof { padding: 72px 0; }
@@ -227,7 +246,7 @@ const projectSchema = {
   .cs-gallery { padding: 56px 0; border-top: 1px solid var(--line-on-paper); }
   .gal-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; min-height: 560px; }
   .gal-cell { background: var(--paper-2); background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0 14px, transparent 14px 28px); border: 1px solid var(--line-on-paper); position: relative; overflow: hidden; }
-  .gal-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .gal-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
   .gal-cell .ph-tag { position: absolute; top: 14px; left: 16px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
   .gal-cell.c1 { grid-row: 1 / 3; }
   @media (max-width: 900px) { .gal-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; min-height: 0; } .gal-cell.c1 { grid-row: auto; } }
@@ -251,4 +270,43 @@ const projectSchema = {
 
   .cs-cta { padding: 56px 0; border-top: 1px solid var(--line-on-paper); display: flex; justify-content: center; }
   .cs-cta .site-wrap { display: flex; gap: 16px; justify-content: space-between; flex-wrap: wrap; }
+
+  /* lightbox */
+  #lb { position: fixed; inset: 0; background: rgba(10,9,8,0.93); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 9999; padding: 24px; }
+  #lb.open { display: flex; }
+  #lb-img { max-width: 92vw; max-height: 84vh; object-fit: contain; display: block; }
+  #lb-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 36px; line-height: 1; cursor: pointer; font-family: inherit; padding: 0; }
+  #lb-close:hover { color: #fff; }
+  #lb-cap { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); font-weight: 400; text-align: center; }
 </style>
+
+<script>
+  const lb = document.getElementById('lb') as HTMLElement;
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+  const lbCap = document.getElementById('lb-cap') as HTMLElement;
+  const lbClose = document.getElementById('lb-close') as HTMLButtonElement;
+
+  function openLb(src: string, alt: string, tag: string) {
+    lbImg.src = src;
+    lbImg.alt = alt;
+    lbCap.textContent = tag;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  document.querySelectorAll<HTMLImageElement>('.lb-trigger').forEach((img) => {
+    img.addEventListener('click', () => {
+      const tag = (img.closest('.gal-cell') as HTMLElement)?.dataset.tag ?? '';
+      openLb(img.src, img.alt, tag);
+    });
+  });
+
+  lbClose.addEventListener('click', closeLb);
+  lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); });
+</script>

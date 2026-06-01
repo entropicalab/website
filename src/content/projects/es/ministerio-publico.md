@@ -8,7 +8,7 @@ location: ciudad de panamá, panamá
 year: 2020
 area: '2,600 m²'
 typology: institutional
-role: documentación constructiva
+role: diseño conceptual · anteproyecto · planos constructivos · aprobación
 status: construido
 featured: false
 order: 4
@@ -19,7 +19,7 @@ award:
 brief: |
   rehabilitación de un edificio civil de 1958 para alojar un programa complejo de 2,600 m²
   de la unidad metropolitana del ministerio público: oficinas, áreas de atención al público
-  y laboratorios forenses. presupuesto aproximado de usd 10 m.
+  y laboratorios forenses. presupuesto aproximado de USD 10M.
 
   la envolvente existente no podía modificarse. el valor de diseño tenía que venir de
   circulación, jerarquía espacial e integración de nuevos usos dentro de las limitaciones
@@ -33,6 +33,9 @@ approach: |
 
   la intervención se extendió más allá del edificio con la renovación de aceras y nuevas
   jardineras, mejorando la accesibilidad y el espacio público circundante.
+
+  el ministerio público es un ejemplo de arquitectura moderna tropical panameña: protección
+  solar simple y efectiva, integrada en la lógica formal del edificio desde 1958.
 
   este proyecto demuestra la capacidad de entrópica para trabajar en contextos públicos
   de alto presupuesto bajo restricciones regulatorias y programáticas estrictas. la libertad

@@ -8,7 +8,7 @@ location: ciudad de panamá, panamá
 year: 2020
 area: '2,600 m²'
 typology: institutional
-role: construction documents
+role: concept design · anteproyecto · construction documents · permitting
 status: built
 featured: false
 order: 4
@@ -19,7 +19,7 @@ award:
 brief: |
   the rehabilitation of a 1958 civic landmark to house a complex 2,600 m² program for the
   unidad metropolitana del ministerio público: offices, public-attention areas, and
-  forensic laboratories. budget around usd 10 m.
+  forensic laboratories. budget around USD 10M.
 
   the existing envelope could not be modified. design value had to come from circulation,
   spatial hierarchy, and the integration of new uses within the limitations of the historic
@@ -33,6 +33,9 @@ approach: |
 
   the intervention extended beyond the building itself with renovation of sidewalks and
   the addition of tree pits, improving accessibility and the surrounding public realm.
+
+  the ministerio público is an example of panamanian tropical modern architecture: simple yet
+  effective solar protection strategies, embedded in the formal logic of the 1958 building.
 
   this project demonstrates entrópica's capacity to work in high-budget public-sector
   contexts under strict regulatory and programmatic constraints. design freedom was

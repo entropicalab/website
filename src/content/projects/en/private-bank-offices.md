@@ -3,7 +3,7 @@ title: private bank offices
 slug: private-bank-offices
 locale: en
 eyebrow: '// commercial'
-lede: a regional bank branch on the dry pacific coast, redesigned so the façade carried the climate instead of the air-conditioning.
+lede: a regional bank branch on the dry pacific coast, redesigned so the façade shielded the spaces from radiation, rain, and heat.
 location: chitré, panamá
 year: 2022
 area: '376 m²'
@@ -21,12 +21,12 @@ metric:
 brief: |
   chitré is hot, dry, and bright, closer to a sahel climate than a wet panamanian one.
   the client's brief was a calm, daylit branch open to walk-in clients, which the
-  earlier scheme had answered with a fully glazed perimeter and a 12-tonne chiller.
+  earlier scheme had answered with a fully glazed perimeter.
 
   the work was to cut the cooling demand back to something a quieter system could hold, without losing the daylight or the openness that made the brief make sense.
 approach: |
   we modelled the radiation map on the existing scheme first, in three timeslots across
-  the year. west and south were the loudest surfaces. the section was redrawn around a
+  the year. west and south were the surfaces with the highest solar load. the section was redrawn around a
   perforated breezeblock screen that admitted ventilated daylight while breaking the
   direct flux by a measurable factor of two.
 
@@ -41,9 +41,6 @@ strategies:
     delta: 'TBD'
   - label: roof
     body: ventilated rainscreen and 10 cm insulation over the slab; reflective topcoat.
-    delta: 'TBD'
-  - label: ventilation
-    body: cross-purge from the rear courtyard at night; mechanical sized to the smaller daytime load.
     delta: 'TBD'
 resultLabel: 'peak radiation on perimeter'
 resultDelta: 'TBD'

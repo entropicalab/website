@@ -3,7 +3,7 @@ title: oficinas privadas de banca
 slug: private-bank-offices
 locale: es
 eyebrow: '// comercial'
-lede: una sucursal bancaria regional en la costa pacífica seca, rediseñada para que la fachada cargara el clima en lugar del aire acondicionado.
+lede: una sucursal bancaria regional en la costa pacífica seca, rediseñada para que la fachada protegiera los espacios de radiación, lluvia y calor.
 location: chitré, panamá
 year: 2022
 area: '376 m²'
@@ -22,13 +22,13 @@ brief: |
   chitré es caliente, seco y brillante, más cerca de un clima saheliano que de un panamá
   húmedo. el brief del cliente era una sucursal tranquila y bien iluminada, abierta a
   clientes de pie, que el esquema anterior había resuelto con un perímetro totalmente
-  vidriado y un chiller de 12 toneladas.
+  vidriado.
 
   el trabajo fue recortar la demanda de enfriamiento a algo que un sistema más silencioso
   pudiera sostener, sin perder la luz natural ni la apertura que daban sentido al brief.
 approach: |
   modelamos primero el mapa de radiación del esquema existente, en tres franjas horarias
-  del año. oeste y sur eran las superficies más ruidosas. la sección se redibujó alrededor
+  del año. oeste y sur eran las superficies de mayor carga solar. la sección se redibujó alrededor
   de una piel de bloque perforado que admitía luz natural ventilada mientras quebraba el
   flujo directo por un factor medible de dos.
 
@@ -43,9 +43,6 @@ strategies:
     delta: 'TBD'
   - label: techo
     body: rainscreen ventilado y aislamiento sobre la losa; pintura reflectiva.
-    delta: 'TBD'
-  - label: ventilación
-    body: purga cruzada desde el patio trasero por la noche; sistema mecánico dimensionado a la carga diurna menor.
     delta: 'TBD'
 resultLabel: 'radiación pico en el perímetro'
 resultDelta: 'TBD'
