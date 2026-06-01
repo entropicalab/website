@@ -2,7 +2,7 @@
 title: 'el espejismo del vidrio.'
 slug: glass-delusion
 locale: es
-categories: ['física edilicia']
+categories: ['arquitectura bioclimática aplicada']
 tags: ['fachadas', 'vidrio', 'ganancia solar']
 keywords: ['fachada de vidrio en el trópico', 'arquitectura tropical panamá', 'control solar']
 eyebrow: '// el aburrido'

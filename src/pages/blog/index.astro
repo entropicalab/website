@@ -11,7 +11,7 @@ const fmt = new Intl.DateTimeFormat('es-PA', { year: 'numeric', month: 'long', d
 
 // Map categories to filter topics
 function getTopic(categories: string[] = []): string {
-  if (categories.some((c) => c === 'guía' || c === 'guias' || c === 'física edilicia' || c === 'método')) return 'guides';
+  if (categories.some((c) => c === 'guía' || c === 'guias' || c === 'arquitectura bioclimática aplicada' || c === 'método')) return 'guides';
   if (categories.some((c) => c === 'estudios de caso')) return 'case-studies';
   if (categories.some((c) => c === 'especulativo' || c === 'facc')) return 'climate-futures';
   return '';
