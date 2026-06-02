@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { getLocaleFromPath, alternateUrls } from '../i18n/utils';
+import { lastmodForPath } from '../lib/lastmod.mjs';
 import type { Locale } from '../i18n/strings';
 
 interface Props {
@@ -27,6 +28,15 @@ const {
 
 const fullTitle = title.includes('entrópica') ? title : `${title} · entrópica`;
 const canonical = new URL(pathname, Astro.site).toString();
+
+const lastmod = lastmodForPath(pathname);
+const lastmodIso = lastmod.toISOString();
+const lastmodLabel = new Intl.DateTimeFormat(locale === 'es' ? 'es-PA' : 'en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(lastmod);
+const updatedText = locale === 'es' ? 'última actualización' : 'last updated';
 
 const alts = alternateUrls(pathname);
 const hreflang = [
@@ -77,7 +87,23 @@ const hreflang = [
     <main id="main">
       <slot />
     </main>
+    <div class="page-updated">
+      <div class="site-wrap">
+        <time datetime={lastmodIso}>{updatedText}: {lastmodLabel}</time>
+      </div>
+    </div>
     <Footer locale={locale} />
     <ConsentBanner locale={locale} />
   </body>
 </html>
+
+<style>
+  .page-updated { padding: 14px 0 4px; }
+  .page-updated time {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute-on-paper-2);
+    font-weight: 400;
+  }
+</style>

@@ -27,6 +27,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        with:
+          # full history so per-file git dates (sitemap lastmod + page
+          # "last updated") are accurate, not collapsed to the latest commit
+          fetch-depth: 0
 
       - name: install, build, and upload
         uses: withastro/action@v4
