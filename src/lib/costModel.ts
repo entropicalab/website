@@ -52,74 +52,17 @@ export const CAPEX_M2: Record<Typology, Record<Tier, Range>> = {
 // research models the blended multiplier at ~1.15 on hard cost.
 const SOFT_COST_MULTIPLIER = 1.15;
 
-// official permitted-construction values, INEC private-construction registry,
-// 1st semester 2024 (research part 2), in PAB(=USD)/m². these are DECLARED /
-// permitted values used for municipal valuation — typically BELOW true all-in
-// market build cost — so the calculator shows them ALONGSIDE the market
-// estimate, not as a replacement. residential = residential-only average;
-// `total` = all-classes average (used for non-residential typologies).
-export type Province =
-  | 'nacional'
-  | 'panama'
-  | 'panama-oeste'
-  | 'colon'
-  | 'cocle'
-  | 'chiriqui'
-  | 'veraguas'
-  | 'los-santos'
-  | 'herrera'
-  | 'bocas'
-  | 'darien';
-
-export const PROVINCE_CAPEX: Record<Province, { residential: number; total: number }> = {
-  nacional: { residential: 342.97, total: 331.59 },
-  panama: { residential: 481.74, total: 462.71 },
-  'panama-oeste': { residential: 284.85, total: 283.8 },
-  colon: { residential: 265.27, total: 198.1 },
-  cocle: { residential: 372.53, total: 347.17 },
-  chiriqui: { residential: 337.91, total: 331.79 },
-  veraguas: { residential: 289.36, total: 290.72 },
-  'los-santos': { residential: 386.17, total: 336.13 },
-  herrera: { residential: 221.87, total: 218.07 },
-  bocas: { residential: 221.53, total: 228.75 },
-  darien: { residential: 166.49, total: 163.6 },
-};
-
-export const PROVINCE_ORDER: Province[] = [
-  'nacional',
-  'panama',
-  'panama-oeste',
-  'colon',
-  'cocle',
-  'chiriqui',
-  'veraguas',
-  'los-santos',
-  'herrera',
-  'bocas',
-  'darien',
-];
-
 export interface CapexResult {
   perM2: Range; // $/m² market (finish-based)
   hard: Range; // market construction only
   total: Range; // market construction + soft costs
-  officialPerM2: number; // INEC permitted value $/m² for the province
-  officialTotal: number; // officialPerM2 × area
 }
 
-export function estimateCapex(
-  area: number,
-  typ: Typology,
-  tier: Tier,
-  province: Province = 'nacional'
-): CapexResult {
+export function estimateCapex(area: number, typ: Typology, tier: Tier): CapexResult {
   const perM2 = CAPEX_M2[typ][tier];
   const hard = scale(perM2, area);
   const total = scale(hard, SOFT_COST_MULTIPLIER);
-  const officialPerM2 = isResidential(typ)
-    ? PROVINCE_CAPEX[province].residential
-    : PROVINCE_CAPEX[province].total;
-  return { perM2, hard, total, officialPerM2, officialTotal: officialPerM2 * area };
+  return { perM2, hard, total };
 }
 
 // ------------------------------------------------------------
@@ -462,7 +405,6 @@ export interface CalculatorInputs {
   tier: Tier;
   pctAC: number; // 0–1
   waterCooledAC: boolean;
-  province?: Province;
   premiumMaintenance?: boolean;
 }
 
@@ -475,7 +417,7 @@ export interface FullEstimate {
 }
 
 export function estimateAll(input: CalculatorInputs): FullEstimate {
-  const capex = estimateCapex(input.area, input.typology, input.tier, input.province ?? 'nacional');
+  const capex = estimateCapex(input.area, input.typology, input.tier);
   const energy = estimateEnergy(input.area, input.typology, input.pctAC);
   const water = estimateWater(input.area, input.typology, input.waterCooledAC);
   const maintenance = estimateMaintenance(

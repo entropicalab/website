@@ -10,9 +10,7 @@ import {
   PERCAPITA,
   MAINT_M2,
   SUSTAINABLE_SAVINGS_PCT,
-  PROVINCE_ORDER,
   type Typology,
-  type Province,
   type Range,
 } from '../lib/costModel';
 
@@ -42,20 +40,6 @@ const S = {
       commercial: 'comercial / retail',
       institutional: 'institucional',
     },
-    provLabel: 'provincia',
-    prov: {
-      nacional: 'promedio nacional',
-      panama: 'panamá',
-      'panama-oeste': 'panamá oeste',
-      colon: 'colón',
-      cocle: 'coclé',
-      chiriqui: 'chiriquí',
-      veraguas: 'veraguas',
-      'los-santos': 'los santos',
-      herrera: 'herrera',
-      bocas: 'bocas del toro',
-      darien: 'darién',
-    } as Record<Province, string>,
     tierLabel: 'nivel de acabados',
     tier: { basic: 'básico', standard: 'estándar', premium: 'premium' },
     acLabel: 'porcentaje con aire acondicionado',
@@ -67,10 +51,8 @@ const S = {
     capexH: 'capex estimado.',
     construction: 'construcción (costo directo)',
     totalDev: 'costo total de desarrollo',
-    officialReg: 'valor registrado (inec)',
     softNote: 'el total incluye ~15 % de costos indirectos: diseño, permisos municipales y legal.',
-    officialNote: 'el valor registrado es el promedio de permisos de construcción (inec) para la provincia. es un valor declarado para avalúo municipal, normalmente por debajo del costo real de obra.',
-    perM2: '$/m² de mercado',
+    perM2: '$/m² aplicado',
     energyEb: '// costo de energía',
     energyH: 'electricidad mensual, lado a lado.',
     scenRegular: 'edificio típico',
@@ -124,20 +106,6 @@ const S = {
       commercial: 'commercial / retail',
       institutional: 'institutional',
     },
-    provLabel: 'province',
-    prov: {
-      nacional: 'national average',
-      panama: 'panamá',
-      'panama-oeste': 'panamá oeste',
-      colon: 'colón',
-      cocle: 'coclé',
-      chiriqui: 'chiriquí',
-      veraguas: 'veraguas',
-      'los-santos': 'los santos',
-      herrera: 'herrera',
-      bocas: 'bocas del toro',
-      darien: 'darién',
-    } as Record<Province, string>,
     tierLabel: 'finish tier',
     tier: { basic: 'basic', standard: 'standard', premium: 'premium' },
     acLabel: 'percent air-conditioned',
@@ -149,10 +117,8 @@ const S = {
     capexH: 'estimated capex.',
     construction: 'construction (hard cost)',
     totalDev: 'total development cost',
-    officialReg: 'registered value (inec)',
     softNote: 'total includes ~15 % indirect costs: design, municipal permits, and legal.',
-    officialNote: 'the registered value is the average permitted construction value (inec) for the province. it is a declared figure for municipal valuation, usually below true build cost.',
-    perM2: '$/m² market',
+    perM2: '$/m² applied',
     energyEb: '// energy cost',
     energyH: 'monthly electricity, side by side.',
     scenRegular: 'typical building',
@@ -216,7 +182,6 @@ const sources = [
       { name: 'Contraloría · Índice de precios de materiales (IPMC, 2024–2025)', url: 'https://www.inec.gob.pa/archivos/07055475IPMC%20%20Enero%2024-25.pdf' },
       { name: 'Contraloría · Costos unitarios de acabados y remodelaciones', url: 'https://www.contraloria.gob.pa/wp-content/uploads/2024/02/2324P0-ACABADOS-Y-REMODELACIONES.pdf' },
       { name: 'Contraloría · Base de datos de costo directo', url: 'https://www.contraloria.gob.pa/wp-content/uploads/2024/07/P2-BASE-DE-DATOS-DE-COSTO-DIRECTO.pdf' },
-      { name: 'Panacrypto · Cómo construir una casa en Panamá (2025)', url: 'https://panacrypto.com/es/como-construir-una-casa-en-panama/' },
     ],
   },
   {
@@ -273,13 +238,6 @@ const sources = [
       </div>
 
       <div class="field">
-        <label for="ci-prov">{S.provLabel}</label>
-        <select id="ci-prov">
-          {PROVINCE_ORDER.map((p) => <option value={p}>{S.prov[p]}</option>)}
-        </select>
-      </div>
-
-      <div class="field">
         <label>{S.tierLabel}</label>
         <div class="seg" role="group" id="ci-tier">
           <button type="button" class="seg-btn" data-tier="basic">{S.tier.basic}</button>
@@ -315,13 +273,8 @@ const sources = [
           <span class="rk">{S.totalDev}</span>
           <span class="rv" id="r-capex-total">—</span>
         </div>
-        <div class="res-row">
-          <span class="rk">{S.officialReg}</span>
-          <span class="rv" id="r-capex-official">—</span>
-        </div>
         <p class="res-note"><span id="r-capex-m2">—</span> · {S.perM2}</p>
         <p class="res-note">{S.softNote}</p>
-        <p class="res-note">{S.officialNote}</p>
       </div>
 
       <!-- energy, two scenarios -->
@@ -515,7 +468,7 @@ const sources = [
 </style>
 
 <script>
-  import { estimateAll, type CalculatorInputs, type Tier, type Typology, type Province, type Range } from '../lib/costModel';
+  import { estimateAll, type CalculatorInputs, type Tier, type Typology, type Range } from '../lib/costModel';
 
   const root = document.querySelector('.calc') as HTMLElement;
   if (root) {
@@ -538,7 +491,6 @@ const sources = [
     const areaEl = $('ci-area') as HTMLInputElement;
     const acEl = $('ci-ac') as HTMLInputElement;
     const typEl = $('ci-typ') as HTMLSelectElement;
-    const provEl = $('ci-prov') as HTMLSelectElement;
     const waterEl = $('ci-watercool') as HTMLInputElement;
     const waterLabel = $('ci-watercool-label') as HTMLElement;
     const tierBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-tier .seg-btn'));
@@ -559,7 +511,6 @@ const sources = [
         tier,
         pctAC: Number(acEl.value) / 100,
         waterCooledAC: waterEl.checked,
-        province: provEl.value as Province,
       };
 
       $('ci-area-val').textContent = `${num.format(input.area)} m²`;
@@ -570,7 +521,6 @@ const sources = [
       // capex
       $('r-capex-hard').textContent = fmtRange(e.capex.hard);
       $('r-capex-total').textContent = fmtRange(e.capex.total);
-      $('r-capex-official').textContent = money.format(Math.round(e.capex.officialTotal));
       $('r-capex-m2').textContent = fmtRange(e.capex.perM2);
 
       // energy per use
@@ -608,7 +558,6 @@ const sources = [
       syncWaterCool();
       render();
     });
-    provEl.addEventListener('change', render);
     [areaEl, acEl, waterEl].forEach((el) => el.addEventListener('input', render));
 
     syncWaterCool();
