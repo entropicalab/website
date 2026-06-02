@@ -28,7 +28,7 @@ evito nombrar proyectos específicos por respeto a los colegas. el punto no es c
 
 ## el contexto energético de panamá
 
-la electricidad en panamá es cara. al 2024, las tarifas residenciales promedian alrededor de **usd 0.175 por kwh**, mientras que los usuarios comerciales pagan cerca de **usd 0.196 por kwh**. el mercado eléctrico nacional opera entre **169 y 199 usd / mwh**, aproximadamente el mismo rango de 0.17 a 0.20 usd / kwh.
+la electricidad en panamá es cara. al 2024, las tarifas residenciales promedian alrededor de **USD 0.175 por kwh**, mientras que los usuarios comerciales pagan cerca de **USD 0.196 por kwh**. el mercado eléctrico nacional opera entre **169 y 199 USD / mwh**, aproximadamente el mismo rango de 0.17 a 0.20 USD / kwh.
 
 eso posiciona a panamá entre los países de alto costo eléctrico, con precios más altos que costa rica o el salvador. las razones son estructurales: la generación depende mucho de la hidroeléctrica, pero la variabilidad de las lluvias y la necesidad de respaldo fósil agregan volatilidad. para cualquier edificio con aire acondicionado, estas tarifas se traducen en costos operativos significativos, y para uno totalmente vidriado en el trópico, esos costos se multiplican.
 
@@ -46,7 +46,7 @@ cuando los arquitectos especifican fachadas de vidrio en ciudades tropicales, la
 
 sin embargo, cada metro cuadrado de vidrio expuesto incrementa la ganancia térmica interna, elevando tanto la carga de enfriamiento como la capacidad instalada de hvac. esta dependencia mecánica genera un círculo vicioso: más vidrio, más enfriamiento; más enfriamiento, cuentas más altas; cuentas más altas, más presión para cortar comodidad o eficiencia en otro lado. y el calor atrapado dentro de los edificios de vidrio no desaparece: se empuja hacia afuera y hacia la ciudad, empeorando la isla de calor urbana.
 
-para los dueños de edificios, esto se traduce en miles de dólares en gasto energético anual. si una torre de oficinas típica consume **100,000 kwh / año** en aire acondicionado, un exceso de 25 a 50% por mal diseño de fachada agrega **25,000 a 50,000 kwh / año**, o aproximadamente **usd 4,000 a 8,500 anuales**, dependiendo de la tarifa. en una vida útil de 25 años, la diferencia puede superar los **usd 200,000**, sin contar mantenimiento ni reemplazo de equipos.
+para los dueños de edificios, esto se traduce en miles de dólares en gasto energético anual. si una torre de oficinas típica consume **100,000 kwh / año** en aire acondicionado, un exceso de 25 a 50% por mal diseño de fachada agrega **25,000 a 50,000 kwh / año**, o aproximadamente **USD 4,000 a 8,500 anuales**, dependiendo de la tarifa. en una vida útil de 25 años, la diferencia puede superar los **USD 200,000**, sin contar mantenimiento ni reemplazo de equipos.
 
 es un tema no marginal que define la sostenibilidad y el desempeño económico de largo plazo del edificio.
 

@@ -187,17 +187,26 @@ export interface EnergyResult {
   annualSavings: Range;
 }
 
+// water-cooled (cooling-tower / chiller) plants are materially more efficient
+// than air-cooled DX, so they cut COOLING electricity even as they add water
+// use. ~15 % less cooling energy is a conservative, defensible figure. only
+// applies to non-residential (towers are commercial/institutional).
+const WATERCOOL_HVAC_FACTOR = 0.85;
+
 export function estimateEnergy(
   area: number,
   typ: Typology,
-  pctAC: number // 0–1
+  pctAC: number, // 0–1
+  waterCooledAC = false
 ): EnergyResult {
   const eui = EUI[typ];
   // non-cooling base load (lighting + plug + other), fixed, = nv. cooling is
   // the extra (fc − nv) that mechanical AC adds, scaled by % air-conditioned.
+  const coolFactor =
+    waterCooledAC && !isResidential(typ) ? WATERCOOL_HVAC_FACTOR : 1;
   const coolingEUI: Range = {
-    low: (eui.fc.low - eui.nv.low) * pctAC,
-    high: (eui.fc.high - eui.nv.high) * pctAC,
+    low: (eui.fc.low - eui.nv.low) * pctAC * coolFactor,
+    high: (eui.fc.high - eui.nv.high) * pctAC * coolFactor,
   };
   const baseEUI: Range = eui.nv; // lighting + plug + other, AC-independent
 
@@ -486,7 +495,7 @@ export interface FullEstimate {
 
 export function estimateAll(input: CalculatorInputs): FullEstimate {
   const capex = estimateCapex(input.area, input.typology, input.tier, input.mode ?? 'new');
-  const energy = estimateEnergy(input.area, input.typology, input.pctAC);
+  const energy = estimateEnergy(input.area, input.typology, input.pctAC, input.waterCooledAC);
   const water = estimateWater(input.area, input.typology, input.waterCooledAC);
   const maintenance = estimateMaintenance(
     input.area,

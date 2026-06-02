@@ -28,7 +28,7 @@ i avoid naming specific projects out of respect for peers. the point is not to c
 
 ## the energy context of panamá
 
-electricity in panamá is expensive. as of 2024, residential rates average around **usd 0.175 per kwh**, while commercial users pay closer to **usd 0.196 per kwh**. the national electricity market operates between **169 and 199 usd / mwh**, roughly the same 0.17 to 0.20 usd / kwh range.
+electricity in panamá is expensive. as of 2024, residential rates average around **USD 0.175 per kwh**, while commercial users pay closer to **USD 0.196 per kwh**. the national electricity market operates between **169 and 199 USD / mwh**, roughly the same 0.17 to 0.20 USD / kwh range.
 
 this positions panamá among high-electricity-cost nations, with higher prices than costa rica or el salvador. the reasons are structural: generation depends heavily on hydroelectricity, but variability in rainfall and the need for fossil-fuel backup add volatility. for any air-conditioned building, these rates translate into significant operational costs — and for a fully glazed building in the tropics, those costs multiply.
 
@@ -46,7 +46,7 @@ when architects specify glass façades in tropical cities, the decision is often
 
 however, every square metre of exposed glass increases internal heat gain, raising both cooling load and installed hvac capacity. this mechanical dependence creates a feedback loop: the more glass, the more cooling; the more cooling, the higher the bills; the higher the bills, the more pressure to cut comfort or efficiency elsewhere. and the heat trapped inside glass buildings does not disappear — it gets pushed outside and into the city, worsening the urban heat island.
 
-for building owners, this translates into thousands of dollars in annual energy expenses. if a typical office tower consumes **100,000 kwh / year** for air conditioning, a 25 to 50% excess from poor façade design adds **25,000 to 50,000 kwh / year**, or roughly **usd 4,000 to 8,500 annually**, depending on tariff levels. over a 25-year lifespan, the difference can exceed **usd 200,000**, excluding maintenance and equipment replacement.
+for building owners, this translates into thousands of dollars in annual energy expenses. if a typical office tower consumes **100,000 kwh / year** for air conditioning, a 25 to 50% excess from poor façade design adds **25,000 to 50,000 kwh / year**, or roughly **USD 4,000 to 8,500 annually**, depending on tariff levels. over a 25-year lifespan, the difference can exceed **USD 200,000**, excluding maintenance and equipment replacement.
 
 this is a non-marginal issue that defines the building's long-term sustainability and economic performance.
 

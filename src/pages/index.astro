@@ -172,7 +172,7 @@ const clients = [
     </div>
   </section>
 
-  <section class="block downside alt">
+  <section class="block downside">
     <div class="site-wrap">
       <div class="downside-grid">
         <div class="downside-left">
@@ -220,15 +220,20 @@ const clients = [
         <p class="block-sub">desde el concepto hasta la construcción, con la energía como criterio de diseño desde el primer día.</p>
       </div>
 
-      <div class="services-grid">
-        {services.map((s) => (
-          <div class="svc">
-            <span class="material-symbols-outlined icon-md icon-amber svc-icon">{s.icon}</span>
-            <div class="svc-eb">{s.eyebrow}</div>
-            <h3 class="svc-title">{s.title}</h3>
-            <p class="svc-body">{s.body}</p>
-          </div>
-        ))}
+      <div class="services-layout">
+        <div class="services-img">
+          <img src="/servicios-guiados.png" alt="servicios de arquitectura guiados por energía" loading="lazy" />
+        </div>
+        <div class="services-grid">
+          {services.map((s) => (
+            <div class="svc">
+              <span class="material-symbols-outlined icon-md icon-amber svc-icon">{s.icon}</span>
+              <div class="svc-eb">{s.eyebrow}</div>
+              <h3 class="svc-title">{s.title}</h3>
+              <p class="svc-body">{s.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div class="services-foot">
@@ -308,12 +313,15 @@ const clients = [
 </BaseLayout>
 
 <style>
-  .hero { padding: 120px 0 96px; }
-  .hero-grid { display: grid; gap: 32px; max-width: 980px; }
-  .hero-eb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
-  .hero-h { font-size: clamp(40px, 6vw, 76px); line-height: 0.98; letter-spacing: -0.03em; margin: 0; font-weight: 300; text-wrap: balance; }
-  .hero-lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; color: var(--mute-on-paper); max-width: 60ch; margin: 0; font-weight: 400; }
+  .hero { padding: 120px 0; position: relative; background: #1c1c1c url('/arq-tropical.png') center / cover no-repeat; }
+  .hero-grid { display: grid; gap: 28px; max-width: 720px; background: rgba(28, 28, 28, 0.72); padding: 44px 48px; border: 1px solid rgba(255, 255, 255, 0.12); }
+  .hero-eb { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.65); font-weight: 400; }
+  .hero-h { font-size: clamp(40px, 6vw, 76px); line-height: 0.98; letter-spacing: -0.03em; margin: 0; font-weight: 300; text-wrap: balance; color: #fff; }
+  .hero-lede { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; color: rgba(255, 255, 255, 0.85); max-width: 56ch; margin: 0; font-weight: 400; }
   .hero-ctas { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .hero .btn:not(.amber) { border-color: rgba(255, 255, 255, 0.5); color: #fff; }
+  .hero .btn:not(.amber):hover { background: #fff; color: #1c1c1c; border-color: #fff; }
+  @media (max-width: 600px) { .hero { padding: 72px 0; } .hero-grid { padding: 28px 24px; } }
   .hero-where { margin-top: 32px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
 
   .manifesto-strip { padding: 56px 0 72px; border-top: 1px solid var(--line-on-paper); }
@@ -365,6 +373,14 @@ const clients = [
   .big-stat-prompt { font-size: clamp(16px, 1.6vw, 19px); line-height: 1.4; margin: 0; color: var(--mute-on-paper); font-weight: 400; font-style: italic; }
   .big-stat-source { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin: 8px 0 0; }
   @media (max-width: 900px) { .downside-grid { grid-template-columns: 1fr; gap: 32px; } }
+  /* downside = amber band, black text, bold figure */
+  .block.downside { background: var(--amber); border-top-color: rgba(28, 28, 28, 0.15); }
+  .block.downside .eyebrow,
+  .block.downside .block-h,
+  .block.downside .big-stat-line { color: #1c1c1c; }
+  .block.downside .big-num,
+  .block.downside .big-num .dash { color: #1c1c1c; font-weight: 500; }
+  .block.downside .big-stat-source { color: rgba(28, 28, 28, 0.6); }
 
   .howdoit-head { margin-bottom: 48px; }
   .howdoit-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
@@ -381,14 +397,17 @@ const clients = [
 
   .services-head { margin-bottom: 48px; }
   .services-head .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 16px; }
-  .services-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .services-layout { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 24px; align-items: stretch; }
+  .services-img { border: 1px solid var(--line-on-paper); overflow: hidden; background: var(--paper-2); }
+  .services-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 300px; }
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
   .svc { background: var(--paper); border: 1px solid var(--line-on-paper); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
   .svc-icon { margin-bottom: 4px; }
   .svc-eb { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; }
   .svc-title { font-size: 16px; font-weight: 400; line-height: 1.2; margin: 0; }
   .svc-body { font-size: 13px; line-height: 1.55; color: var(--mute-on-paper); font-weight: 400; margin: 0; }
   .services-foot { margin-top: 40px; }
-  @media (max-width: 1100px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px) { .services-layout { grid-template-columns: 1fr; } .services-img img { min-height: 200px; } }
   @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
 
   .experience-head { margin-bottom: 48px; }
