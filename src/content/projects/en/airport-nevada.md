@@ -11,4 +11,5 @@ status: coming soon
 featured: false
 comingSoon: true
 order: 18
+heroImage: /projects/airport-nevada/01.jpg
 ---
