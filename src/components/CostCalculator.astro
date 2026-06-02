@@ -1,0 +1,375 @@
+---
+// interactive panama building cost estimator.
+// one component, locale-driven. the client island lives at the bottom and
+// imports the pure model from src/lib/costModel.ts.
+import type { Locale } from '../i18n/strings';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+
+const S = {
+  es: {
+    areaLabel: 'área construida',
+    typLabel: 'categoría de edificio',
+    typ: {
+      'residential-sf': 'residencial · unifamiliar',
+      'residential-mf': 'residencial · multifamiliar',
+      office: 'oficinas',
+      commercial: 'comercial / retail',
+      institutional: 'institucional',
+    },
+    tierLabel: 'nivel de acabados',
+    tier: { basic: 'básico', standard: 'estándar', premium: 'premium' },
+    acLabel: 'porcentaje con aire acondicionado',
+    waterCooled: 'a/a por agua (torre de enfriamiento)',
+    premiumMaint: 'mantenimiento premium',
+    inputsEb: '// tu proyecto',
+    inputsH: 'describe el edificio.',
+    capexEb: '// costo de construcción',
+    capexH: 'capex estimado.',
+    construction: 'construcción (costo directo)',
+    totalDev: 'costo total de desarrollo',
+    softNote: 'el total incluye ~15 % de costos blandos: diseño, permisos municipales y legal.',
+    perM2: '$/m² aplicado',
+    energyEb: '// costo de energía',
+    energyH: 'electricidad mensual, lado a lado.',
+    scenRegular: 'edificio típico',
+    scenSustainable: 'código sostenible · res v.2',
+    use: {
+      ac: 'aire acondicionado',
+      lighting: 'iluminación',
+      plug: 'equipos y enchufes',
+      other: 'otros',
+    },
+    total: 'total',
+    perMonth: '/ mes',
+    perYear: '/ año',
+    savingsEb: '// la prueba',
+    savingsLabel: 'ahorro anual diseñando bajo el código sostenible.',
+    opexEb: '// operación mensual',
+    opexH: 'opex mensual total.',
+    water: 'agua + alcantarillado (idaan)',
+    maintenance: 'mantenimiento (ph)',
+    energyLine: 'energía',
+    opexRegular: 'edificio típico',
+    opexSustainable: 'código sostenible',
+    disclaimer:
+      'estimación con fines orientativos, no es una cotización. los rangos se derivan de datos públicos de 2026 (capex de mercado, tarifas asep, bloques idaan, cuotas ph y las líneas base de eui del reglamento de edificación sostenible res v.2). cada proyecto real depende del sitio, el suelo, el diseño y el momento del mercado. para un número que puedas usar, hablemos.',
+    cta: 'conversemos tu proyecto',
+  },
+  en: {
+    areaLabel: 'built area',
+    typLabel: 'building category',
+    typ: {
+      'residential-sf': 'residential · single-family',
+      'residential-mf': 'residential · multi-family',
+      office: 'office',
+      commercial: 'commercial / retail',
+      institutional: 'institutional',
+    },
+    tierLabel: 'finish tier',
+    tier: { basic: 'basic', standard: 'standard', premium: 'premium' },
+    acLabel: 'percent air-conditioned',
+    waterCooled: 'water-cooled a/c (cooling tower)',
+    premiumMaint: 'premium maintenance',
+    inputsEb: '// your project',
+    inputsH: 'describe the building.',
+    capexEb: '// construction cost',
+    capexH: 'estimated capex.',
+    construction: 'construction (hard cost)',
+    totalDev: 'total development cost',
+    softNote: 'total includes ~15 % soft costs: design, municipal permits, and legal.',
+    perM2: '$/m² applied',
+    energyEb: '// energy cost',
+    energyH: 'monthly electricity, side by side.',
+    scenRegular: 'typical building',
+    scenSustainable: 'sustainable code · res v.2',
+    use: {
+      ac: 'air conditioning',
+      lighting: 'lighting',
+      plug: 'plug loads',
+      other: 'other',
+    },
+    total: 'total',
+    perMonth: '/ mo',
+    perYear: '/ yr',
+    savingsEb: '// the proof',
+    savingsLabel: 'saved per year by designing to the sustainable code.',
+    opexEb: '// monthly operation',
+    opexH: 'total monthly opex.',
+    water: 'water + sewer (idaan)',
+    maintenance: 'maintenance (ph)',
+    energyLine: 'energy',
+    opexRegular: 'typical building',
+    opexSustainable: 'sustainable code',
+    disclaimer:
+      'estimate for guidance only, not a quote. ranges are derived from public 2026 data (market capex, asep tariffs, idaan blocks, ph fees, and the energy-use baselines of panama’s res v.2 sustainable-building code). a real project depends on site, soil, design, and market timing. for a number you can use, let’s talk.',
+    cta: 'let’s talk about your project',
+  },
+}[locale];
+
+const typOrder = [
+  'residential-sf',
+  'residential-mf',
+  'office',
+  'commercial',
+  'institutional',
+] as const;
+const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
+---
+
+<section class="calc" data-locale={locale}>
+  <div class="calc-grid">
+    <!-- ============ inputs ============ -->
+    <div class="calc-inputs">
+      <div class="eyebrow">{S.inputsEb}</div>
+      <h2 class="calc-h">{S.inputsH}</h2>
+
+      <div class="field">
+        <label for="ci-area">{S.areaLabel} <span class="val" id="ci-area-val">250 m²</span></label>
+        <input type="range" id="ci-area" min="50" max="3000" step="10" value="250" />
+      </div>
+
+      <div class="field">
+        <label for="ci-typ">{S.typLabel}</label>
+        <select id="ci-typ">
+          {typOrder.map((k) => <option value={k}>{S.typ[k]}</option>)}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>{S.tierLabel}</label>
+        <div class="seg" role="group" id="ci-tier">
+          <button type="button" class="seg-btn" data-tier="basic">{S.tier.basic}</button>
+          <button type="button" class="seg-btn active" data-tier="standard">{S.tier.standard}</button>
+          <button type="button" class="seg-btn" data-tier="premium">{S.tier.premium}</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="ci-ac">{S.acLabel} <span class="val" id="ci-ac-val">80 %</span></label>
+        <input type="range" id="ci-ac" min="0" max="100" step="5" value="80" />
+      </div>
+
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="ci-watercool" /> <span>{S.waterCooled}</span></label>
+        <label class="check"><input type="checkbox" id="ci-premium-maint" /> <span>{S.premiumMaint}</span></label>
+      </div>
+    </div>
+
+    <!-- ============ results ============ -->
+    <div class="calc-results">
+      <!-- capex -->
+      <div class="res-block">
+        <div class="eyebrow">{S.capexEb}</div>
+        <h3 class="res-h">{S.capexH}</h3>
+        <div class="res-row">
+          <span class="rk">{S.construction}</span>
+          <span class="rv" id="r-capex-hard">—</span>
+        </div>
+        <div class="res-row strong">
+          <span class="rk">{S.totalDev}</span>
+          <span class="rv" id="r-capex-total">—</span>
+        </div>
+        <p class="res-note"><span id="r-capex-m2">—</span> · {S.perM2}</p>
+        <p class="res-note">{S.softNote}</p>
+      </div>
+
+      <!-- energy, two scenarios -->
+      <div class="res-block">
+        <div class="eyebrow">{S.energyEb}</div>
+        <h3 class="res-h">{S.energyH}</h3>
+        <div class="scen-grid">
+          <div class="scen">
+            <div class="scen-name">{S.scenRegular}</div>
+            {useOrder.map((u) => (
+              <div class="res-row sm">
+                <span class="rk">{S.use[u]}</span>
+                <span class="rv" id={`r-en-reg-${u}`}>—</span>
+              </div>
+            ))}
+            <div class="res-row sm strong">
+              <span class="rk">{S.total}</span>
+              <span class="rv" id="r-en-reg-total">—</span>
+            </div>
+          </div>
+          <div class="scen scen-alt">
+            <div class="scen-name">{S.scenSustainable}</div>
+            {useOrder.map((u) => (
+              <div class="res-row sm">
+                <span class="rk">{S.use[u]}</span>
+                <span class="rv" id={`r-en-sus-${u}`}>—</span>
+              </div>
+            ))}
+            <div class="res-row sm strong">
+              <span class="rk">{S.total}</span>
+              <span class="rv" id="r-en-sus-total">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- proof: annual savings -->
+      <div class="res-proof">
+        <div class="proof-num" id="r-savings">—</div>
+        <div class="proof-copy">
+          <div class="eyebrow amber">{S.savingsEb}</div>
+          <p>{S.savingsLabel}</p>
+        </div>
+      </div>
+
+      <!-- monthly opex roll-up -->
+      <div class="res-block">
+        <div class="eyebrow">{S.opexEb}</div>
+        <h3 class="res-h">{S.opexH}</h3>
+        <div class="res-row sm"><span class="rk">{S.water}</span><span class="rv" id="r-water">—</span></div>
+        <div class="res-row sm"><span class="rk">{S.maintenance}</span><span class="rv" id="r-maint">—</span></div>
+        <div class="res-row strong"><span class="rk">{S.opexRegular}</span><span class="rv" id="r-opex-reg">—</span></div>
+        <div class="res-row strong alt-line"><span class="rk">{S.opexSustainable}</span><span class="rv" id="r-opex-sus">—</span></div>
+      </div>
+
+      <p class="disclaimer">{S.disclaimer}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .calc { padding: 8px 0 24px; }
+  .calc-grid { display: grid; grid-template-columns: 360px 1fr; gap: 56px; align-items: start; }
+  @media (max-width: 900px) { .calc-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+  .calc-inputs { position: sticky; top: 24px; }
+  @media (max-width: 900px) { .calc-inputs { position: static; } }
+  .calc-inputs .eyebrow,
+  .res-block .eyebrow,
+  .proof-copy .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; display: inline-block; }
+  .calc-h { font-size: 22px; font-weight: 300; letter-spacing: -0.015em; margin: 0 0 28px; }
+
+  .field { margin-bottom: 24px; }
+  .field label { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; margin-bottom: 10px; }
+  .field label .val { color: var(--ink-on-paper); font-size: 13px; letter-spacing: 0; text-transform: none; }
+  input[type='range'] { width: 100%; accent-color: var(--amber); cursor: pointer; }
+  select { width: 100%; font-family: inherit; font-size: 14px; font-weight: 300; padding: 10px 12px; background: var(--paper); border: 1px solid var(--line-on-paper); color: var(--ink-on-paper); border-radius: 0; cursor: pointer; }
+  select:focus { outline: 1px solid var(--amber); }
+
+  .seg { display: flex; border: 1px solid var(--line-on-paper); }
+  .seg-btn { flex: 1; background: none; border: none; border-right: 1px solid var(--line-on-paper); font-family: inherit; font-size: 12px; letter-spacing: 0.04em; padding: 10px 4px; cursor: pointer; color: var(--mute-on-paper); transition: all 0.15s; }
+  .seg-btn:last-child { border-right: none; }
+  .seg-btn:hover { color: var(--ink-on-paper); }
+  .seg-btn.active { background: var(--amber); color: #1a1a1a; }
+
+  .checks { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .check { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 300; color: var(--ink-on-paper); cursor: pointer; }
+  .check input { accent-color: var(--amber); width: 16px; height: 16px; cursor: pointer; }
+
+  .calc-results { display: flex; flex-direction: column; gap: 28px; }
+  .res-block { border: 1px solid var(--line-on-paper); padding: 28px; }
+  .res-h { font-size: 18px; font-weight: 300; letter-spacing: -0.01em; margin: 0 0 20px; }
+  .res-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 9px 0; border-top: 1px solid var(--line-on-paper-2); }
+  .res-row:first-of-type { border-top: none; }
+  .res-row.sm { padding: 6px 0; }
+  .res-row .rk { font-size: 13px; color: var(--mute-on-paper); font-weight: 300; }
+  .res-row .rv { font-size: 14px; font-weight: 400; font-feature-settings: 'tnum' 1; text-align: right; white-space: nowrap; }
+  .res-row.strong .rk { color: var(--ink-on-paper); }
+  .res-row.strong .rv { font-size: 15px; }
+  .res-row.alt-line .rv { color: var(--amber); }
+  .res-note { font-size: 11px; color: var(--mute-on-paper-2); font-weight: 300; margin: 12px 0 0; line-height: 1.5; }
+
+  .scen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 540px) { .scen-grid { grid-template-columns: 1fr; gap: 28px; } }
+  .scen-name { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line-on-paper); }
+  .scen-alt .scen-name { color: var(--ink-on-paper); }
+
+  .res-proof { display: flex; align-items: center; gap: 28px; padding: 8px 4px; }
+  @media (max-width: 540px) { .res-proof { flex-direction: column; align-items: flex-start; gap: 12px; } }
+  .proof-num { font-size: clamp(40px, 7vw, 72px); color: var(--amber); letter-spacing: -0.04em; line-height: 0.95; font-weight: 300; font-feature-settings: 'tnum' 1, 'lnum' 1; white-space: nowrap; }
+  .proof-copy p { font-size: 14px; line-height: 1.5; color: var(--ink-on-paper); font-weight: 300; margin: 0; max-width: 30ch; }
+
+  .disclaimer { font-size: 11px; line-height: 1.6; color: var(--mute-on-paper-2); font-weight: 300; margin: 0; max-width: 70ch; }
+</style>
+
+<script>
+  import { estimateAll, type CalculatorInputs, type Tier, type Typology, type Range } from '../lib/costModel';
+
+  const root = document.querySelector('.calc') as HTMLElement;
+  if (root) {
+    const locale = (document.documentElement.lang === 'en' ? 'en' : 'es') as 'en' | 'es';
+    const money = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-PA', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    });
+    const num = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-PA', { maximumFractionDigits: 0 });
+
+    const fmtRange = (x: Range, m = money): string => {
+      const lo = Math.round(x.low);
+      const hi = Math.round(x.high);
+      if (lo === hi) return m.format(lo);
+      return `${m.format(lo)} – ${m.format(hi)}`;
+    };
+
+    const $ = (id: string) => document.getElementById(id) as HTMLElement;
+    const areaEl = $('ci-area') as HTMLInputElement;
+    const acEl = $('ci-ac') as HTMLInputElement;
+    const typEl = $('ci-typ') as HTMLSelectElement;
+    const waterEl = $('ci-watercool') as HTMLInputElement;
+    const maintEl = $('ci-premium-maint') as HTMLInputElement;
+    const tierBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-tier .seg-btn'));
+    let tier: Tier = 'standard';
+
+    function render() {
+      const input: CalculatorInputs = {
+        area: Number(areaEl.value),
+        typology: typEl.value as Typology,
+        tier,
+        pctAC: Number(acEl.value) / 100,
+        waterCooledAC: waterEl.checked,
+        premiumMaintenance: maintEl.checked,
+      };
+
+      $('ci-area-val').textContent = `${num.format(input.area)} m²`;
+      $('ci-ac-val').textContent = `${acEl.value} %`;
+
+      const e = estimateAll(input);
+
+      // capex
+      $('r-capex-hard').textContent = fmtRange(e.capex.hard);
+      $('r-capex-total').textContent = fmtRange(e.capex.total);
+      $('r-capex-m2').textContent = fmtRange(e.capex.perM2);
+
+      // energy per use
+      (['ac', 'lighting', 'plug', 'other'] as const).forEach((u) => {
+        $(`r-en-reg-${u}`).textContent = fmtRange(e.energy.regular.perUse[u]);
+        $(`r-en-sus-${u}`).textContent = fmtRange(e.energy.sustainable.perUse[u]);
+      });
+      $('r-en-reg-total').textContent = fmtRange(e.energy.regular.total);
+      $('r-en-sus-total').textContent = fmtRange(e.energy.sustainable.total);
+
+      // proof: annual savings (show midpoint as the headline number)
+      const savMid = Math.round((e.energy.annualSavings.low + e.energy.annualSavings.high) / 2);
+      $('r-savings').textContent = money.format(Math.max(savMid, 0));
+
+      // opex
+      $('r-water').textContent = fmtRange(e.water.monthly);
+      $('r-maint').textContent = fmtRange(e.maintenance.monthly);
+      $('r-opex-reg').textContent = fmtRange(e.monthlyOpex.regular);
+      $('r-opex-sus').textContent = fmtRange(e.monthlyOpex.sustainable);
+    }
+
+    tierBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tierBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        tier = btn.dataset.tier as Tier;
+        render();
+      });
+    });
+    [areaEl, acEl, typEl, waterEl, maintEl].forEach((el) =>
+      el.addEventListener('input', render)
+    );
+
+    render();
+  }
+</script>

@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CostCalculator from '../../components/CostCalculator.astro';
+import { localized, tr } from '../../i18n/utils';
+
+const locale = 'es' as const;
+const t = tr(locale);
+---
+
+<BaseLayout
+  title="calculadora de costos · entrópica"
+  description="estima el costo de construcción y de operación de un edificio en panamá, con la diferencia energética entre un edificio típico y uno bajo el código sostenible res v.2."
+  locale={locale}
+  noindex={true}
+>
+  <section class="tool-hero">
+    <div class="site-wrap">
+      <div class="eyebrow">// herramienta · borrador</div>
+      <h1 class="hero-h">
+        ¿cuánto cuesta construir<br />
+        y operar en panamá?
+      </h1>
+      <p class="hero-lede">
+        mueve los controles para estimar el costo de construcción y la operación mensual
+        de un edificio en panamá. la energía se calcula dos veces: como un edificio típico,
+        y como un edificio diseñado bajo el código sostenible res v.2. la diferencia es lo
+        que se paga, mes a mes, durante toda la vida del edificio.
+      </p>
+    </div>
+  </section>
+
+  <section class="tool-body">
+    <div class="site-wrap">
+      <CostCalculator locale={locale} />
+    </div>
+  </section>
+
+  <section class="tool-cta">
+    <div class="site-wrap">
+      <div class="cta-inner">
+        <div class="eyebrow">// del estimado al proyecto</div>
+        <h2 class="cta-h">los números reales se ganan en el diseño.</h2>
+        <a class="btn amber" href={localized('/contact', locale)}>
+          {t('cta.contact')}
+          <span class="arrow-tail" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tool-hero { padding: 96px 0 40px; }
+  .tool-hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; }
+  .hero-h { font-size: clamp(32px, 4.5vw, 56px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; font-weight: 300; text-wrap: balance; }
+  .hero-lede { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 64ch; margin: 0; font-weight: 300; }
+
+  .tool-body { padding: 24px 0 64px; }
+
+  .tool-cta { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .cta-inner { max-width: 720px; }
+  .cta-inner .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; font-weight: 400; }
+  .cta-h { font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 28px; font-weight: 300; text-wrap: balance; }
+</style>
