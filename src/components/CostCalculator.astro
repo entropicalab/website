@@ -18,6 +18,9 @@ interface Props {
 }
 const { locale } = Astro.props;
 
+// formspree endpoint (same as the contact form) — used for lead capture
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xkoerobb';
+
 // server-side range formatters for the assumptions table
 const rng = (x: Range, dp = 0): string => {
   const f = (n: number) => n.toFixed(dp);
@@ -44,9 +47,26 @@ const S = {
     waterCooledHint: 'solo comercial / institucional',
     inputsEb: '// tu proyecto',
     inputsH: 'describe el edificio.',
+    modeLabel: 'tipo de proyecto',
+    modeNew: 'obra nueva',
+    modeReno: 'renovación',
+    audienceLabel: 'tu perfil',
+    audDev: 'desarrollador',
+    audHome: 'propietario',
     capexEb: '// costo de construcción',
+    capexEbReno: '// costo de renovación',
     capexH: 'capex estimado.',
+    capexHReno: 'renovación estimada.',
     construction: 'construcción (costo directo)',
+    constructionReno: 'renovación (costo directo)',
+    lcSavingsLabelHome: 'menos cada mes en luz y agua, en un edificio bajo el código sostenible.',
+    emailEb: '// llévate el reporte',
+    emailH: '¿quieres este estimado en pdf?',
+    emailPlaceholder: 'tu correo',
+    emailBtn: 'envíame el reporte',
+    emailNote: 'te enviamos el estimado y, si quieres, conversamos tu proyecto. sin spam.',
+    emailSentH: 'gracias.',
+    emailSentBody: 'recibimos tu correo. te escribimos pronto.',
     totalDev: 'costo total de desarrollo',
     softNote: 'el total incluye ~15 % de costos indirectos: diseño, permisos municipales y legal.',
     excludesNote: 'no incluye terreno, mobiliario ni el itbms (7 %) sobre servicios profesionales.',
@@ -120,9 +140,26 @@ const S = {
     waterCooledHint: 'commercial / institutional only',
     inputsEb: '// your project',
     inputsH: 'describe the building.',
+    modeLabel: 'project type',
+    modeNew: 'new build',
+    modeReno: 'renovation',
+    audienceLabel: 'your profile',
+    audDev: 'developer',
+    audHome: 'homeowner',
     capexEb: '// construction cost',
+    capexEbReno: '// renovation cost',
     capexH: 'estimated capex.',
+    capexHReno: 'estimated renovation.',
     construction: 'construction (hard cost)',
+    constructionReno: 'renovation (hard cost)',
+    lcSavingsLabelHome: 'less every month on power and water, in a building built to the sustainable code.',
+    emailEb: '// take the report',
+    emailH: 'want this estimate as a pdf?',
+    emailPlaceholder: 'your email',
+    emailBtn: 'send me the report',
+    emailNote: 'we’ll send the estimate and, if you like, talk through your project. no spam.',
+    emailSentH: 'thanks.',
+    emailSentBody: 'we got your email. we’ll be in touch soon.',
     totalDev: 'total development cost',
     softNote: 'total includes ~15 % indirect costs: design, municipal permits, and legal.',
     excludesNote: 'excludes land, furniture/FF&E, and the 7 % ITBMS on professional services.',
@@ -235,12 +272,41 @@ const sources = [
 ];
 ---
 
-<section class="calc" data-locale={locale} data-maint-ph={S.maintenancePH} data-maint-home={S.maintenanceHome}>
+<section
+  class="calc"
+  data-locale={locale}
+  data-maint-ph={S.maintenancePH}
+  data-maint-home={S.maintenanceHome}
+  data-capex-eb={S.capexEb}
+  data-capex-eb-reno={S.capexEbReno}
+  data-capex-h={S.capexH}
+  data-capex-h-reno={S.capexHReno}
+  data-capex-k={S.construction}
+  data-capex-k-reno={S.constructionReno}
+  data-lc-label-dev={S.lcSavingsLabel}
+  data-lc-label-home={S.lcSavingsLabelHome}
+>
   <div class="calc-grid">
     <!-- ============ inputs ============ -->
     <div class="calc-inputs">
       <div class="eyebrow">{S.inputsEb}</div>
       <h2 class="calc-h">{S.inputsH}</h2>
+
+      <div class="field">
+        <label>{S.modeLabel}</label>
+        <div class="seg" role="group" id="ci-mode">
+          <button type="button" class="seg-btn active" data-mode="new">{S.modeNew}</button>
+          <button type="button" class="seg-btn" data-mode="renovation">{S.modeReno}</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>{S.audienceLabel}</label>
+        <div class="seg" role="group" id="ci-aud">
+          <button type="button" class="seg-btn active" data-aud="dev">{S.audDev}</button>
+          <button type="button" class="seg-btn" data-aud="home">{S.audHome}</button>
+        </div>
+      </div>
 
       <div class="field">
         <label for="ci-area">{S.areaLabel} <span class="val" id="ci-area-val">250 m²</span></label>
@@ -280,10 +346,10 @@ const sources = [
     <div class="calc-results">
       <!-- capex -->
       <div class="res-block">
-        <div class="eyebrow">{S.capexEb}</div>
-        <h3 class="res-h">{S.capexH}</h3>
+        <div class="eyebrow" id="r-capex-eb">{S.capexEb}</div>
+        <h3 class="res-h" id="r-capex-h">{S.capexH}</h3>
         <div class="res-row">
-          <span class="rk">{S.construction}</span>
+          <span class="rk" id="r-capex-klabel">{S.construction}</span>
           <span class="rv" id="r-capex-hard">—</span>
         </div>
         <div class="res-row strong">
@@ -383,8 +449,28 @@ const sources = [
 
         <div class="lc-hero">
           <div class="lc-hero-num" id="r-lc-savings">—</div>
-          <p class="lc-hero-label">{S.lcSavingsLabel}</p>
+          <p class="lc-hero-label" id="r-lc-savings-label">{S.lcSavingsLabel}</p>
         </div>
+      </div>
+
+      <!-- lead capture -->
+      <div class="res-block email-block" id="email-block">
+        <div class="eyebrow">{S.emailEb}</div>
+        <h3 class="res-h">{S.emailH}</h3>
+        <form class="email-form" action={FORMSPREE_ENDPOINT} method="POST">
+          <input type="email" name="email" required placeholder={S.emailPlaceholder} autocomplete="email" />
+          <button type="submit" class="btn amber">{S.emailBtn}</button>
+          <input type="hidden" name="_subject" value="entropica-lab.com · calculadora · nuevo lead" />
+          <input type="hidden" name="origen" value="cost-calculator" />
+          <input type="hidden" name="resumen" id="email-summary" value="" />
+          <div class="honeypot" aria-hidden="true"><input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></div>
+        </form>
+        <p class="res-note">{S.emailNote}</p>
+      </div>
+      <div class="res-block email-sent" id="email-sent" hidden>
+        <div class="eyebrow amber">{S.emailEb}</div>
+        <h3 class="res-h">{S.emailSentH}</h3>
+        <p class="res-note">{S.emailSentBody}</p>
       </div>
 
       <details class="methodology">
@@ -522,6 +608,14 @@ const sources = [
   .lc-hero-num { font-size: clamp(52px, 10vw, 104px); color: var(--amber); letter-spacing: -0.04em; line-height: 0.92; font-weight: 300; font-feature-settings: 'tnum' 1, 'lnum' 1; white-space: nowrap; }
   .lc-hero-label { font-size: 15px; line-height: 1.5; color: var(--ink-on-paper); font-weight: 300; margin: 10px 0 0; max-width: 36ch; }
 
+  /* lead capture */
+  .email-block .res-h { margin-bottom: 16px; }
+  .email-form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .email-form input[type='email'] { flex: 1; min-width: 200px; font-family: inherit; font-size: 14px; font-weight: 300; padding: 11px 14px; background: var(--paper); border: 1px solid var(--line-on-paper); color: var(--ink-on-paper); }
+  .email-form input[type='email']:focus { outline: 1px solid var(--amber); }
+  .email-form .btn { white-space: nowrap; }
+  .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
   /* collapsible methodology */
   .methodology { border: 1px solid var(--line-on-paper); padding: 4px 24px; }
   .methodology summary { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; cursor: pointer; padding: 14px 0; list-style: none; }
@@ -557,10 +651,11 @@ const sources = [
 </style>
 
 <script>
-  import { estimateAll, type CalculatorInputs, type Tier, type Typology, type Range } from '../lib/costModel';
+  import { estimateAll, type CalculatorInputs, type Tier, type Typology, type Mode, type Range } from '../lib/costModel';
 
   const root = document.querySelector('.calc') as HTMLElement;
   if (root) {
+    const d = root.dataset;
     const locale = (document.documentElement.lang === 'en' ? 'en' : 'es') as 'en' | 'es';
     const money = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-PA', {
       style: 'currency',
@@ -583,10 +678,14 @@ const sources = [
     const waterEl = $('ci-watercool') as HTMLInputElement;
     const waterLabel = $('ci-watercool-label') as HTMLElement;
     const tierBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-tier .seg-btn'));
+    const modeBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-mode .seg-btn'));
+    const audBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-aud .seg-btn'));
     const maintLabels = Array.from(document.querySelectorAll<HTMLElement>('.js-maint-label'));
-    const maintPH = root.dataset.maintPh ?? 'maintenance (ph)';
-    const maintHome = root.dataset.maintHome ?? 'upkeep';
+    const maintPH = d.maintPh ?? 'maintenance (ph)';
+    const maintHome = d.maintHome ?? 'upkeep';
     let tier: Tier = 'standard';
+    let mode: Mode = 'new';
+    let audience: 'dev' | 'home' = 'dev';
 
     // water-cooled AC only applies to non-residential cooling towers
     function syncWaterCool() {
@@ -610,6 +709,7 @@ const sources = [
         tier,
         pctAC: Number(acEl.value) / 100,
         waterCooledAC: waterEl.checked,
+        mode,
       };
 
       $('ci-area-val').textContent = `${num.format(input.area)} m²`;
@@ -617,7 +717,11 @@ const sources = [
 
       const e = estimateAll(input);
 
-      // capex
+      // capex — labels adapt to new build vs renovation
+      const reno = mode === 'renovation';
+      $('r-capex-eb').textContent = (reno ? d.capexEbReno : d.capexEb) ?? '';
+      $('r-capex-h').textContent = (reno ? d.capexHReno : d.capexH) ?? '';
+      $('r-capex-klabel').textContent = (reno ? d.capexKReno : d.capexK) ?? '';
       $('r-capex-hard').textContent = fmtRange(e.capex.hard);
       $('r-capex-total').textContent = fmtRange(e.capex.total);
       $('r-capex-m2').textContent = fmtRange(e.capex.perM2);
@@ -647,8 +751,24 @@ const sources = [
       // lifecycle: 30-year total cost of ownership
       $('r-lc-reg').textContent = fmtRange(e.lifecycle.regular);
       $('r-lc-sus').textContent = fmtRange(e.lifecycle.sustainable);
-      const lcSavMid = Math.round((e.lifecycle.savings.low + e.lifecycle.savings.high) / 2);
-      $('r-lc-savings').textContent = money.format(Math.max(lcSavMid, 0));
+
+      // hero number adapts to audience: developer → 30-yr discounted saving;
+      // homeowner → monthly saving on the bill.
+      if (audience === 'home') {
+        const mSav = Math.round((e.energy.monthlySavings.low + e.energy.monthlySavings.high) / 2);
+        $('r-lc-savings').textContent = money.format(Math.max(mSav, 0));
+        $('r-lc-savings-label').textContent = d.lcLabelHome ?? '';
+      } else {
+        const lcSav = Math.round((e.lifecycle.savings.low + e.lifecycle.savings.high) / 2);
+        $('r-lc-savings').textContent = money.format(Math.max(lcSav, 0));
+        $('r-lc-savings-label').textContent = d.lcLabelDev ?? '';
+      }
+
+      // lead-capture summary (hidden field sent with the email)
+      const summary = $('email-summary') as HTMLInputElement | null;
+      if (summary) {
+        summary.value = `${mode} · ${input.typology} · ${input.area} m² · ${tier} · a/c ${acEl.value}% · capex ${fmtRange(e.capex.total)} · opex ${fmtRange(e.monthlyOpex.regular)}→${fmtRange(e.monthlyOpex.sustainable)}/mes`;
+      }
 
       // comparison bars — widths as % of a shared scale (the larger total)
       const mid = (x: Range) => (x.low + x.high) / 2;
@@ -666,20 +786,51 @@ const sources = [
       setW('bar-lc-sus', (mid(e.lifecycle.sustainable) / lcMax) * 100);
     }
 
-    tierBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        tierBtns.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        tier = btn.dataset.tier as Tier;
-        render();
+    const wireSeg = (
+      btns: HTMLButtonElement[],
+      onPick: (btn: HTMLButtonElement) => void
+    ) => {
+      btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          btns.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          onPick(btn);
+          render();
+        });
       });
-    });
+    };
+
+    wireSeg(tierBtns, (b) => (tier = b.dataset.tier as Tier));
+    wireSeg(modeBtns, (b) => (mode = b.dataset.mode as Mode));
+    wireSeg(audBtns, (b) => (audience = b.dataset.aud as 'dev' | 'home'));
+
     typEl.addEventListener('change', () => {
       syncWaterCool();
       syncMaintLabel();
       render();
     });
     [areaEl, acEl, waterEl].forEach((el) => el.addEventListener('input', render));
+
+    // lead capture — AJAX submit so the page state survives
+    const emailForm = root.querySelector('.email-form') as HTMLFormElement | null;
+    emailForm?.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      try {
+        const res = await fetch(emailForm.action, {
+          method: 'POST',
+          body: new FormData(emailForm),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          $('email-block').hidden = true;
+          $('email-sent').hidden = false;
+        } else {
+          emailForm.submit();
+        }
+      } catch {
+        emailForm.submit();
+      }
+    });
 
     syncWaterCool();
     syncMaintLabel();

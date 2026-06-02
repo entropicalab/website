@@ -52,16 +52,40 @@ export const CAPEX_M2: Record<Typology, Record<Tier, Range>> = {
 // research models the blended multiplier at ~1.15 on hard cost.
 const SOFT_COST_MULTIPLIER = 1.15;
 
+export type Mode = 'new' | 'renovation';
+
+// RENOVATION reference values (research: "Panama Renovation Cost Research").
+// MUPA publishes minimum taxable $/m² per renovation class — single-family
+// 250/350/500, condo unit 250/300/375, commercial/office ~750 (open plazas
+// ~500). these are FLOORS (DOYC adjusts upward to audited market value), so
+// we model the cost as a band from the reference floor to ~1.6× market.
+// commercial tiers are extrapolated around the 750 office-reform reference.
+const RENO_M2: Record<Typology, Record<Tier, Range>> = {
+  'residential-sf': { basic: r(250, 400), standard: r(350, 560), premium: r(500, 800) },
+  'residential-mf': { basic: r(250, 400), standard: r(300, 480), premium: r(375, 600) },
+  office: { basic: r(500, 750), standard: r(750, 1050), premium: r(900, 1300) },
+  commercial: { basic: r(500, 750), standard: r(750, 1050), premium: r(900, 1300) },
+  institutional: { basic: r(450, 700), standard: r(700, 1000), premium: r(850, 1250) },
+};
+// renovation soft costs: COICI sets a 2 % structural-design fee on reforms
+// (a premium over new build), plus municipal Visto Bueno (~1 %) and legal.
+const RENO_SOFT_MULTIPLIER = 1.12;
+
 export interface CapexResult {
   perM2: Range; // $/m² market (finish-based)
-  hard: Range; // market construction only
-  total: Range; // market construction + soft costs
+  hard: Range; // market construction/renovation only
+  total: Range; // + soft costs
 }
 
-export function estimateCapex(area: number, typ: Typology, tier: Tier): CapexResult {
-  const perM2 = CAPEX_M2[typ][tier];
+export function estimateCapex(
+  area: number,
+  typ: Typology,
+  tier: Tier,
+  mode: Mode = 'new'
+): CapexResult {
+  const perM2 = mode === 'renovation' ? RENO_M2[typ][tier] : CAPEX_M2[typ][tier];
   const hard = scale(perM2, area);
-  const total = scale(hard, SOFT_COST_MULTIPLIER);
+  const total = scale(hard, mode === 'renovation' ? RENO_SOFT_MULTIPLIER : SOFT_COST_MULTIPLIER);
   return { perM2, hard, total };
 }
 
@@ -427,6 +451,7 @@ export interface CalculatorInputs {
   tier: Tier;
   pctAC: number; // 0–1
   waterCooledAC: boolean;
+  mode?: Mode; // 'new' (default) or 'renovation'
   premiumMaintenance?: boolean;
 }
 
@@ -460,7 +485,7 @@ export interface FullEstimate {
 }
 
 export function estimateAll(input: CalculatorInputs): FullEstimate {
-  const capex = estimateCapex(input.area, input.typology, input.tier);
+  const capex = estimateCapex(input.area, input.typology, input.tier, input.mode ?? 'new');
   const energy = estimateEnergy(input.area, input.typology, input.pctAC);
   const water = estimateWater(input.area, input.typology, input.waterCooledAC);
   const maintenance = estimateMaintenance(
