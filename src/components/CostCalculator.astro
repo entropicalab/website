@@ -568,6 +568,8 @@ const sources = [
   .res-row.sm { padding: 6px 0; }
   .res-row .rk { font-size: 13px; color: var(--mute-on-paper); font-weight: 300; }
   .res-row .rv { font-size: 14px; font-weight: 400; font-feature-settings: 'tnum' 1; text-align: right; white-space: nowrap; }
+  /* keep the "USD" currency code uppercase against the brand's global lowercase */
+  .rv, .bar-total, .lc-hero-num, #r-capex-m2 { text-transform: none; }
   .res-row.strong .rk { color: var(--ink-on-paper); }
   .res-row.strong .rv { font-size: 15px; }
   .res-note { font-size: 12px; color: var(--mute-on-paper); font-weight: 300; margin: 12px 0 0; line-height: 1.55; }
