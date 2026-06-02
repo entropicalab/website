@@ -7,13 +7,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://entropica-lab.com',
   trailingSlash: 'never',
-  integrations: [
-    mdx(),
-    sitemap({
-      // keep work-in-progress / noindex tools out of the sitemap
-      filter: (page) => !page.includes('/tools/'),
-    }),
-  ],
+  integrations: [mdx(), sitemap()],
   i18n: {
     defaultLocale: 'es',
     locales: ['es', 'en'],
