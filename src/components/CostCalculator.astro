@@ -10,7 +10,9 @@ import {
   PERCAPITA,
   MAINT_M2,
   SUSTAINABLE_SAVINGS_PCT,
+  PROVINCE_ORDER,
   type Typology,
+  type Province,
   type Range,
 } from '../lib/costModel';
 
@@ -40,6 +42,20 @@ const S = {
       commercial: 'comercial / retail',
       institutional: 'institucional',
     },
+    provLabel: 'provincia',
+    prov: {
+      nacional: 'promedio nacional',
+      panama: 'panamá',
+      'panama-oeste': 'panamá oeste',
+      colon: 'colón',
+      cocle: 'coclé',
+      chiriqui: 'chiriquí',
+      veraguas: 'veraguas',
+      'los-santos': 'los santos',
+      herrera: 'herrera',
+      bocas: 'bocas del toro',
+      darien: 'darién',
+    } as Record<Province, string>,
     tierLabel: 'nivel de acabados',
     tier: { basic: 'básico', standard: 'estándar', premium: 'premium' },
     acLabel: 'porcentaje con aire acondicionado',
@@ -51,8 +67,10 @@ const S = {
     capexH: 'capex estimado.',
     construction: 'construcción (costo directo)',
     totalDev: 'costo total de desarrollo',
+    officialReg: 'valor registrado (inec)',
     softNote: 'el total incluye ~15 % de costos indirectos: diseño, permisos municipales y legal.',
-    perM2: '$/m² aplicado',
+    officialNote: 'el valor registrado es el promedio de permisos de construcción (inec) para la provincia. es un valor declarado para avalúo municipal, normalmente por debajo del costo real de obra.',
+    perM2: '$/m² de mercado',
     energyEb: '// costo de energía',
     energyH: 'electricidad mensual, lado a lado.',
     scenRegular: 'edificio típico',
@@ -106,6 +124,20 @@ const S = {
       commercial: 'commercial / retail',
       institutional: 'institutional',
     },
+    provLabel: 'province',
+    prov: {
+      nacional: 'national average',
+      panama: 'panamá',
+      'panama-oeste': 'panamá oeste',
+      colon: 'colón',
+      cocle: 'coclé',
+      chiriqui: 'chiriquí',
+      veraguas: 'veraguas',
+      'los-santos': 'los santos',
+      herrera: 'herrera',
+      bocas: 'bocas del toro',
+      darien: 'darién',
+    } as Record<Province, string>,
     tierLabel: 'finish tier',
     tier: { basic: 'basic', standard: 'standard', premium: 'premium' },
     acLabel: 'percent air-conditioned',
@@ -117,8 +149,10 @@ const S = {
     capexH: 'estimated capex.',
     construction: 'construction (hard cost)',
     totalDev: 'total development cost',
+    officialReg: 'registered value (inec)',
     softNote: 'total includes ~15 % indirect costs: design, municipal permits, and legal.',
-    perM2: '$/m² applied',
+    officialNote: 'the registered value is the average permitted construction value (inec) for the province. it is a declared figure for municipal valuation, usually below true build cost.',
+    perM2: '$/m² market',
     energyEb: '// energy cost',
     energyH: 'monthly electricity, side by side.',
     scenRegular: 'typical building',
@@ -178,16 +212,19 @@ const sources = [
   {
     group: S.srcCapex,
     items: [
+      { name: 'INEC · Edificaciones particulares por provincia (1er sem. 2024)', url: 'https://www.inec.gob.pa/archivos/P053342420241216160104Cuadro%2013.pdf' },
+      { name: 'Contraloría · Índice de precios de materiales (IPMC, 2024–2025)', url: 'https://www.inec.gob.pa/archivos/07055475IPMC%20%20Enero%2024-25.pdf' },
+      { name: 'Contraloría · Costos unitarios de acabados y remodelaciones', url: 'https://www.contraloria.gob.pa/wp-content/uploads/2024/02/2324P0-ACABADOS-Y-REMODELACIONES.pdf' },
+      { name: 'Contraloría · Base de datos de costo directo', url: 'https://www.contraloria.gob.pa/wp-content/uploads/2024/07/P2-BASE-DE-DATOS-DE-COSTO-DIRECTO.pdf' },
       { name: 'Panacrypto · Cómo construir una casa en Panamá (2025)', url: 'https://panacrypto.com/es/como-construir-una-casa-en-panama/' },
-      { name: 'Panablock · Costo de construcción en bloque de concreto', url: 'https://www.panablock.com/blogs/news/titulo-blog-post-uno' },
-      { name: 'Contraloría General de la República · Base de datos de costo directo', url: 'https://www.contraloria.gob.pa/wp-content/uploads/2024/07/P2-BASE-DE-DATOS-DE-COSTO-DIRECTO.pdf' },
     ],
   },
   {
     group: S.srcEnergy,
     items: [
-      { name: 'ASEP · Pliego tarifario, clientes regulados (ene–jun 2026)', url: 'https://asep.gob.pa/wp-content/uploads/electricidad/tarifas/01_tarifas_clientes_regulados/tarifas_2023-2026/2026/enero/I_t_2026.pdf' },
-      { name: 'EDEMET (Naturgy) · Pliego tarifario', url: 'https://www.naturgy.com.pa/app/uploads/2022/11/Pliego_Tarifario_EDEMET_Enero_-Junio_18.pdf' },
+      { name: 'ASEP · Pliego tarifario, clientes regulados (2026)', url: 'https://asep.gob.pa/wp-content/uploads/electricidad/tarifas/01_tarifas_clientes_regulados/tarifas_2023-2026/2026/abril/I_t_2026.pdf' },
+      { name: 'La Prensa · Ajuste de tarifas eléctricas y fin del FET adicional (2026)', url: 'https://www.prensa.com/economia/tarifas-electricas-se-ajustan-a-partir-del-1-de-enero-de-2026-la-mayoria-de-los-usuarios-no-tendra-aumentos-en-su-factura/' },
+      { name: 'Naturgy · Tarifas EDEMET / EDECHI', url: 'https://www.naturgy.com.pa/hogar/distribucion-de-electricidad/tarifas/' },
     ],
   },
   {
@@ -201,9 +238,9 @@ const sources = [
   {
     group: S.srcWater,
     items: [
-      { name: 'ASEP · Tarifas de agua potable (IDAAN)', url: 'https://asep.gob.pa/wp-content/uploads/agua/tarifas/tarifa_1_IDAAN.pdf' },
+      { name: 'ASEP · Tarifas de agua potable y alcantarillado (IDAAN)', url: 'https://asep.gob.pa/wp-content/uploads/agua/tarifas/tarifa_1_IDAAN.pdf' },
       { name: 'ASEP · Resolución AN-3491 (agua)', url: 'https://www.asep.gob.pa/wp-content/uploads/agua/tarifas/anno_3491_agua.pdf' },
-      { name: 'SENACYT · Demanda de agua potable en Panamá', url: 'https://www.senacyt.gob.pa/investigacion-cientifica-analizara-la-demanda-de-agua-potable-para-la-optimizacion-de-los-sistemas-de-acueductos-en-panama/' },
+      { name: 'La Prensa · Inversión en agua potable en el presupuesto del Estado', url: 'https://www.prensa.com/sociedad/el-agua-potable-no-ha-sido-prioridad-para-el-estado/' },
     ],
   },
   {
@@ -232,6 +269,13 @@ const sources = [
         <label for="ci-typ">{S.typLabel}</label>
         <select id="ci-typ">
           {typOrder.map((k) => <option value={k}>{S.typ[k]}</option>)}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="ci-prov">{S.provLabel}</label>
+        <select id="ci-prov">
+          {PROVINCE_ORDER.map((p) => <option value={p}>{S.prov[p]}</option>)}
         </select>
       </div>
 
@@ -271,8 +315,13 @@ const sources = [
           <span class="rk">{S.totalDev}</span>
           <span class="rv" id="r-capex-total">—</span>
         </div>
+        <div class="res-row">
+          <span class="rk">{S.officialReg}</span>
+          <span class="rv" id="r-capex-official">—</span>
+        </div>
         <p class="res-note"><span id="r-capex-m2">—</span> · {S.perM2}</p>
         <p class="res-note">{S.softNote}</p>
+        <p class="res-note">{S.officialNote}</p>
       </div>
 
       <!-- energy, two scenarios -->
@@ -466,7 +515,7 @@ const sources = [
 </style>
 
 <script>
-  import { estimateAll, type CalculatorInputs, type Tier, type Typology, type Range } from '../lib/costModel';
+  import { estimateAll, type CalculatorInputs, type Tier, type Typology, type Province, type Range } from '../lib/costModel';
 
   const root = document.querySelector('.calc') as HTMLElement;
   if (root) {
@@ -489,6 +538,7 @@ const sources = [
     const areaEl = $('ci-area') as HTMLInputElement;
     const acEl = $('ci-ac') as HTMLInputElement;
     const typEl = $('ci-typ') as HTMLSelectElement;
+    const provEl = $('ci-prov') as HTMLSelectElement;
     const waterEl = $('ci-watercool') as HTMLInputElement;
     const waterLabel = $('ci-watercool-label') as HTMLElement;
     const tierBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-tier .seg-btn'));
@@ -509,6 +559,7 @@ const sources = [
         tier,
         pctAC: Number(acEl.value) / 100,
         waterCooledAC: waterEl.checked,
+        province: provEl.value as Province,
       };
 
       $('ci-area-val').textContent = `${num.format(input.area)} m²`;
@@ -519,6 +570,7 @@ const sources = [
       // capex
       $('r-capex-hard').textContent = fmtRange(e.capex.hard);
       $('r-capex-total').textContent = fmtRange(e.capex.total);
+      $('r-capex-official').textContent = money.format(Math.round(e.capex.officialTotal));
       $('r-capex-m2').textContent = fmtRange(e.capex.perM2);
 
       // energy per use
@@ -556,6 +608,7 @@ const sources = [
       syncWaterCool();
       render();
     });
+    provEl.addEventListener('change', render);
     [areaEl, acEl, waterEl].forEach((el) => el.addEventListener('input', render));
 
     syncWaterCool();

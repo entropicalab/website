@@ -52,17 +52,74 @@ export const CAPEX_M2: Record<Typology, Record<Tier, Range>> = {
 // research models the blended multiplier at ~1.15 on hard cost.
 const SOFT_COST_MULTIPLIER = 1.15;
 
+// official permitted-construction values, INEC private-construction registry,
+// 1st semester 2024 (research part 2), in PAB(=USD)/m². these are DECLARED /
+// permitted values used for municipal valuation — typically BELOW true all-in
+// market build cost — so the calculator shows them ALONGSIDE the market
+// estimate, not as a replacement. residential = residential-only average;
+// `total` = all-classes average (used for non-residential typologies).
+export type Province =
+  | 'nacional'
+  | 'panama'
+  | 'panama-oeste'
+  | 'colon'
+  | 'cocle'
+  | 'chiriqui'
+  | 'veraguas'
+  | 'los-santos'
+  | 'herrera'
+  | 'bocas'
+  | 'darien';
+
+export const PROVINCE_CAPEX: Record<Province, { residential: number; total: number }> = {
+  nacional: { residential: 342.97, total: 331.59 },
+  panama: { residential: 481.74, total: 462.71 },
+  'panama-oeste': { residential: 284.85, total: 283.8 },
+  colon: { residential: 265.27, total: 198.1 },
+  cocle: { residential: 372.53, total: 347.17 },
+  chiriqui: { residential: 337.91, total: 331.79 },
+  veraguas: { residential: 289.36, total: 290.72 },
+  'los-santos': { residential: 386.17, total: 336.13 },
+  herrera: { residential: 221.87, total: 218.07 },
+  bocas: { residential: 221.53, total: 228.75 },
+  darien: { residential: 166.49, total: 163.6 },
+};
+
+export const PROVINCE_ORDER: Province[] = [
+  'nacional',
+  'panama',
+  'panama-oeste',
+  'colon',
+  'cocle',
+  'chiriqui',
+  'veraguas',
+  'los-santos',
+  'herrera',
+  'bocas',
+  'darien',
+];
+
 export interface CapexResult {
-  perM2: Range; // $/m² used
-  hard: Range; // construction only
-  total: Range; // construction + soft costs
+  perM2: Range; // $/m² market (finish-based)
+  hard: Range; // market construction only
+  total: Range; // market construction + soft costs
+  officialPerM2: number; // INEC permitted value $/m² for the province
+  officialTotal: number; // officialPerM2 × area
 }
 
-export function estimateCapex(area: number, typ: Typology, tier: Tier): CapexResult {
+export function estimateCapex(
+  area: number,
+  typ: Typology,
+  tier: Tier,
+  province: Province = 'nacional'
+): CapexResult {
   const perM2 = CAPEX_M2[typ][tier];
   const hard = scale(perM2, area);
   const total = scale(hard, SOFT_COST_MULTIPLIER);
-  return { perM2, hard, total };
+  const officialPerM2 = isResidential(typ)
+    ? PROVINCE_CAPEX[province].residential
+    : PROVINCE_CAPEX[province].total;
+  return { perM2, hard, total, officialPerM2, officialTotal: officialPerM2 * area };
 }
 
 // ------------------------------------------------------------
@@ -113,14 +170,42 @@ export const SUSTAINABLE_SAVINGS_PCT = (Object.keys(END_USE_SHARE) as EndUse[]).
 const isResidential = (typ: Typology) =>
   typ === 'residential-sf' || typ === 'residential-mf';
 
-// effective $/kWh per the synthesis section: residential uses progressive
-// BTS blocks keyed to monthly kWh; commercial/office switches BTD→MTD by
-// size; institutional is a flat approximation.
-function tariff(typ: Typology, monthlyKWh: number, area: number): number {
+// residential electricity is billed PROGRESSIVELY across BTS blocks and at
+// rates that are NET of the FET state subsidy (research part 2). these net
+// rates are a blend of the ENSA and EDEMET 2026 pliegos, so the tool is not
+// tied to one concessionaire. a monthly fixed customer charge is added.
+//   BTS-1 (0–300 kWh):   ~0.085–0.097 → blended 0.091
+//   BTS-2 (301–750 kWh): ~0.152–0.164 → blended 0.158
+//   BTS-3 (>750 kWh):    ~0.203–0.257 → blended 0.230
+const RES_FIXED_CHARGE = 3.03; // $/month
+const RES_BLOCKS: { upTo: number; rate: number }[] = [
+  { upTo: 300, rate: 0.091 },
+  { upTo: 750, rate: 0.158 },
+  { upTo: Infinity, rate: 0.23 },
+];
+
+function residentialBill(monthlyKWh: number): number {
+  let cost = RES_FIXED_CHARGE;
+  let remaining = monthlyKWh;
+  let prev = 0;
+  for (const b of RES_BLOCKS) {
+    const amt = Math.min(remaining, b.upTo - prev);
+    if (amt > 0) {
+      cost += amt * b.rate;
+      remaining -= amt;
+    }
+    prev = b.upTo;
+    if (remaining <= 0) break;
+  }
+  return cost;
+}
+
+// effective $/kWh. residential reflects the progressive, post-subsidy bill;
+// commercial/office switches BTD→MTD by size; institutional is flat. these
+// non-residential classes do not receive the FET subsidy.
+function effectiveRate(typ: Typology, monthlyKWh: number, area: number): number {
   if (isResidential(typ)) {
-    if (monthlyKWh <= 300) return 0.16;
-    if (monthlyKWh <= 750) return 0.21;
-    return 0.33;
+    return monthlyKWh > 0 ? residentialBill(monthlyKWh) / monthlyKWh : 0;
   }
   if (typ === 'institutional') return 0.18;
   // office + commercial/retail
@@ -170,14 +255,16 @@ export function estimateEnergy(
       totalKWh = addR(totalKWh, monthly);
     });
 
-    // tariff keyed to the scenario's midpoint monthly kWh (stable bracket)
-    const midKWh = (totalKWh.low + totalKWh.high) / 2;
-    const rate = tariff(typ, midKWh, area);
+    // progressive billing: the effective $/kWh is computed at each bound of
+    // the consumption range, so the low/high spread reflects the real tariff
+    // curve (and the FET subsidy) rather than a single flat rate.
+    const rateLo = effectiveRate(typ, totalKWh.low, area);
+    const rateHi = effectiveRate(typ, totalKWh.high, area);
 
     (Object.keys(useKWh) as EndUse[]).forEach((use) => {
-      perUse[use] = scale(useKWh[use], rate);
+      perUse[use] = { low: useKWh[use].low * rateLo, high: useKWh[use].high * rateHi };
     });
-    const total = scale(totalKWh, rate);
+    const total: Range = { low: totalKWh.low * rateLo, high: totalKWh.high * rateHi };
     return { perUse, total, monthlyKWh: totalKWh };
   };
 
@@ -263,18 +350,45 @@ function idaanBill(kGal: number, residential: boolean): number {
 }
 
 const SEWER_MULTIPLIER = 1.4; // potable + ~40 % sewer surcharge
-const WASTE_FEE: Record<'residential' | 'commercial', number> = {
-  residential: 4.0,
-  commercial: 35.0,
-};
-const MIN_MONTHLY: Record<'residential' | 'commercial', number> = {
-  residential: 6.4,
-  commercial: 11.5,
-};
+const WASTE_FEE = { commercial: 35.0 };
+const MIN_MONTHLY = { commercial: 11.5 };
+
+// residential IDAAN tariff (research part 2): billed in cubic metres with
+// COMBINED water + sewer marginal rates, and a minimum 30 m³/month billing
+// that sets a hard floor of $7.92/month. this is the authoritative
+// structure and is materially cheaper than the gallon-converted table.
+const M3_MIN_BILL = 7.92; // covers the first 30 m³ (minimum billing)
+const M3_MIN_VOLUME = 30;
+const IDAAN_M3_BLOCKS: { upTo: number; rate: number }[] = [
+  { upTo: 41, rate: 0.26 }, // 0.21 water + 0.05 sewer
+  { upTo: 60, rate: 0.46 },
+  { upTo: 78, rate: 0.53 },
+  { upTo: 116, rate: 0.56 },
+  { upTo: 192, rate: 0.57 },
+  { upTo: Infinity, rate: 0.6 }, // commercial-ish beyond 192 m³
+];
+
+function residentialWaterBill(m3: number): number {
+  if (m3 <= M3_MIN_VOLUME) return M3_MIN_BILL;
+  let cost = M3_MIN_BILL;
+  let remaining = m3 - M3_MIN_VOLUME;
+  let prev = M3_MIN_VOLUME;
+  for (const b of IDAAN_M3_BLOCKS) {
+    if (prev >= b.upTo) continue;
+    const amt = Math.min(remaining, b.upTo - prev);
+    if (amt > 0) {
+      cost += amt * b.rate;
+      remaining -= amt;
+    }
+    prev = b.upTo;
+    if (remaining <= 0) break;
+  }
+  return cost;
+}
 
 export interface WaterResult {
-  monthly: Range; // total monthly $ (potable + sewer + waste)
-  monthlyKGal: Range;
+  monthly: Range; // total monthly $ (water + sewer, + waste for commercial)
+  monthlyM3: Range;
   people: number;
 }
 
@@ -288,20 +402,28 @@ export function estimateWater(
   if (waterCooledAC) pc = addR(pc, WATERCOOL_SURCHARGE[typ]);
 
   const dailyL: Range = scale(pc, people);
-  const monthlyGal: Range = scale(dailyL, 30 / L_PER_GALLON);
-  const monthlyKGal: Range = scale(monthlyGal, 1 / 1000);
+  const monthlyM3: Range = scale(dailyL, 30 / 1000); // litres/day → m³/month
 
-  const residential = isResidential(typ);
-  const cls = residential ? 'residential' : 'commercial';
+  if (isResidential(typ)) {
+    // part 2 m³ model, combined water + sewer, $7.92 floor
+    const monthly: Range = {
+      low: residentialWaterBill(monthlyM3.low),
+      high: residentialWaterBill(monthlyM3.high),
+    };
+    return { monthly, monthlyM3, people };
+  }
+
+  // non-residential: keep the gallon-block model + sewer surcharge + waste
+  const monthlyKGal: Range = scale(monthlyM3, 264.172 / 1000); // m³ → kGal
   const raw: Range = {
-    low: idaanBill(monthlyKGal.low, residential),
-    high: idaanBill(monthlyKGal.high, residential),
+    low: idaanBill(monthlyKGal.low, false),
+    high: idaanBill(monthlyKGal.high, false),
   };
-  const withSurcharges: Range = {
-    low: Math.max(raw.low * SEWER_MULTIPLIER + WASTE_FEE[cls], MIN_MONTHLY[cls]),
-    high: Math.max(raw.high * SEWER_MULTIPLIER + WASTE_FEE[cls], MIN_MONTHLY[cls]),
+  const monthly: Range = {
+    low: Math.max(raw.low * SEWER_MULTIPLIER + WASTE_FEE.commercial, MIN_MONTHLY.commercial),
+    high: Math.max(raw.high * SEWER_MULTIPLIER + WASTE_FEE.commercial, MIN_MONTHLY.commercial),
   };
-  return { monthly: withSurcharges, monthlyKGal, people };
+  return { monthly, monthlyM3, people };
 }
 
 // ------------------------------------------------------------
@@ -340,6 +462,7 @@ export interface CalculatorInputs {
   tier: Tier;
   pctAC: number; // 0–1
   waterCooledAC: boolean;
+  province?: Province;
   premiumMaintenance?: boolean;
 }
 
@@ -352,7 +475,7 @@ export interface FullEstimate {
 }
 
 export function estimateAll(input: CalculatorInputs): FullEstimate {
-  const capex = estimateCapex(input.area, input.typology, input.tier);
+  const capex = estimateCapex(input.area, input.typology, input.tier, input.province ?? 'nacional');
   const energy = estimateEnergy(input.area, input.typology, input.pctAC);
   const water = estimateWater(input.area, input.typology, input.waterCooledAC);
   const maintenance = estimateMaintenance(
