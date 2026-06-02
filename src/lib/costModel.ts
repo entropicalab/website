@@ -81,34 +81,31 @@ export const EUI: Record<Typology, { fc: Range; nv: Range }> = {
 
 export type EndUse = 'ac' | 'lighting' | 'plug' | 'other';
 
-// standard tropical end-use shares of total electricity. anchored to the
-// research's "HVAC = 55–65 % of the bill" with the balance split across
-// lighting, plug loads and a small 'other' (vertical transport, pumps).
-export const END_USE_SHARE: Record<EndUse, number> = {
-  ac: 0.6,
-  plug: 0.2,
-  lighting: 0.15,
-  other: 0.05,
+// the building's NON-COOLING load (lighting + plug + other) is fixed per m²
+// and INDEPENDENT of air-conditioning — switching the AC off does not dim the
+// lights. we anchor it to the naturally-ventilated EUI (`nv`), which is, by
+// definition, a building's energy use with no mechanical cooling. cooling is
+// then the extra energy AC adds on top, = (fc − nv), scaled by the % of the
+// building that is air-conditioned. so only AC tracks the slider.
+//
+// the non-cooling base is split into its three end uses by these sub-shares
+// (derived from the standard tropical 20 % plug / 15 % lighting / 5 % other
+// split, renormalised to the non-cooling portion).
+const NONCOOLING_SUBSHARE: Record<'lighting' | 'plug' | 'other', number> = {
+  plug: 0.5, // 20 / 40
+  lighting: 0.375, // 15 / 40
+  other: 0.125, // 5 / 40
 };
 
 // RES V.2 per-end-use reductions. cooling falls most (passive envelope:
 // roof insulation, low-SHGC glazing, reflective albedo + inverter AC);
-// lighting falls via LED + daylighting; plug loads barely move. the
-// blended total lands ~28 %, inside the quoted 20–38.8 % band.
+// lighting falls via LED + daylighting; plug loads barely move.
 export const SUSTAINABLE_REDUCTION: Record<EndUse, number> = {
   ac: 0.4,
   lighting: 0.3,
   plug: 0.05,
   other: 0.1,
 };
-
-// blended whole-building reduction = Σ(share · reduction). lands ~0.30,
-// inside the research's quoted 20–38.8 % band. surfaced in the UI so the
-// "sustainable" column has a single honest headline percentage.
-export const SUSTAINABLE_SAVINGS_PCT = (Object.keys(END_USE_SHARE) as EndUse[]).reduce(
-  (acc, u) => acc + END_USE_SHARE[u] * SUSTAINABLE_REDUCTION[u],
-  0
-);
 
 const isResidential = (typ: Typology) =>
   typ === 'residential-sf' || typ === 'residential-mf';
@@ -143,16 +140,14 @@ function residentialBill(monthlyKWh: number): number {
   return cost;
 }
 
-// effective $/kWh. residential reflects the progressive, post-subsidy bill;
-// commercial/office switches BTD→MTD by size; institutional is flat. these
-// non-residential classes do not receive the FET subsidy.
-function effectiveRate(typ: Typology, monthlyKWh: number, area: number): number {
-  if (isResidential(typ)) {
-    return monthlyKWh > 0 ? residentialBill(monthlyKWh) / monthlyKWh : 0;
-  }
-  if (typ === 'institutional') return 0.18;
-  // office + commercial/retail
-  return area >= 2000 ? 0.18 : 0.21;
+// monthly electricity bill ($) for a given monthly kWh. residential is the
+// progressive, post-FET-subsidy bill; commercial/office switches BTD→MTD by
+// size; institutional is flat. non-residential classes get no FET subsidy.
+function monthlyBill(typ: Typology, monthlyKWh: number, area: number): number {
+  if (monthlyKWh <= 0) return 0;
+  if (isResidential(typ)) return residentialBill(monthlyKWh);
+  const rate = typ === 'institutional' ? 0.18 : area >= 2000 ? 0.18 : 0.21;
+  return monthlyKWh * rate;
 }
 
 export interface EnergyScenario {
@@ -174,40 +169,58 @@ export function estimateEnergy(
   pctAC: number // 0–1
 ): EnergyResult {
   const eui = EUI[typ];
-  // regular intensity, interpolated nv→fc by % conditioned
-  const regularEUI: Range = {
-    low: eui.nv.low + (eui.fc.low - eui.nv.low) * pctAC,
-    high: eui.nv.high + (eui.fc.high - eui.nv.high) * pctAC,
+  // non-cooling base load (lighting + plug + other), fixed, = nv. cooling is
+  // the extra (fc − nv) that mechanical AC adds, scaled by % air-conditioned.
+  const coolingEUI: Range = {
+    low: (eui.fc.low - eui.nv.low) * pctAC,
+    high: (eui.fc.high - eui.nv.high) * pctAC,
   };
+  const baseEUI: Range = eui.nv; // lighting + plug + other, AC-independent
 
   const buildScenario = (reduce: boolean): EnergyScenario => {
     const perUse = {} as Record<EndUse, Range>;
     let totalKWh: Range = r(0, 0);
-
-    // per-use annual kWh, then monthly
     const useKWh = {} as Record<EndUse, Range>;
-    (Object.keys(END_USE_SHARE) as EndUse[]).forEach((use) => {
-      const share = END_USE_SHARE[use];
+
+    const addUse = (use: EndUse, annual: Range) => {
       const factor = reduce ? 1 - SUSTAINABLE_REDUCTION[use] : 1;
-      const annual: Range = {
-        low: regularEUI.low * area * share * factor,
-        high: regularEUI.high * area * share * factor,
-      };
-      const monthly = scale(annual, 1 / 12);
+      const monthly = scale({ low: annual.low * factor, high: annual.high * factor }, 1 / 12);
       useKWh[use] = monthly;
       totalKWh = addR(totalKWh, monthly);
+    };
+
+    // cooling — the only end use that responds to the % AC slider
+    addUse('ac', { low: coolingEUI.low * area, high: coolingEUI.high * area });
+    // non-cooling end uses — fixed per-m² estimates, independent of AC
+    (['lighting', 'plug', 'other'] as const).forEach((use) => {
+      addUse(use, {
+        low: baseEUI.low * NONCOOLING_SUBSHARE[use] * area,
+        high: baseEUI.high * NONCOOLING_SUBSHARE[use] * area,
+      });
     });
 
-    // progressive billing: the effective $/kWh is computed at each bound of
-    // the consumption range, so the low/high spread reflects the real tariff
-    // curve (and the FET subsidy) rather than a single flat rate.
-    const rateLo = effectiveRate(typ, totalKWh.low, area);
-    const rateHi = effectiveRate(typ, totalKWh.high, area);
-
-    (Object.keys(useKWh) as EndUse[]).forEach((use) => {
-      perUse[use] = { low: useKWh[use].low * rateLo, high: useKWh[use].high * rateHi };
+    // marginal cost attribution: the fixed base loads sit on the cheap, lower
+    // (subsidised) blocks; cooling is the load stacked on top, so it carries
+    // the marginal "tier-creep" cost it actually causes. this keeps the
+    // lighting / plug / other dollar figures stable as the AC slider moves —
+    // only AC responds — while the total still equals the true bill.
+    (['ac', 'lighting', 'plug', 'other'] as EndUse[]).forEach((u) => {
+      perUse[u] = { low: 0, high: 0 };
     });
-    const total: Range = { low: totalKWh.low * rateLo, high: totalKWh.high * rateHi };
+    (['low', 'high'] as const).forEach((b) => {
+      const baseK = useKWh.lighting[b] + useKWh.plug[b] + useKWh.other[b];
+      const totalK = baseK + useKWh.ac[b];
+      const baseBill = monthlyBill(typ, baseK, area);
+      const totalBill = monthlyBill(typ, totalK, area);
+      perUse.ac[b] = Math.max(totalBill - baseBill, 0);
+      (['lighting', 'plug', 'other'] as const).forEach((u) => {
+        perUse[u][b] = baseK > 0 ? baseBill * (useKWh[u][b] / baseK) : 0;
+      });
+    });
+    const total: Range = {
+      low: monthlyBill(typ, totalKWh.low, area),
+      high: monthlyBill(typ, totalKWh.high, area),
+    };
     return { perUse, total, monthlyKWh: totalKWh };
   };
 
@@ -335,12 +348,21 @@ export interface WaterResult {
   people: number;
 }
 
+// a single-family household has roughly the same number of people regardless
+// of how large the house is — a 600 m² home is not 15 people. so SF occupancy
+// is clamped to a realistic 2–6, instead of scaling linearly with area.
+const SF_OCCUPANCY_MIN = 2;
+const SF_OCCUPANCY_MAX = 6;
+
 export function estimateWater(
   area: number,
   typ: Typology,
   waterCooledAC: boolean
 ): WaterResult {
-  const people = (DENSITY[typ] * area) / 100;
+  let people = (DENSITY[typ] * area) / 100;
+  if (typ === 'residential-sf') {
+    people = Math.min(Math.max(people, SF_OCCUPANCY_MIN), SF_OCCUPANCY_MAX);
+  }
   let pc = PERCAPITA[typ];
   if (waterCooledAC) pc = addR(pc, WATERCOOL_SURCHARGE[typ]);
 
@@ -408,12 +430,33 @@ export interface CalculatorInputs {
   premiumMaintenance?: boolean;
 }
 
+// ------------------------------------------------------------
+// 6 · LIFECYCLE — 30-year total cost of ownership (research part 2)
+// ------------------------------------------------------------
+// total cost = construction CAPEX + the net present value of operating cost
+// over the building's life. discount rate 6.25 % matches the SBP late-2025
+// benchmark mortgage rate; horizon 30 years (residential design life). only
+// energy differs between scenarios, so the lifecycle gap IS the discounted
+// value of designing to the sustainable code.
+export const DISCOUNT_RATE = 0.0625;
+export const LIFECYCLE_YEARS = 30;
+// present-value annuity factor for a level annual cost over the horizon
+const ANNUITY_FACTOR =
+  (1 - Math.pow(1 + DISCOUNT_RATE, -LIFECYCLE_YEARS)) / DISCOUNT_RATE; // ≈ 13.4
+
+export interface LifecycleResult {
+  regular: Range; // capex + NPV(opex) over the horizon
+  sustainable: Range;
+  savings: Range; // regular − sustainable (discounted lifetime saving)
+}
+
 export interface FullEstimate {
   capex: CapexResult;
   energy: EnergyResult;
   water: WaterResult;
   maintenance: MaintenanceResult;
   monthlyOpex: { regular: Range; sustainable: Range };
+  lifecycle: LifecycleResult;
 }
 
 export function estimateAll(input: CalculatorInputs): FullEstimate {
@@ -432,5 +475,22 @@ export function estimateAll(input: CalculatorInputs): FullEstimate {
       maintenance.monthly
     ),
   };
-  return { capex, energy, water, maintenance, monthlyOpex };
+
+  // lifecycle: capex + discounted 30-year operation
+  const npvOpex = (monthly: Range): Range => ({
+    low: monthly.low * 12 * ANNUITY_FACTOR,
+    high: monthly.high * 12 * ANNUITY_FACTOR,
+  });
+  const lcRegular = addR(capex.total, npvOpex(monthlyOpex.regular));
+  const lcSustainable = addR(capex.total, npvOpex(monthlyOpex.sustainable));
+  const lifecycle: LifecycleResult = {
+    regular: lcRegular,
+    sustainable: lcSustainable,
+    savings: {
+      low: lcRegular.low - lcSustainable.low,
+      high: lcRegular.high - lcSustainable.high,
+    },
+  };
+
+  return { capex, energy, water, maintenance, monthlyOpex, lifecycle };
 }

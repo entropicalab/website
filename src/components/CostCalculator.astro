@@ -9,7 +9,6 @@ import {
   DENSITY,
   PERCAPITA,
   MAINT_M2,
-  SUSTAINABLE_SAVINGS_PCT,
   type Typology,
   type Range,
 } from '../lib/costModel';
@@ -18,8 +17,6 @@ interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-
-const savingsPct = Math.round(SUSTAINABLE_SAVINGS_PCT * 100);
 
 // server-side range formatters for the assumptions table
 const rng = (x: Range, dp = 0): string => {
@@ -52,6 +49,7 @@ const S = {
     construction: 'construcción (costo directo)',
     totalDev: 'costo total de desarrollo',
     softNote: 'el total incluye ~15 % de costos indirectos: diseño, permisos municipales y legal.',
+    excludesNote: 'no incluye terreno, mobiliario ni el itbms (7 %) sobre servicios profesionales.',
     perM2: '$/m² aplicado',
     energyEb: '// costo de energía',
     energyH: 'electricidad mensual, lado a lado.',
@@ -70,13 +68,18 @@ const S = {
     opexH: 'opex mensual total, lado a lado.',
     energyLine: 'energía',
     water: 'agua + alcantarillado',
-    maintenance: 'mantenimiento (ph)',
+    maintenancePH: 'mantenimiento (ph)',
+    maintenanceHome: 'conservación / upkeep',
+    lcEb: '// costo a 30 años',
+    lcH: 'lo que cuesta a lo largo de su vida útil.',
+    lcRegular: 'edificio típico',
+    lcSustainable: 'código sostenible',
+    lcSavingsLabel: 'menos a 30 años diseñando bajo el código sostenible.',
+    lcNote: 'valor presente de la construcción más 30 años de operación, descontados al 6.25 % (tasa hipotecaria de referencia, sbp). la diferencia es el valor descontado de diseñar eficiente.',
     assumptionsEb: '// qué hay detrás del cálculo',
     assumptionsH: 'los promedios por categoría.',
     assumptionsIntro:
-      'cada estimación parte de promedios de mercado y de las líneas base del reglamento de edificación sostenible (res v.2). estos son los valores que usa la calculadora para cada categoría de edificio. la columna sostenible aplica una reducción energética de ~' +
-      savingsPct +
-      ' % sobre el caso típico, dentro del rango de 20–38.8 % que documenta el reglamento.',
+      'cada estimación parte de promedios de mercado y de las líneas base del reglamento de edificación sostenible (res v.2). estos son los valores que usa la calculadora para cada categoría de edificio. el consumo de iluminación, equipos y otros se estima por m² y no depende del aire acondicionado; solo el enfriamiento varía con el porcentaje de a/a. la columna sostenible reduce cada uso por separado (enfriamiento −40 %, iluminación −30 %, equipos −5 %), dentro del rango de 20–38.8 % que documenta el reglamento.',
     aCapex: 'construcción (estándar)',
     aEnergy: 'energía (100 % a/a)',
     aEnergyUnit: 'kwh/m²·año',
@@ -84,6 +87,7 @@ const S = {
     aWaterUnit: 'l/persona·día',
     aOcc: 'ocupación',
     aOccUnit: 'pers./100 m²',
+    aOccCap: 'máx. 6 por hogar',
     aMaint: 'mantenimiento',
     aMaintUnit: '$/m²·mes',
     sourcesEb: '// fuentes',
@@ -118,6 +122,7 @@ const S = {
     construction: 'construction (hard cost)',
     totalDev: 'total development cost',
     softNote: 'total includes ~15 % indirect costs: design, municipal permits, and legal.',
+    excludesNote: 'excludes land, furniture/FF&E, and the 7 % ITBMS on professional services.',
     perM2: '$/m² applied',
     energyEb: '// energy cost',
     energyH: 'monthly electricity, side by side.',
@@ -136,13 +141,18 @@ const S = {
     opexH: 'total monthly opex, side by side.',
     energyLine: 'energy',
     water: 'water + sewer',
-    maintenance: 'maintenance (ph)',
+    maintenancePH: 'maintenance (ph)',
+    maintenanceHome: 'upkeep / conservación',
+    lcEb: '// 30-year cost',
+    lcH: 'what it costs across its useful life.',
+    lcRegular: 'typical building',
+    lcSustainable: 'sustainable code',
+    lcSavingsLabel: 'less over 30 years by designing to the sustainable code.',
+    lcNote: 'present value of construction plus 30 years of operation, discounted at 6.25 % (the SBP benchmark mortgage rate). the gap is the discounted value of designing efficiently.',
     assumptionsEb: '// what is behind the numbers',
     assumptionsH: 'the per-category averages.',
     assumptionsIntro:
-      'every estimate starts from market averages and the energy-use baselines of the res v.2 sustainable-building code. these are the values the calculator uses for each building category. the sustainable column applies a ~' +
-      savingsPct +
-      ' % energy reduction over the typical case, within the 20–38.8 % range the code documents.',
+      'every estimate starts from market averages and the energy-use baselines of the res v.2 sustainable-building code. these are the values the calculator uses for each building category. lighting, plug loads and other are estimated per m² and do not depend on air-conditioning; only cooling varies with the % a/c. the sustainable column reduces each end use separately (cooling −40 %, lighting −30 %, plug −5 %), within the 20–38.8 % range the code documents.',
     aCapex: 'construction (standard)',
     aEnergy: 'energy (100 % a/c)',
     aEnergyUnit: 'kwh/m²·yr',
@@ -150,6 +160,7 @@ const S = {
     aWaterUnit: 'l/person·day',
     aOcc: 'occupancy',
     aOccUnit: 'ppl/100 m²',
+    aOccCap: 'max 6 per household',
     aMaint: 'maintenance',
     aMaintUnit: '$/m²·mo',
     sourcesEb: '// sources',
@@ -218,7 +229,7 @@ const sources = [
 ];
 ---
 
-<section class="calc" data-locale={locale}>
+<section class="calc" data-locale={locale} data-maint-ph={S.maintenancePH} data-maint-home={S.maintenanceHome}>
   <div class="calc-grid">
     <!-- ============ inputs ============ -->
     <div class="calc-inputs">
@@ -275,6 +286,7 @@ const sources = [
         </div>
         <p class="res-note"><span id="r-capex-m2">—</span> · {S.perM2}</p>
         <p class="res-note">{S.softNote}</p>
+        <p class="res-note">{S.excludesNote}</p>
       </div>
 
       <!-- energy, two scenarios -->
@@ -329,17 +341,40 @@ const sources = [
             <div class="scen-name">{S.scenRegular}</div>
             <div class="res-row sm"><span class="rk">{S.energyLine}</span><span class="rv" id="r-opex-reg-energy">—</span></div>
             <div class="res-row sm"><span class="rk">{S.water}</span><span class="rv" id="r-opex-reg-water">—</span></div>
-            <div class="res-row sm"><span class="rk">{S.maintenance}</span><span class="rv" id="r-opex-reg-maint">—</span></div>
+            <div class="res-row sm"><span class="rk js-maint-label">{S.maintenancePH}</span><span class="rv" id="r-opex-reg-maint">—</span></div>
             <div class="res-row sm strong"><span class="rk">{S.total}</span><span class="rv" id="r-opex-reg-total">—</span></div>
           </div>
           <div class="scen scen-alt">
             <div class="scen-name">{S.scenSustainable}</div>
             <div class="res-row sm"><span class="rk">{S.energyLine}</span><span class="rv" id="r-opex-sus-energy">—</span></div>
             <div class="res-row sm"><span class="rk">{S.water}</span><span class="rv" id="r-opex-sus-water">—</span></div>
-            <div class="res-row sm"><span class="rk">{S.maintenance}</span><span class="rv" id="r-opex-sus-maint">—</span></div>
+            <div class="res-row sm"><span class="rk js-maint-label">{S.maintenancePH}</span><span class="rv" id="r-opex-sus-maint">—</span></div>
             <div class="res-row sm strong"><span class="rk">{S.total}</span><span class="rv" id="r-opex-sus-total">—</span></div>
           </div>
         </div>
+      </div>
+
+      <!-- lifecycle: 30-year total cost of ownership -->
+      <div class="res-block">
+        <div class="eyebrow">{S.lcEb}</div>
+        <h3 class="res-h">{S.lcH}</h3>
+        <div class="scen-grid">
+          <div class="scen">
+            <div class="scen-name">{S.lcRegular}</div>
+            <div class="res-row sm strong"><span class="rk">{S.total}</span><span class="rv" id="r-lc-reg">—</span></div>
+          </div>
+          <div class="scen scen-alt">
+            <div class="scen-name">{S.lcSustainable}</div>
+            <div class="res-row sm strong"><span class="rk">{S.total}</span><span class="rv" id="r-lc-sus">—</span></div>
+          </div>
+        </div>
+        <div class="res-proof lc-proof">
+          <div class="proof-num" id="r-lc-savings">—</div>
+          <div class="proof-copy">
+            <p>{S.lcSavingsLabel}</p>
+          </div>
+        </div>
+        <p class="res-note">{S.lcNote}</p>
       </div>
 
       <p class="disclaimer">{S.disclaimer}</p>
@@ -358,7 +393,7 @@ const sources = [
           <div class="assum-row"><span class="ak">{S.aCapex}</span><span class="av">{money(CAPEX_M2[k].standard)}<span class="au">/m²</span></span></div>
           <div class="assum-row"><span class="ak">{S.aEnergy}</span><span class="av">{rng(EUI[k].fc)}<span class="au">{S.aEnergyUnit}</span></span></div>
           <div class="assum-row"><span class="ak">{S.aWater}</span><span class="av">{rng(PERCAPITA[k])}<span class="au">{S.aWaterUnit}</span></span></div>
-          <div class="assum-row"><span class="ak">{S.aOcc}</span><span class="av">{DENSITY[k]}<span class="au">{S.aOccUnit}</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aOcc}</span><span class="av">{DENSITY[k]}<span class="au">{S.aOccUnit}{k === 'residential-sf' ? ` · ${S.aOccCap}` : ''}</span></span></div>
           <div class="assum-row"><span class="ak">{S.aMaint}</span><span class="av">{money2(MAINT_M2[k].standard)}<span class="au">{S.aMaintUnit}</span></span></div>
         </div>
       ))}
@@ -439,6 +474,8 @@ const sources = [
   @media (max-width: 540px) { .res-proof { flex-direction: column; align-items: flex-start; gap: 12px; } }
   .proof-num { font-size: clamp(40px, 7vw, 72px); color: var(--amber); letter-spacing: -0.04em; line-height: 0.95; font-weight: 300; font-feature-settings: 'tnum' 1, 'lnum' 1; white-space: nowrap; }
   .proof-copy p { font-size: 14px; line-height: 1.5; color: var(--ink-on-paper); font-weight: 300; margin: 0; max-width: 30ch; }
+  .lc-proof { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line-on-paper-2); }
+  .lc-proof .proof-num { font-size: clamp(32px, 5vw, 52px); }
 
   .disclaimer { font-size: 13px; line-height: 1.7; color: var(--mute-on-paper); font-weight: 300; margin: 0; max-width: 72ch; padding: 20px 24px; border-left: 2px solid var(--line-on-paper); background: var(--paper-2); }
 
@@ -494,6 +531,9 @@ const sources = [
     const waterEl = $('ci-watercool') as HTMLInputElement;
     const waterLabel = $('ci-watercool-label') as HTMLElement;
     const tierBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-tier .seg-btn'));
+    const maintLabels = Array.from(document.querySelectorAll<HTMLElement>('.js-maint-label'));
+    const maintPH = root.dataset.maintPh ?? 'maintenance (ph)';
+    const maintHome = root.dataset.maintHome ?? 'upkeep';
     let tier: Tier = 'standard';
 
     // water-cooled AC only applies to non-residential cooling towers
@@ -502,6 +542,13 @@ const sources = [
       waterEl.disabled = isRes;
       waterLabel.classList.toggle('disabled', isRes);
       if (isRes) waterEl.checked = false;
+    }
+
+    // a standalone single-family home is not a PH (horizontal property);
+    // its recurring cost is private upkeep, so the label switches.
+    function syncMaintLabel() {
+      const label = typEl.value === 'residential-sf' ? maintHome : maintPH;
+      maintLabels.forEach((el) => (el.textContent = label));
     }
 
     function render() {
@@ -544,6 +591,12 @@ const sources = [
       $('r-opex-sus-maint').textContent = fmtRange(e.maintenance.monthly);
       $('r-opex-reg-total').textContent = fmtRange(e.monthlyOpex.regular);
       $('r-opex-sus-total').textContent = fmtRange(e.monthlyOpex.sustainable);
+
+      // lifecycle: 30-year total cost of ownership
+      $('r-lc-reg').textContent = fmtRange(e.lifecycle.regular);
+      $('r-lc-sus').textContent = fmtRange(e.lifecycle.sustainable);
+      const lcSavMid = Math.round((e.lifecycle.savings.low + e.lifecycle.savings.high) / 2);
+      $('r-lc-savings').textContent = money.format(Math.max(lcSavMid, 0));
     }
 
     tierBtns.forEach((btn) => {
@@ -556,11 +609,13 @@ const sources = [
     });
     typEl.addEventListener('change', () => {
       syncWaterCool();
+      syncMaintLabel();
       render();
     });
     [areaEl, acEl, waterEl].forEach((el) => el.addEventListener('input', render));
 
     syncWaterCool();
+    syncMaintLabel();
     render();
   }
 </script>
