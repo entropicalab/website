@@ -50,16 +50,18 @@ const S = {
     modeLabel: 'tipo de proyecto',
     modeNew: 'obra nueva',
     modeReno: 'renovación',
-    audienceLabel: 'tu perfil',
-    audDev: 'desarrollador',
-    audHome: 'propietario',
+    horizonLabel: 'ver resultados en',
+    horMonth: 'mensual',
+    horYear: 'anual',
+    horLife: 'vida útil',
     capexEb: '// costo de construcción',
     capexEbReno: '// costo de renovación',
     capexH: 'capex estimado.',
     capexHReno: 'renovación estimada.',
     construction: 'construcción (costo directo)',
     constructionReno: 'renovación (costo directo)',
-    lcSavingsLabelHome: 'menos cada mes en luz y agua, en un edificio bajo el código sostenible.',
+    lcSavingsLabelHome: 'menos cada mes en luz y agua, bajo el código sostenible.',
+    lcSavingsLabelYear: 'menos al año en operación, bajo el código sostenible.',
     emailEb: '// llévate el reporte',
     emailH: '¿quieres este estimado en pdf?',
     emailPlaceholder: 'tu correo',
@@ -143,16 +145,18 @@ const S = {
     modeLabel: 'project type',
     modeNew: 'new build',
     modeReno: 'renovation',
-    audienceLabel: 'your profile',
-    audDev: 'developer',
-    audHome: 'homeowner',
+    horizonLabel: 'show results in',
+    horMonth: 'monthly',
+    horYear: 'yearly',
+    horLife: 'lifetime',
     capexEb: '// construction cost',
     capexEbReno: '// renovation cost',
     capexH: 'estimated capex.',
     capexHReno: 'estimated renovation.',
     construction: 'construction (hard cost)',
     constructionReno: 'renovation (hard cost)',
-    lcSavingsLabelHome: 'less every month on power and water, in a building built to the sustainable code.',
+    lcSavingsLabelHome: 'less every month on power and water, under the sustainable code.',
+    lcSavingsLabelYear: 'less per year in operation, under the sustainable code.',
     emailEb: '// take the report',
     emailH: 'want this estimate as a pdf?',
     emailPlaceholder: 'your email',
@@ -283,8 +287,9 @@ const sources = [
   data-capex-h-reno={S.capexHReno}
   data-capex-k={S.construction}
   data-capex-k-reno={S.constructionReno}
-  data-lc-label-dev={S.lcSavingsLabel}
-  data-lc-label-home={S.lcSavingsLabelHome}
+  data-lc-label-month={S.lcSavingsLabelHome}
+  data-lc-label-year={S.lcSavingsLabelYear}
+  data-lc-label-life={S.lcSavingsLabel}
 >
   <div class="calc-grid">
     <!-- ============ inputs ============ -->
@@ -297,14 +302,6 @@ const sources = [
         <div class="seg" role="group" id="ci-mode">
           <button type="button" class="seg-btn active" data-mode="new">{S.modeNew}</button>
           <button type="button" class="seg-btn" data-mode="renovation">{S.modeReno}</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>{S.audienceLabel}</label>
-        <div class="seg" role="group" id="ci-aud">
-          <button type="button" class="seg-btn active" data-aud="dev">{S.audDev}</button>
-          <button type="button" class="seg-btn" data-aud="home">{S.audHome}</button>
         </div>
       </div>
 
@@ -339,6 +336,15 @@ const sources = [
           <input type="checkbox" id="ci-watercool" />
           <span>{S.waterCooled} <span class="check-hint">· {S.waterCooledHint}</span></span>
         </label>
+      </div>
+
+      <div class="field horizon-field">
+        <label>{S.horizonLabel}</label>
+        <div class="seg" role="group" id="ci-hor">
+          <button type="button" class="seg-btn" data-hor="month">{S.horMonth}</button>
+          <button type="button" class="seg-btn" data-hor="year">{S.horYear}</button>
+          <button type="button" class="seg-btn active" data-hor="lifetime">{S.horLife}</button>
+        </div>
       </div>
     </div>
 
@@ -547,6 +553,7 @@ const sources = [
   .seg-btn.active { background: var(--amber); color: #1a1a1a; }
 
   .checks { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .horizon-field { margin-top: 24px; }
   .check { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 300; color: var(--ink-on-paper); cursor: pointer; line-height: 1.4; }
   .check input { accent-color: var(--amber); width: 16px; height: 16px; cursor: pointer; margin-top: 2px; flex: none; }
   .check-hint { color: var(--mute-on-paper-2); font-size: 11px; }
@@ -581,14 +588,14 @@ const sources = [
   .bar-total { font-size: 14px; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--ink-on-paper); font-feature-settings: 'tnum' 1; }
   .bar { display: flex; height: 26px; background: var(--paper-2); border: 1px solid var(--line-on-paper); overflow: hidden; }
   .bseg { height: 100%; display: block; width: 0; transition: width 0.35s ease; }
-  /* brandbook palette: clay-red = cooling/hot-side, tobacco = lighting,
-     swell-blue = plug loads, mangrove-green = passive/sustainable */
-  .seg-ac { background: var(--barro); }
-  .seg-lighting { background: var(--tabaco); }
-  .seg-plug { background: var(--marejada); }
-  .seg-other { background: var(--manglar); }
-  .seg-typ { background: var(--barro); }
-  .seg-sus { background: var(--manglar); }
+  /* monochrome ramp on deep-shade green (#2d3a2a) as the darkest foundation;
+     larger / costlier uses sit darker, lighter uses step up in tone */
+  .seg-ac { background: #2d3a2a; }
+  .seg-lighting { background: #455641; }
+  .seg-plug { background: #647a5e; }
+  .seg-other { background: #8aa183; }
+  .seg-typ { background: #647a5e; }
+  .seg-sus { background: #2d3a2a; }
 
   .bar-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px; }
   .bar-legend .lg { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; color: var(--mute-on-paper); font-weight: 300; }
@@ -662,6 +669,7 @@ const sources = [
     const money = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-PA', {
       style: 'currency',
       currency: 'USD',
+      currencyDisplay: 'code', // render the capitalized "USD" code, not "$"/"US$"
       maximumFractionDigits: 0,
     });
     const num = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-PA', { maximumFractionDigits: 0 });
@@ -670,7 +678,8 @@ const sources = [
       const lo = Math.round(x.low);
       const hi = Math.round(x.high);
       if (lo === hi) return money.format(lo);
-      return `${money.format(lo)} – ${money.format(hi)}`;
+      // currency shown once: "USD 1,200 – 1,800"
+      return `${money.format(lo)} – ${num.format(hi)}`;
     };
 
     const $ = (id: string) => document.getElementById(id) as HTMLElement;
@@ -681,13 +690,13 @@ const sources = [
     const waterLabel = $('ci-watercool-label') as HTMLElement;
     const tierBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-tier .seg-btn'));
     const modeBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-mode .seg-btn'));
-    const audBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-aud .seg-btn'));
+    const horBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-hor .seg-btn'));
     const maintLabels = Array.from(document.querySelectorAll<HTMLElement>('.js-maint-label'));
     const maintPH = d.maintPh ?? 'maintenance (ph)';
     const maintHome = d.maintHome ?? 'upkeep';
     let tier: Tier = 'standard';
     let mode: Mode = 'new';
-    let audience: 'dev' | 'home' = 'dev';
+    let horizon: 'month' | 'year' | 'lifetime' = 'lifetime';
 
     // water-cooled AC only applies to non-residential cooling towers
     function syncWaterCool() {
@@ -754,17 +763,23 @@ const sources = [
       $('r-lc-reg').textContent = fmtRange(e.lifecycle.regular);
       $('r-lc-sus').textContent = fmtRange(e.lifecycle.sustainable);
 
-      // hero number adapts to audience: developer → 30-yr discounted saving;
-      // homeowner → monthly saving on the bill.
-      if (audience === 'home') {
-        const mSav = Math.round((e.energy.monthlySavings.low + e.energy.monthlySavings.high) / 2);
-        $('r-lc-savings').textContent = money.format(Math.max(mSav, 0));
-        $('r-lc-savings-label').textContent = d.lcLabelHome ?? '';
+      // hero number adapts to the chosen horizon: monthly / yearly saving on
+      // operation, or the 30-year discounted lifetime saving.
+      const mid = (x: Range) => (x.low + x.high) / 2;
+      let heroVal: number;
+      let heroLabel: string;
+      if (horizon === 'month') {
+        heroVal = mid(e.energy.monthlySavings);
+        heroLabel = d.lcLabelMonth ?? '';
+      } else if (horizon === 'year') {
+        heroVal = mid(e.energy.annualSavings);
+        heroLabel = d.lcLabelYear ?? '';
       } else {
-        const lcSav = Math.round((e.lifecycle.savings.low + e.lifecycle.savings.high) / 2);
-        $('r-lc-savings').textContent = money.format(Math.max(lcSav, 0));
-        $('r-lc-savings-label').textContent = d.lcLabelDev ?? '';
+        heroVal = mid(e.lifecycle.savings);
+        heroLabel = d.lcLabelLife ?? '';
       }
+      $('r-lc-savings').textContent = money.format(Math.max(Math.round(heroVal), 0));
+      $('r-lc-savings-label').textContent = heroLabel;
 
       // lead-capture summary (hidden field sent with the email)
       const summary = $('email-summary') as HTMLInputElement | null;
@@ -773,7 +788,6 @@ const sources = [
       }
 
       // comparison bars — widths as % of a shared scale (the larger total)
-      const mid = (x: Range) => (x.low + x.high) / 2;
       const setW = (id: string, pct: number) => {
         const el = document.getElementById(id);
         if (el) el.style.width = `${Math.max(0, Math.min(100, pct))}%`;
@@ -804,7 +818,7 @@ const sources = [
 
     wireSeg(tierBtns, (b) => (tier = b.dataset.tier as Tier));
     wireSeg(modeBtns, (b) => (mode = b.dataset.mode as Mode));
-    wireSeg(audBtns, (b) => (audience = b.dataset.aud as 'dev' | 'home'));
+    wireSeg(horBtns, (b) => (horizon = b.dataset.hor as 'month' | 'year' | 'lifetime'));
 
     typEl.addEventListener('change', () => {
       syncWaterCool();
