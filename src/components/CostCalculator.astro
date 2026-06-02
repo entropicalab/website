@@ -3,11 +3,31 @@
 // one component, locale-driven. the client island lives at the bottom and
 // imports the pure model from src/lib/costModel.ts.
 import type { Locale } from '../i18n/strings';
+import {
+  CAPEX_M2,
+  EUI,
+  DENSITY,
+  PERCAPITA,
+  MAINT_M2,
+  SUSTAINABLE_SAVINGS_PCT,
+  type Typology,
+  type Range,
+} from '../lib/costModel';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
+
+const savingsPct = Math.round(SUSTAINABLE_SAVINGS_PCT * 100);
+
+// server-side range formatters for the assumptions table
+const rng = (x: Range, dp = 0): string => {
+  const f = (n: number) => n.toFixed(dp);
+  return x.low === x.high ? f(x.low) : `${f(x.low)}–${f(x.high)}`;
+};
+const money = (x: Range): string => `$${rng(x)}`;
+const money2 = (x: Range): string => `$${rng(x, 2)}`;
 
 const S = {
   es: {
@@ -24,14 +44,14 @@ const S = {
     tier: { basic: 'básico', standard: 'estándar', premium: 'premium' },
     acLabel: 'porcentaje con aire acondicionado',
     waterCooled: 'a/a por agua (torre de enfriamiento)',
-    premiumMaint: 'mantenimiento premium',
+    waterCooledHint: 'solo comercial / institucional',
     inputsEb: '// tu proyecto',
     inputsH: 'describe el edificio.',
     capexEb: '// costo de construcción',
     capexH: 'capex estimado.',
     construction: 'construcción (costo directo)',
     totalDev: 'costo total de desarrollo',
-    softNote: 'el total incluye ~15 % de costos blandos: diseño, permisos municipales y legal.',
+    softNote: 'el total incluye ~15 % de costos indirectos: diseño, permisos municipales y legal.',
     perM2: '$/m² aplicado',
     energyEb: '// costo de energía',
     energyH: 'electricidad mensual, lado a lado.',
@@ -44,20 +64,37 @@ const S = {
       other: 'otros',
     },
     total: 'total',
-    perMonth: '/ mes',
-    perYear: '/ año',
     savingsEb: '// la prueba',
     savingsLabel: 'ahorro anual diseñando bajo el código sostenible.',
     opexEb: '// operación mensual',
-    opexH: 'opex mensual total.',
-    water: 'agua + alcantarillado (idaan)',
-    maintenance: 'mantenimiento (ph)',
+    opexH: 'opex mensual total, lado a lado.',
     energyLine: 'energía',
-    opexRegular: 'edificio típico',
-    opexSustainable: 'código sostenible',
+    water: 'agua + alcantarillado',
+    maintenance: 'mantenimiento (ph)',
+    assumptionsEb: '// qué hay detrás del cálculo',
+    assumptionsH: 'los promedios por categoría.',
+    assumptionsIntro:
+      'cada estimación parte de promedios de mercado y de las líneas base del reglamento de edificación sostenible (res v.2). estos son los valores que usa la calculadora para cada categoría de edificio. la columna sostenible aplica una reducción energética de ~' +
+      savingsPct +
+      ' % sobre el caso típico, dentro del rango de 20–38.8 % que documenta el reglamento.',
+    aCapex: 'construcción (estándar)',
+    aEnergy: 'energía (100 % a/a)',
+    aEnergyUnit: 'kwh/m²·año',
+    aWater: 'agua',
+    aWaterUnit: 'l/persona·día',
+    aOcc: 'ocupación',
+    aOccUnit: 'pers./100 m²',
+    aMaint: 'mantenimiento',
+    aMaintUnit: '$/m²·mes',
+    sourcesEb: '// fuentes',
+    sourcesH: 'de dónde salen los números.',
+    srcCapex: 'costos de construcción (capex)',
+    srcEnergy: 'tarifas eléctricas (asep)',
+    srcCode: 'línea base energética (res v.2)',
+    srcWater: 'agua y alcantarillado (idaan / asep)',
+    srcMaint: 'mantenimiento (propiedad horizontal)',
     disclaimer:
       'estimación con fines orientativos, no es una cotización. los rangos se derivan de datos públicos de 2026 (capex de mercado, tarifas asep, bloques idaan, cuotas ph y las líneas base de eui del reglamento de edificación sostenible res v.2). cada proyecto real depende del sitio, el suelo, el diseño y el momento del mercado. para un número que puedas usar, hablemos.',
-    cta: 'conversemos tu proyecto',
   },
   en: {
     areaLabel: 'built area',
@@ -73,14 +110,14 @@ const S = {
     tier: { basic: 'basic', standard: 'standard', premium: 'premium' },
     acLabel: 'percent air-conditioned',
     waterCooled: 'water-cooled a/c (cooling tower)',
-    premiumMaint: 'premium maintenance',
+    waterCooledHint: 'commercial / institutional only',
     inputsEb: '// your project',
     inputsH: 'describe the building.',
     capexEb: '// construction cost',
     capexH: 'estimated capex.',
     construction: 'construction (hard cost)',
     totalDev: 'total development cost',
-    softNote: 'total includes ~15 % soft costs: design, municipal permits, and legal.',
+    softNote: 'total includes ~15 % indirect costs: design, municipal permits, and legal.',
     perM2: '$/m² applied',
     energyEb: '// energy cost',
     energyH: 'monthly electricity, side by side.',
@@ -93,20 +130,37 @@ const S = {
       other: 'other',
     },
     total: 'total',
-    perMonth: '/ mo',
-    perYear: '/ yr',
     savingsEb: '// the proof',
     savingsLabel: 'saved per year by designing to the sustainable code.',
     opexEb: '// monthly operation',
-    opexH: 'total monthly opex.',
-    water: 'water + sewer (idaan)',
-    maintenance: 'maintenance (ph)',
+    opexH: 'total monthly opex, side by side.',
     energyLine: 'energy',
-    opexRegular: 'typical building',
-    opexSustainable: 'sustainable code',
+    water: 'water + sewer',
+    maintenance: 'maintenance (ph)',
+    assumptionsEb: '// what is behind the numbers',
+    assumptionsH: 'the per-category averages.',
+    assumptionsIntro:
+      'every estimate starts from market averages and the energy-use baselines of the res v.2 sustainable-building code. these are the values the calculator uses for each building category. the sustainable column applies a ~' +
+      savingsPct +
+      ' % energy reduction over the typical case, within the 20–38.8 % range the code documents.',
+    aCapex: 'construction (standard)',
+    aEnergy: 'energy (100 % a/c)',
+    aEnergyUnit: 'kwh/m²·yr',
+    aWater: 'water',
+    aWaterUnit: 'l/person·day',
+    aOcc: 'occupancy',
+    aOccUnit: 'ppl/100 m²',
+    aMaint: 'maintenance',
+    aMaintUnit: '$/m²·mo',
+    sourcesEb: '// sources',
+    sourcesH: 'where the numbers come from.',
+    srcCapex: 'construction costs (capex)',
+    srcEnergy: 'electricity tariffs (asep)',
+    srcCode: 'energy baseline (res v.2)',
+    srcWater: 'water + sewer (idaan / asep)',
+    srcMaint: 'maintenance (horizontal property)',
     disclaimer:
       'estimate for guidance only, not a quote. ranges are derived from public 2026 data (market capex, asep tariffs, idaan blocks, ph fees, and the energy-use baselines of panama’s res v.2 sustainable-building code). a real project depends on site, soil, design, and market timing. for a number you can use, let’s talk.',
-    cta: 'let’s talk about your project',
   },
 }[locale];
 
@@ -118,6 +172,48 @@ const typOrder = [
   'institutional',
 ] as const;
 const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
+
+// grouped sources (shared across locales — official document titles)
+const sources = [
+  {
+    group: S.srcCapex,
+    items: [
+      { name: 'Panacrypto · Cómo construir una casa en Panamá (2025)', url: 'https://panacrypto.com/es/como-construir-una-casa-en-panama/' },
+      { name: 'Panablock · Costo de construcción en bloque de concreto', url: 'https://www.panablock.com/blogs/news/titulo-blog-post-uno' },
+      { name: 'Contraloría General de la República · Base de datos de costo directo', url: 'https://www.contraloria.gob.pa/wp-content/uploads/2024/07/P2-BASE-DE-DATOS-DE-COSTO-DIRECTO.pdf' },
+    ],
+  },
+  {
+    group: S.srcEnergy,
+    items: [
+      { name: 'ASEP · Pliego tarifario, clientes regulados (ene–jun 2026)', url: 'https://asep.gob.pa/wp-content/uploads/electricidad/tarifas/01_tarifas_clientes_regulados/tarifas_2023-2026/2026/enero/I_t_2026.pdf' },
+      { name: 'EDEMET (Naturgy) · Pliego tarifario', url: 'https://www.naturgy.com.pa/app/uploads/2022/11/Pliego_Tarifario_EDEMET_Enero_-Junio_18.pdf' },
+    ],
+  },
+  {
+    group: S.srcCode,
+    items: [
+      { name: 'Gaceta Oficial · Guía de construcción sostenible', url: 'https://www.gacetaoficial.gob.pa/pdfTemp/28165/GacetaNo_28165_20161124.pdf' },
+      { name: 'JTIA · Reglamento de edificación sostenible (RES V.2)', url: 'https://www.gacetaoficial.gob.pa/pdfTemp/29726/96966.pdf' },
+      { name: 'Panamá Green Building Council · Avance de sostenibilidad', url: 'https://panamagbc.org/wp-content/uploads/2026/04/Avance-de-Sostenibilidad-en-la-edificacion-en-Panama.pdf' },
+    ],
+  },
+  {
+    group: S.srcWater,
+    items: [
+      { name: 'ASEP · Tarifas de agua potable (IDAAN)', url: 'https://asep.gob.pa/wp-content/uploads/agua/tarifas/tarifa_1_IDAAN.pdf' },
+      { name: 'ASEP · Resolución AN-3491 (agua)', url: 'https://www.asep.gob.pa/wp-content/uploads/agua/tarifas/anno_3491_agua.pdf' },
+      { name: 'SENACYT · Demanda de agua potable en Panamá', url: 'https://www.senacyt.gob.pa/investigacion-cientifica-analizara-la-demanda-de-agua-potable-para-la-optimizacion-de-los-sistemas-de-acueductos-en-panama/' },
+    ],
+  },
+  {
+    group: S.srcMaint,
+    items: [
+      { name: 'Ley 284 de 2022 · Régimen de propiedad horizontal', url: 'https://www.arispeabogado.com/p/cobrar-cuotas-mantenimiento-ph-panama.html' },
+      { name: 'H&H Facility Management · Cuotas de gastos comunes', url: 'https://www.hhfacilitymanagement.com/cuotas/cuales-son-las-cuotas-de-gastos-comunes-en-un-ph/' },
+    ],
+  },
+];
 ---
 
 <section class="calc" data-locale={locale}>
@@ -129,7 +225,7 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
 
       <div class="field">
         <label for="ci-area">{S.areaLabel} <span class="val" id="ci-area-val">250 m²</span></label>
-        <input type="range" id="ci-area" min="50" max="3000" step="10" value="250" />
+        <input type="range" id="ci-area" min="50" max="10000" step="10" value="250" />
       </div>
 
       <div class="field">
@@ -154,8 +250,10 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
       </div>
 
       <div class="checks">
-        <label class="check"><input type="checkbox" id="ci-watercool" /> <span>{S.waterCooled}</span></label>
-        <label class="check"><input type="checkbox" id="ci-premium-maint" /> <span>{S.premiumMaint}</span></label>
+        <label class="check" id="ci-watercool-label">
+          <input type="checkbox" id="ci-watercool" />
+          <span>{S.waterCooled} <span class="check-hint">· {S.waterCooledHint}</span></span>
+        </label>
       </div>
     </div>
 
@@ -220,17 +318,66 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
         </div>
       </div>
 
-      <!-- monthly opex roll-up -->
+      <!-- monthly opex roll-up, two scenarios -->
       <div class="res-block">
         <div class="eyebrow">{S.opexEb}</div>
         <h3 class="res-h">{S.opexH}</h3>
-        <div class="res-row sm"><span class="rk">{S.water}</span><span class="rv" id="r-water">—</span></div>
-        <div class="res-row sm"><span class="rk">{S.maintenance}</span><span class="rv" id="r-maint">—</span></div>
-        <div class="res-row strong"><span class="rk">{S.opexRegular}</span><span class="rv" id="r-opex-reg">—</span></div>
-        <div class="res-row strong alt-line"><span class="rk">{S.opexSustainable}</span><span class="rv" id="r-opex-sus">—</span></div>
+        <div class="scen-grid">
+          <div class="scen">
+            <div class="scen-name">{S.scenRegular}</div>
+            <div class="res-row sm"><span class="rk">{S.energyLine}</span><span class="rv" id="r-opex-reg-energy">—</span></div>
+            <div class="res-row sm"><span class="rk">{S.water}</span><span class="rv" id="r-opex-reg-water">—</span></div>
+            <div class="res-row sm"><span class="rk">{S.maintenance}</span><span class="rv" id="r-opex-reg-maint">—</span></div>
+            <div class="res-row sm strong"><span class="rk">{S.total}</span><span class="rv" id="r-opex-reg-total">—</span></div>
+          </div>
+          <div class="scen scen-alt">
+            <div class="scen-name">{S.scenSustainable}</div>
+            <div class="res-row sm"><span class="rk">{S.energyLine}</span><span class="rv" id="r-opex-sus-energy">—</span></div>
+            <div class="res-row sm"><span class="rk">{S.water}</span><span class="rv" id="r-opex-sus-water">—</span></div>
+            <div class="res-row sm"><span class="rk">{S.maintenance}</span><span class="rv" id="r-opex-sus-maint">—</span></div>
+            <div class="res-row sm strong"><span class="rk">{S.total}</span><span class="rv" id="r-opex-sus-total">—</span></div>
+          </div>
+        </div>
       </div>
 
       <p class="disclaimer">{S.disclaimer}</p>
+    </div>
+  </div>
+
+  <!-- ============ assumptions: per-category averages ============ -->
+  <div class="calc-assumptions">
+    <div class="eyebrow">{S.assumptionsEb}</div>
+    <h2 class="assum-h">{S.assumptionsH}</h2>
+    <p class="assum-intro">{S.assumptionsIntro}</p>
+    <div class="assum-grid">
+      {typOrder.map((k) => (
+        <div class="assum-card">
+          <div class="assum-title">{S.typ[k]}</div>
+          <div class="assum-row"><span class="ak">{S.aCapex}</span><span class="av">{money(CAPEX_M2[k].standard)}<span class="au">/m²</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aEnergy}</span><span class="av">{rng(EUI[k].fc)}<span class="au">{S.aEnergyUnit}</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aWater}</span><span class="av">{rng(PERCAPITA[k])}<span class="au">{S.aWaterUnit}</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aOcc}</span><span class="av">{DENSITY[k]}<span class="au">{S.aOccUnit}</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aMaint}</span><span class="av">{money2(MAINT_M2[k].standard)}<span class="au">{S.aMaintUnit}</span></span></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- ============ sources ============ -->
+  <div class="calc-sources">
+    <div class="eyebrow">{S.sourcesEb}</div>
+    <h2 class="assum-h">{S.sourcesH}</h2>
+    <div class="src-grid">
+      {sources.map((s) => (
+        <div class="src-group">
+          <div class="src-group-name">{s.group}</div>
+          <ul>
+            {s.items.map((it) => (
+              <li><a href={it.url} target="_blank" rel="noopener nofollow">{it.name}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   </div>
 </section>
@@ -244,7 +391,9 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
   @media (max-width: 900px) { .calc-inputs { position: static; } }
   .calc-inputs .eyebrow,
   .res-block .eyebrow,
-  .proof-copy .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; display: inline-block; }
+  .proof-copy .eyebrow,
+  .calc-assumptions .eyebrow,
+  .calc-sources .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; display: inline-block; }
   .calc-h { font-size: 22px; font-weight: 300; letter-spacing: -0.015em; margin: 0 0 28px; }
 
   .field { margin-bottom: 24px; }
@@ -261,8 +410,11 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
   .seg-btn.active { background: var(--amber); color: #1a1a1a; }
 
   .checks { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
-  .check { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 300; color: var(--ink-on-paper); cursor: pointer; }
-  .check input { accent-color: var(--amber); width: 16px; height: 16px; cursor: pointer; }
+  .check { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 300; color: var(--ink-on-paper); cursor: pointer; line-height: 1.4; }
+  .check input { accent-color: var(--amber); width: 16px; height: 16px; cursor: pointer; margin-top: 2px; flex: none; }
+  .check-hint { color: var(--mute-on-paper-2); font-size: 11px; }
+  .check.disabled { opacity: 0.45; cursor: not-allowed; }
+  .check.disabled input { cursor: not-allowed; }
 
   .calc-results { display: flex; flex-direction: column; gap: 28px; }
   .res-block { border: 1px solid var(--line-on-paper); padding: 28px; }
@@ -274,8 +426,7 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
   .res-row .rv { font-size: 14px; font-weight: 400; font-feature-settings: 'tnum' 1; text-align: right; white-space: nowrap; }
   .res-row.strong .rk { color: var(--ink-on-paper); }
   .res-row.strong .rv { font-size: 15px; }
-  .res-row.alt-line .rv { color: var(--amber); }
-  .res-note { font-size: 11px; color: var(--mute-on-paper-2); font-weight: 300; margin: 12px 0 0; line-height: 1.5; }
+  .res-note { font-size: 12px; color: var(--mute-on-paper); font-weight: 300; margin: 12px 0 0; line-height: 1.55; }
 
   .scen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   @media (max-width: 540px) { .scen-grid { grid-template-columns: 1fr; gap: 28px; } }
@@ -287,7 +438,31 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
   .proof-num { font-size: clamp(40px, 7vw, 72px); color: var(--amber); letter-spacing: -0.04em; line-height: 0.95; font-weight: 300; font-feature-settings: 'tnum' 1, 'lnum' 1; white-space: nowrap; }
   .proof-copy p { font-size: 14px; line-height: 1.5; color: var(--ink-on-paper); font-weight: 300; margin: 0; max-width: 30ch; }
 
-  .disclaimer { font-size: 11px; line-height: 1.6; color: var(--mute-on-paper-2); font-weight: 300; margin: 0; max-width: 70ch; }
+  .disclaimer { font-size: 13px; line-height: 1.7; color: var(--mute-on-paper); font-weight: 300; margin: 0; max-width: 72ch; padding: 20px 24px; border-left: 2px solid var(--line-on-paper); background: var(--paper-2); }
+
+  /* assumptions */
+  .calc-assumptions { padding: 64px 0 8px; border-top: 1px solid var(--line-on-paper); margin-top: 48px; }
+  .assum-h { font-size: clamp(22px, 2.6vw, 30px); font-weight: 300; letter-spacing: -0.015em; margin: 0 0 16px; }
+  .assum-intro { font-size: 14px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 300; max-width: 70ch; margin: 0 0 36px; }
+  .assum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .assum-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .assum-grid { grid-template-columns: 1fr; } }
+  .assum-card { border: 1px solid var(--line-on-paper); padding: 22px; }
+  .assum-title { font-size: 14px; font-weight: 400; letter-spacing: 0.02em; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line-on-paper); }
+  .assum-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; }
+  .assum-row .ak { font-size: 12px; color: var(--mute-on-paper); font-weight: 300; }
+  .assum-row .av { font-size: 13px; font-weight: 400; text-align: right; font-feature-settings: 'tnum' 1; white-space: nowrap; }
+  .assum-row .au { font-size: 10px; color: var(--mute-on-paper-2); margin-left: 4px; }
+
+  /* sources */
+  .calc-sources { padding: 56px 0 8px; border-top: 1px solid var(--line-on-paper); margin-top: 48px; }
+  .src-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 48px; }
+  @media (max-width: 700px) { .src-grid { grid-template-columns: 1fr; } }
+  .src-group-name { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 12px; }
+  .src-group ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .src-group li { font-size: 13px; line-height: 1.45; font-weight: 300; }
+  .src-group a { color: var(--ink-on-paper); border-bottom: 1px solid var(--line-on-paper-2); }
+  .src-group a:hover { color: var(--amber); border-bottom-color: var(--amber); }
 </style>
 
 <script>
@@ -303,11 +478,11 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
     });
     const num = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-PA', { maximumFractionDigits: 0 });
 
-    const fmtRange = (x: Range, m = money): string => {
+    const fmtRange = (x: Range): string => {
       const lo = Math.round(x.low);
       const hi = Math.round(x.high);
-      if (lo === hi) return m.format(lo);
-      return `${m.format(lo)} – ${m.format(hi)}`;
+      if (lo === hi) return money.format(lo);
+      return `${money.format(lo)} – ${money.format(hi)}`;
     };
 
     const $ = (id: string) => document.getElementById(id) as HTMLElement;
@@ -315,9 +490,17 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
     const acEl = $('ci-ac') as HTMLInputElement;
     const typEl = $('ci-typ') as HTMLSelectElement;
     const waterEl = $('ci-watercool') as HTMLInputElement;
-    const maintEl = $('ci-premium-maint') as HTMLInputElement;
+    const waterLabel = $('ci-watercool-label') as HTMLElement;
     const tierBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('#ci-tier .seg-btn'));
     let tier: Tier = 'standard';
+
+    // water-cooled AC only applies to non-residential cooling towers
+    function syncWaterCool() {
+      const isRes = typEl.value.startsWith('residential');
+      waterEl.disabled = isRes;
+      waterLabel.classList.toggle('disabled', isRes);
+      if (isRes) waterEl.checked = false;
+    }
 
     function render() {
       const input: CalculatorInputs = {
@@ -326,7 +509,6 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
         tier,
         pctAC: Number(acEl.value) / 100,
         waterCooledAC: waterEl.checked,
-        premiumMaintenance: maintEl.checked,
       };
 
       $('ci-area-val').textContent = `${num.format(input.area)} m²`;
@@ -347,15 +529,19 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
       $('r-en-reg-total').textContent = fmtRange(e.energy.regular.total);
       $('r-en-sus-total').textContent = fmtRange(e.energy.sustainable.total);
 
-      // proof: annual savings (show midpoint as the headline number)
+      // proof: annual savings (midpoint headline)
       const savMid = Math.round((e.energy.annualSavings.low + e.energy.annualSavings.high) / 2);
       $('r-savings').textContent = money.format(Math.max(savMid, 0));
 
-      // opex
-      $('r-water').textContent = fmtRange(e.water.monthly);
-      $('r-maint').textContent = fmtRange(e.maintenance.monthly);
-      $('r-opex-reg').textContent = fmtRange(e.monthlyOpex.regular);
-      $('r-opex-sus').textContent = fmtRange(e.monthlyOpex.sustainable);
+      // opex, two scenarios (water + maintenance identical both sides)
+      $('r-opex-reg-energy').textContent = fmtRange(e.energy.regular.total);
+      $('r-opex-sus-energy').textContent = fmtRange(e.energy.sustainable.total);
+      $('r-opex-reg-water').textContent = fmtRange(e.water.monthly);
+      $('r-opex-sus-water').textContent = fmtRange(e.water.monthly);
+      $('r-opex-reg-maint').textContent = fmtRange(e.maintenance.monthly);
+      $('r-opex-sus-maint').textContent = fmtRange(e.maintenance.monthly);
+      $('r-opex-reg-total').textContent = fmtRange(e.monthlyOpex.regular);
+      $('r-opex-sus-total').textContent = fmtRange(e.monthlyOpex.sustainable);
     }
 
     tierBtns.forEach((btn) => {
@@ -366,10 +552,13 @@ const useOrder = ['ac', 'lighting', 'plug', 'other'] as const;
         render();
       });
     });
-    [areaEl, acEl, typEl, waterEl, maintEl].forEach((el) =>
-      el.addEventListener('input', render)
-    );
+    typEl.addEventListener('change', () => {
+      syncWaterCool();
+      render();
+    });
+    [areaEl, acEl, waterEl].forEach((el) => el.addEventListener('input', render));
 
+    syncWaterCool();
     render();
   }
 </script>

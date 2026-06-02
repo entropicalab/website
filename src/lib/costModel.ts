@@ -40,7 +40,7 @@ const addR = (a: Range, b: Range): Range => ({ low: a.low + b.low, high: a.high 
 // ------------------------------------------------------------
 // 1 · CAPEX — construction cost matrix ($/m²) by typology × tier
 // ------------------------------------------------------------
-const CAPEX_M2: Record<Typology, Record<Tier, Range>> = {
+export const CAPEX_M2: Record<Typology, Record<Tier, Range>> = {
   'residential-sf': { basic: r(370, 500), standard: r(650, 850), premium: r(1300, 2200) },
   'residential-mf': { basic: r(800, 1000), standard: r(1100, 1500), premium: r(1600, 2500) },
   office: { basic: r(600, 800), standard: r(850, 1200), premium: r(1300, 1800) },
@@ -71,7 +71,7 @@ export function estimateCapex(area: number, typ: Typology, tier: Tier): CapexRes
 // fc = fully conditioned (100 % AC) · nv = naturally ventilated.
 // a building's regular intensity is interpolated between nv and fc by
 // the user's "% air-conditioned" input.
-const EUI: Record<Typology, { fc: Range; nv: Range }> = {
+export const EUI: Record<Typology, { fc: Range; nv: Range }> = {
   'residential-sf': { fc: r(135, 155), nv: r(35, 45) },
   'residential-mf': { fc: r(140, 165), nv: r(40, 50) },
   office: { fc: r(172, 215), nv: r(60, 80) },
@@ -84,7 +84,7 @@ export type EndUse = 'ac' | 'lighting' | 'plug' | 'other';
 // standard tropical end-use shares of total electricity. anchored to the
 // research's "HVAC = 55–65 % of the bill" with the balance split across
 // lighting, plug loads and a small 'other' (vertical transport, pumps).
-const END_USE_SHARE: Record<EndUse, number> = {
+export const END_USE_SHARE: Record<EndUse, number> = {
   ac: 0.6,
   plug: 0.2,
   lighting: 0.15,
@@ -95,12 +95,20 @@ const END_USE_SHARE: Record<EndUse, number> = {
 // roof insulation, low-SHGC glazing, reflective albedo + inverter AC);
 // lighting falls via LED + daylighting; plug loads barely move. the
 // blended total lands ~28 %, inside the quoted 20–38.8 % band.
-const SUSTAINABLE_REDUCTION: Record<EndUse, number> = {
+export const SUSTAINABLE_REDUCTION: Record<EndUse, number> = {
   ac: 0.4,
   lighting: 0.3,
   plug: 0.05,
   other: 0.1,
 };
+
+// blended whole-building reduction = Σ(share · reduction). lands ~0.30,
+// inside the research's quoted 20–38.8 % band. surfaced in the UI so the
+// "sustainable" column has a single honest headline percentage.
+export const SUSTAINABLE_SAVINGS_PCT = (Object.keys(END_USE_SHARE) as EndUse[]).reduce(
+  (acc, u) => acc + END_USE_SHARE[u] * SUSTAINABLE_REDUCTION[u],
+  0
+);
 
 const isResidential = (typ: Typology) =>
   typ === 'residential-sf' || typ === 'residential-mf';
@@ -190,7 +198,7 @@ export function estimateEnergy(
 // ------------------------------------------------------------
 // 3 · WATER — IDAAN progressive blocks + sewer surcharge + waste fee
 // ------------------------------------------------------------
-const DENSITY: Record<Typology, number> = {
+export const DENSITY: Record<Typology, number> = {
   // occupants per 100 m²
   'residential-sf': 2.5,
   'residential-mf': 4.0,
@@ -199,16 +207,22 @@ const DENSITY: Record<Typology, number> = {
   institutional: 12.0,
 };
 
-const PERCAPITA: Record<Typology, Range> = {
-  // base demand, litres / person / day (dry DX AC)
-  'residential-sf': r(450, 550),
-  'residential-mf': r(400, 500),
+export const PERCAPITA: Record<Typology, Range> = {
+  // metered demand, litres / person / day (dry DX AC).
+  // NOTE: the research quotes gross design allowances (≈450–550 L for a
+  // single-family home, against panamá's ≈507 L/day national average,
+  // the highest in latin america). those allowances include distribution
+  // losses and over-provisioning and overstate the BILLED volume, so for
+  // residential we use lower metered-consumption bands. commercial/
+  // institutional sanitation figures are kept as published.
+  'residential-sf': r(300, 400),
+  'residential-mf': r(280, 360),
   office: r(40, 50),
   commercial: r(60, 90),
   institutional: r(35, 55),
 };
 
-const WATERCOOL_SURCHARGE: Record<Typology, Range> = {
+export const WATERCOOL_SURCHARGE: Record<Typology, Range> = {
   // additional L/person/day for water-cooled (cooling-tower) AC
   'residential-sf': r(0, 0),
   'residential-mf': r(0, 0),
@@ -293,7 +307,7 @@ export function estimateWater(
 // ------------------------------------------------------------
 // 4 · MAINTENANCE — PH (horizontal property) fees, $/m²/month
 // ------------------------------------------------------------
-const MAINT_M2: Record<Typology, { standard: Range; premium: Range }> = {
+export const MAINT_M2: Record<Typology, { standard: Range; premium: Range }> = {
   // single-family modelled on private upkeep ($0.40–0.75/m²); the premium
   // tier nudges to the top of that band (gated / serviced).
   'residential-sf': { standard: r(0.4, 0.6), premium: r(0.6, 0.75) },
@@ -311,7 +325,7 @@ export interface MaintenanceResult {
 export function estimateMaintenance(
   area: number,
   typ: Typology,
-  premium: boolean
+  premium = false
 ): MaintenanceResult {
   const perM2 = premium ? MAINT_M2[typ].premium : MAINT_M2[typ].standard;
   return { perM2, monthly: scale(perM2, area) };
@@ -326,7 +340,7 @@ export interface CalculatorInputs {
   tier: Tier;
   pctAC: number; // 0–1
   waterCooledAC: boolean;
-  premiumMaintenance: boolean;
+  premiumMaintenance?: boolean;
 }
 
 export interface FullEstimate {
@@ -344,7 +358,7 @@ export function estimateAll(input: CalculatorInputs): FullEstimate {
   const maintenance = estimateMaintenance(
     input.area,
     input.typology,
-    input.premiumMaintenance
+    input.premiumMaintenance ?? false
   );
   const monthlyOpex = {
     regular: addR(addR(energy.regular.total, water.monthly), maintenance.monthly),
