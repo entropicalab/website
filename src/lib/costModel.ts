@@ -24,9 +24,42 @@ export type Typology =
   | 'residential-mf'
   | 'office'
   | 'commercial'
-  | 'institutional';
+  | 'institutional'
+  | 'industrial'
+  | 'mixed-use';
 
 export type Tier = 'basic' | 'standard' | 'premium';
+
+// panamá microclimates (research "Climatological & Architectural Performance
+// Framework"). multiplier on the COOLING load only — base loads (lighting,
+// plug) are climate-independent. pacific city is the baseline (1.0); the dry
+// arc runs hotter; the highlands trend toward passive (little/no mechanical
+// cooling).
+export type ClimateZone =
+  | 'pacific-city'
+  | 'caribbean'
+  | 'dry-arc'
+  | 'highland'
+  | 'archipelago';
+
+const CLIMATE_COOLING: Record<ClimateZone, number> = {
+  'pacific-city': 1.0,
+  caribbean: 1.08,
+  'dry-arc': 1.12,
+  highland: 0.3,
+  archipelago: 1.05,
+};
+
+// window-to-wall ratio. glazing is the single biggest envelope driver of
+// cooling load (research: 25 % is the tropical optimum; 50 % adds ~10–15 %
+// discomfort; 100 % curtain-wall is an extreme greenhouse penalty). modelled
+// as a multiplier on the cooling load, with 50 % as the neutral baseline.
+export type WWR = 25 | 50 | 100;
+const WWR_COOLING: Record<WWR, number> = {
+  25: 0.9,
+  50: 1.0,
+  100: 1.3,
+};
 
 export interface Range {
   low: number;
@@ -46,6 +79,8 @@ export const CAPEX_M2: Record<Typology, Record<Tier, Range>> = {
   office: { basic: r(600, 800), standard: r(850, 1200), premium: r(1300, 1800) },
   commercial: { basic: r(550, 750), standard: r(800, 1100), premium: r(1200, 1700) },
   institutional: { basic: r(650, 850), standard: r(900, 1250), premium: r(1300, 1900) },
+  industrial: { basic: r(350, 500), standard: r(550, 750), premium: r(800, 1100) },
+  'mixed-use': { basic: r(700, 950), standard: r(1050, 1450), premium: r(1600, 2400) },
 };
 
 // soft costs: ~5–10 % design + 1–1.5 % municipal permit + 1–2 % legal.
@@ -66,6 +101,8 @@ const RENO_M2: Record<Typology, Record<Tier, Range>> = {
   office: { basic: r(500, 750), standard: r(750, 1050), premium: r(900, 1300) },
   commercial: { basic: r(500, 750), standard: r(750, 1050), premium: r(900, 1300) },
   institutional: { basic: r(450, 700), standard: r(700, 1000), premium: r(850, 1250) },
+  industrial: { basic: r(300, 500), standard: r(500, 750), premium: r(750, 1050) },
+  'mixed-use': { basic: r(400, 650), standard: r(700, 1000), premium: r(950, 1400) },
 };
 // renovation soft costs: COICI sets a 2 % structural-design fee on reforms
 // (a premium over new build), plus municipal Visto Bueno (~1 %) and legal.
@@ -101,6 +138,8 @@ export const EUI: Record<Typology, { fc: Range; nv: Range }> = {
   office: { fc: r(172, 215), nv: r(60, 80) },
   commercial: { fc: r(240, 320), nv: r(75, 95) },
   institutional: { fc: r(120, 150), nv: r(40, 55) },
+  industrial: { fc: r(170, 250), nv: r(40, 60) },
+  'mixed-use': { fc: r(160, 210), nv: r(50, 70) },
 };
 
 export type EndUse = 'ac' | 'lighting' | 'plug' | 'other';
@@ -197,13 +236,19 @@ export function estimateEnergy(
   area: number,
   typ: Typology,
   pctAC: number, // 0–1
-  waterCooledAC = false
+  waterCooledAC = false,
+  climate: ClimateZone = 'pacific-city',
+  wwr: WWR = 50
 ): EnergyResult {
   const eui = EUI[typ];
   // non-cooling base load (lighting + plug + other), fixed, = nv. cooling is
-  // the extra (fc − nv) that mechanical AC adds, scaled by % air-conditioned.
+  // the extra (fc − nv) that mechanical AC adds, scaled by % air-conditioned,
+  // the microclimate (highland ≈ passive, dry-arc hotter), the glazing ratio,
+  // and a water-cooled-plant efficiency credit.
   const coolFactor =
-    waterCooledAC && !isResidential(typ) ? WATERCOOL_HVAC_FACTOR : 1;
+    (waterCooledAC && !isResidential(typ) ? WATERCOOL_HVAC_FACTOR : 1) *
+    CLIMATE_COOLING[climate] *
+    WWR_COOLING[wwr];
   const coolingEUI: Range = {
     low: (eui.fc.low - eui.nv.low) * pctAC * coolFactor,
     high: (eui.fc.high - eui.nv.high) * pctAC * coolFactor,
@@ -281,6 +326,8 @@ export const DENSITY: Record<Typology, number> = {
   office: 8.0,
   commercial: 6.0,
   institutional: 12.0,
+  industrial: 2.0,
+  'mixed-use': 5.0,
 };
 
 export const PERCAPITA: Record<Typology, Range> = {
@@ -296,6 +343,8 @@ export const PERCAPITA: Record<Typology, Range> = {
   office: r(40, 50),
   commercial: r(60, 90),
   institutional: r(35, 55),
+  industrial: r(40, 60),
+  'mixed-use': r(90, 150),
 };
 
 export const WATERCOOL_SURCHARGE: Record<Typology, Range> = {
@@ -305,6 +354,8 @@ export const WATERCOOL_SURCHARGE: Record<Typology, Range> = {
   office: r(15, 25),
   commercial: r(20, 30),
   institutional: r(10, 20),
+  industrial: r(15, 25),
+  'mixed-use': r(15, 25),
 };
 
 const L_PER_GALLON = 3.785;
@@ -435,6 +486,8 @@ export const MAINT_M2: Record<Typology, { standard: Range; premium: Range }> = {
   office: { standard: r(1.8, 2.4), premium: r(2.5, 3.5) },
   commercial: { standard: r(2.0, 2.8), premium: r(3.0, 5.0) },
   institutional: { standard: r(0.8, 1.2), premium: r(1.4, 2.0) },
+  industrial: { standard: r(0.5, 0.9), premium: r(1.0, 1.5) },
+  'mixed-use': { standard: r(1.5, 2.1), premium: r(2.4, 3.4) },
 };
 
 export interface MaintenanceResult {
@@ -461,70 +514,146 @@ export interface CalculatorInputs {
   pctAC: number; // 0–1
   waterCooledAC: boolean;
   mode?: Mode; // 'new' (default) or 'renovation'
+  climate?: ClimateZone;
+  wwr?: WWR;
   premiumMaintenance?: boolean;
+  // sustainable-case upfront capex uplift (better glazing/shading/controls).
+  sustainablePremiumPct?: number; // 0–0.10, default 0.05
+  // financial assumptions for the lifecycle view (all editable in the UI)
+  discountRate?: number; // default 0.0625 (SBP benchmark mortgage rate)
+  tariffEscalation?: number; // default 0.03 (ASEP-aligned)
+  horizonYears?: number; // default 30
 }
 
-// ------------------------------------------------------------
-// 6 · LIFECYCLE — 30-year total cost of ownership (research part 2)
-// ------------------------------------------------------------
-// total cost = construction CAPEX + the net present value of operating cost
-// over the building's life. discount rate 6.25 % matches the SBP late-2025
-// benchmark mortgage rate; horizon 30 years (residential design life). only
-// energy differs between scenarios, so the lifecycle gap IS the discounted
-// value of designing to the sustainable code.
-export const DISCOUNT_RATE = 0.0625;
-export const LIFECYCLE_YEARS = 30;
-// present-value annuity factor for a level annual cost over the horizon
-const ANNUITY_FACTOR =
-  (1 - Math.pow(1 + DISCOUNT_RATE, -LIFECYCLE_YEARS)) / DISCOUNT_RATE; // ≈ 13.4
+// sustainable-case operating differentials BEYOND energy:
+// RES v.2 water-efficiency provisions, plus lower maintenance from a smaller
+// HVAC plant and a more durable envelope (research: 10–25 % fewer service
+// calls, 10–15 % lower facility-management cost).
+const SUSTAINABLE_WATER_FACTOR = 0.9;
+const SUSTAINABLE_MAINT_FACTOR = 0.88;
+
+export const DEFAULT_DISCOUNT_RATE = 0.0625;
+export const DEFAULT_TARIFF_ESCALATION = 0.03;
+export const DEFAULT_HORIZON_YEARS = 30;
+export const DEFAULT_SUSTAINABLE_PREMIUM = 0.05;
+
+const mid = (x: Range): number => (x.low + x.high) / 2;
+const subR = (a: Range, b: Range): Range => ({ low: a.low - b.low, high: a.high - b.high });
+
+// present value of a 1/yr stream escalating at `esc`, discounted at `disc`,
+// over `years`. with esc = 0 this is the standard annuity factor. modelling
+// tariff escalation makes future savings worth more (ASEP raises rates).
+function npvFactor(disc: number, esc: number, years: number): number {
+  let f = 0;
+  for (let t = 1; t <= years; t++) {
+    f += Math.pow(1 + esc, t - 1) / Math.pow(1 + disc, t);
+  }
+  return f;
+}
+
+export interface OpexLines {
+  energy: Range;
+  water: Range;
+  maint: Range;
+  total: Range;
+}
 
 export interface LifecycleResult {
-  regular: Range; // capex + NPV(opex) over the horizon
-  sustainable: Range;
-  savings: Range; // regular − sustainable (discounted lifetime saving)
+  regular: Range; // typical capex + NPV(opex)
+  sustainable: Range; // sustainable capex (incl. premium) + NPV(opex)
+  savings: Range; // regular − sustainable, NET of the upfront premium
 }
 
 export interface FullEstimate {
-  capex: CapexResult;
+  capex: {
+    perM2: Range;
+    hard: Range; // typical direct construction/renovation
+    typicalTotal: Range; // + indirect costs
+    sustainableTotal: Range; // typicalTotal × (1 + premium)
+    premium: Range; // sustainableTotal − typicalTotal
+  };
   energy: EnergyResult;
   water: WaterResult;
-  maintenance: MaintenanceResult;
-  monthlyOpex: { regular: Range; sustainable: Range };
+  opex: { regular: OpexLines; sustainable: OpexLines };
+  monthlySavings: Range; // operational only (regular − sustainable opex)
+  annualSavings: Range;
   lifecycle: LifecycleResult;
+  paybackYears: number | null; // simple payback of the premium; null if no savings
+  assumptions: {
+    discountRate: number;
+    tariffEscalation: number;
+    horizonYears: number;
+    premiumPct: number;
+  };
 }
 
 export function estimateAll(input: CalculatorInputs): FullEstimate {
-  const capex = estimateCapex(input.area, input.typology, input.tier, input.mode ?? 'new');
-  const energy = estimateEnergy(input.area, input.typology, input.pctAC, input.waterCooledAC);
-  const water = estimateWater(input.area, input.typology, input.waterCooledAC);
-  const maintenance = estimateMaintenance(
+  const mode = input.mode ?? 'new';
+  const premiumPct = input.sustainablePremiumPct ?? DEFAULT_SUSTAINABLE_PREMIUM;
+  const disc = input.discountRate ?? DEFAULT_DISCOUNT_RATE;
+  const esc = input.tariffEscalation ?? DEFAULT_TARIFF_ESCALATION;
+  const years = input.horizonYears ?? DEFAULT_HORIZON_YEARS;
+
+  const c = estimateCapex(input.area, input.typology, input.tier, mode);
+  const sustainableTotal = scale(c.total, 1 + premiumPct);
+  const premium = subR(sustainableTotal, c.total);
+
+  const energy = estimateEnergy(
     input.area,
     input.typology,
-    input.premiumMaintenance ?? false
+    input.pctAC,
+    input.waterCooledAC,
+    input.climate ?? 'pacific-city',
+    input.wwr ?? 50
   );
-  const monthlyOpex = {
-    regular: addR(addR(energy.regular.total, water.monthly), maintenance.monthly),
-    sustainable: addR(
-      addR(energy.sustainable.total, water.monthly),
-      maintenance.monthly
-    ),
-  };
+  const water = estimateWater(input.area, input.typology, input.waterCooledAC);
+  const maint = estimateMaintenance(input.area, input.typology, input.premiumMaintenance ?? false);
 
-  // lifecycle: capex + discounted 30-year operation
-  const npvOpex = (monthly: Range): Range => ({
-    low: monthly.low * 12 * ANNUITY_FACTOR,
-    high: monthly.high * 12 * ANNUITY_FACTOR,
-  });
-  const lcRegular = addR(capex.total, npvOpex(monthlyOpex.regular));
-  const lcSustainable = addR(capex.total, npvOpex(monthlyOpex.sustainable));
-  const lifecycle: LifecycleResult = {
-    regular: lcRegular,
-    sustainable: lcSustainable,
-    savings: {
-      low: lcRegular.low - lcSustainable.low,
-      high: lcRegular.high - lcSustainable.high,
+  const waterSus = scale(water.monthly, SUSTAINABLE_WATER_FACTOR);
+  const maintSus = scale(maint.monthly, SUSTAINABLE_MAINT_FACTOR);
+
+  const opex = {
+    regular: {
+      energy: energy.regular.total,
+      water: water.monthly,
+      maint: maint.monthly,
+      total: addR(addR(energy.regular.total, water.monthly), maint.monthly),
+    },
+    sustainable: {
+      energy: energy.sustainable.total,
+      water: waterSus,
+      maint: maintSus,
+      total: addR(addR(energy.sustainable.total, waterSus), maintSus),
     },
   };
 
-  return { capex, energy, water, maintenance, monthlyOpex, lifecycle };
+  const monthlySavings = subR(opex.regular.total, opex.sustainable.total);
+  const annualSavings = scale(monthlySavings, 12);
+
+  // lifecycle NPV with tariff escalation; sustainable carries the capex premium
+  const f = npvFactor(disc, esc, years);
+  const npv = (monthly: Range) => scale(monthly, 12 * f);
+  const lcRegular = addR(c.total, npv(opex.regular.total));
+  const lcSustainable = addR(sustainableTotal, npv(opex.sustainable.total));
+  const lifecycle: LifecycleResult = {
+    regular: lcRegular,
+    sustainable: lcSustainable,
+    savings: subR(lcRegular, lcSustainable),
+  };
+
+  // simple payback: the upfront premium recovered by first-year opex savings
+  const annualSavCentral = mid(annualSavings);
+  const paybackYears = annualSavCentral > 0 ? mid(premium) / annualSavCentral : null;
+
+  return {
+    capex: { perM2: c.perM2, hard: c.hard, typicalTotal: c.total, sustainableTotal, premium },
+    energy,
+    water,
+    opex,
+    monthlySavings,
+    annualSavings,
+    lifecycle,
+    paybackYears,
+    assumptions: { discountRate: disc, tariffEscalation: esc, horizonYears: years, premiumPct },
+  };
 }
