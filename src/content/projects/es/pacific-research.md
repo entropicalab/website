@@ -11,7 +11,7 @@ role: arquitectura + exhibiciones + espacio público
 status: concepto
 featured: false
 order: 4
-heroImage: /projects/pacific-research/01.png
+heroImage: /projects/pacific-research/01.jpg
 brief: |
   en la entrada pacífica del canal de panamá, un sitio de educación e investigación
   marina necesitaba un paquete integral de diseño para modernizar su infraestructura
@@ -38,6 +38,6 @@ strategies:
     body: 'integración de plantas nativas para reforzar biodiversidad y actuar como capa pasiva de sombra.'
 closingQuote: 'un espacio público que no pretende que el clima no esté ahí.'
 gallery:
-  - { src: '/projects/pacific-research/02.png', tag: '// vista' }
-  - { src: '/projects/pacific-research/03.png', tag: '// vista' }
+  - { src: '/projects/pacific-research/02.jpg', tag: '// vista' }
+  - { src: '/projects/pacific-research/03.jpg', tag: '// vista' }
 ---

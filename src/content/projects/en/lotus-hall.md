@@ -12,7 +12,7 @@ role: daylight studies + energy modeling + façade specification
 status: concept
 featured: true
 order: 1
-heroImage: /projects/lotus-hall/01.png
+heroImage: /projects/lotus-hall/01.jpg
 metric:
   value: '-36'
   unit: '%'

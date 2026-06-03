@@ -9,7 +9,7 @@ eyebrow: '// facc 2.0'
 summary: '¿y si las granjas de servidores se mudaran al norte helado? un diseño especulativo donde aire frío, nieve y agua de mar hacen el trabajo de enfriamiento que hoy hacen las máquinas.'
 date: 2024-09-01
 author: josé barría
-heroImage: /blog/arctic-data-centers/01.png
+heroImage: /blog/arctic-data-centers/01.jpg
 draft: false
 ---
 

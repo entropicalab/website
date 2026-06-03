@@ -12,7 +12,7 @@ role: conceptual design + construction documents + daylight studies
 status: in construction
 featured: false
 order: 9
-heroImage: /projects/casa-tn/01.png
+heroImage: /projects/casa-tn/01.jpg
 metric:
   value: 'in progress'
   unit: ''
@@ -59,7 +59,7 @@ resultDelta: 'TBD'
 closingQuote: 'a house that opens itself to the climate it sits in.'
 gallery:
   - { src: '/projects/casa-tn/02.jpg', tag: '// view' }
-  - { src: '/projects/casa-tn/03.png', tag: '// view' }
-  - { src: '/projects/casa-tn/04.png', tag: '// view' }
-  - { src: '/projects/casa-tn/05.png', tag: '// view' }
+  - { src: '/projects/casa-tn/03.jpg', tag: '// view' }
+  - { src: '/projects/casa-tn/04.jpg', tag: '// view' }
+  - { src: '/projects/casa-tn/05.jpg', tag: '// view' }
 ---

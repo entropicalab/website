@@ -12,7 +12,7 @@ role: diseño conceptual + planos constructivos
 status: en construcción
 featured: false
 order: 12
-heroImage: /projects/casa-ih/01.png
+heroImage: /projects/casa-ih/01.jpg
 metric:
   value: 'en obra'
   unit: ''
@@ -26,5 +26,5 @@ approach: |
   más detalle de este proyecto se publicará cuando la construcción avance y la intención
   de diseño sea legible en forma construida.
 gallery:
-  - { src: '/projects/casa-ih/02.png', tag: '// vista' }
+  - { src: '/projects/casa-ih/02.jpg', tag: '// vista' }
 ---

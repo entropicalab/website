@@ -11,7 +11,7 @@ role: architecture + exhibits + public realm
 status: concept
 featured: false
 order: 4
-heroImage: /projects/pacific-research/01.png
+heroImage: /projects/pacific-research/01.jpg
 brief: |
   on the pacific entrance of the panama canal, a long-standing marine education and
   research site needed a comprehensive design package to modernize its visitor
@@ -38,6 +38,6 @@ strategies:
     body: 'native planting integration to strengthen site biodiversity and act as a passive shading layer.'
 closingQuote: 'a public space that does not pretend the climate is not there.'
 gallery:
-  - { src: '/projects/pacific-research/02.png', tag: '// view' }
-  - { src: '/projects/pacific-research/03.png', tag: '// view' }
+  - { src: '/projects/pacific-research/02.jpg', tag: '// view' }
+  - { src: '/projects/pacific-research/03.jpg', tag: '// view' }
 ---

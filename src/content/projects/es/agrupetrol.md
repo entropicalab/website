@@ -11,5 +11,5 @@ status: próximamente
 featured: false
 comingSoon: true
 order: 16
-heroImage: /projects/agrupetrol/agrupetrol.png
+heroImage: /projects/agrupetrol/agrupetrol.jpg
 ---

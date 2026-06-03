@@ -12,7 +12,7 @@ role: diseño de fachada + especificación de envolvente
 status: pospuesto
 featured: false
 order: 8
-heroImage: /projects/las-vaquitas-offices/01.png
+heroImage: /projects/las-vaquitas-offices/01.jpg
 brief: |
   el desarrollador ya tenía un cascarón estructural diseñado y una decisión de
   compra de fachada abierta. el brief era el diseño de la fachada: comparar variantes razonables de vidrio y
@@ -33,6 +33,6 @@ strategies:
   - label: espec. de techo
     body: 'aislamiento continuo bajo el rainscreen; pintura reflectiva.'
 gallery:
-  - { src: '/projects/las-vaquitas-offices/02.png', tag: '// interior' }
-  - { src: '/projects/las-vaquitas-offices/03.png', tag: '// detalle de fachada' }
+  - { src: '/projects/las-vaquitas-offices/02.jpg', tag: '// interior' }
+  - { src: '/projects/las-vaquitas-offices/03.jpg', tag: '// detalle de fachada' }
 ---

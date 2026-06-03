@@ -6,7 +6,7 @@ categories: ['arquitectura bioclimática aplicada']
 tags: ['fachadas', 'vidrio', 'ganancia solar']
 keywords: ['fachada de vidrio en el trópico', 'arquitectura tropical panamá', 'control solar']
 eyebrow: '// física edilicia'
-heroImage: /blog/glass-delusion/glass-delusion.png
+heroImage: /blog/glass-delusion/glass-delusion.jpg
 summary: desmontando la estética modernista templada con física edilicia revisada por pares. por qué una fachada de vidrio sin protección en el trópico es soporte vital, no arquitectura.
 date: 2024-11-12
 author: josé barría

@@ -9,7 +9,7 @@ eyebrow: '// facc 3.0'
 summary: 'un diseño especulativo donde la piel del edificio aloja algas en vez de silicio, transformando fachadas en biofábricas urbanas que producen energía, biomasa y aire limpio.'
 date: 2024-10-08
 author: josé barría
-heroImage: /blog/living-facade-elements/01.png
+heroImage: /blog/living-facade-elements/01.jpg
 draft: false
 ---
 

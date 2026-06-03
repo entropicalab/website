@@ -12,7 +12,7 @@ role: daylight studies + conceptual design (interiors)
 status: concept
 featured: false
 order: 14
-heroImage: /projects/eurostone-showroom/01.png
+heroImage: /projects/eurostone-showroom/01.jpg
 metric:
   value: 'concept'
   unit: ''
@@ -41,6 +41,6 @@ resultLabel: 'daylight-led interior composition'
 resultDelta: 'concept'
 closingQuote: 'a showroom for the material itself.'
 gallery:
-  - { src: '/projects/eurostone-showroom/02.png', tag: '// view' }
-  - { src: '/projects/eurostone-showroom/03.png', tag: '// view' }
+  - { src: '/projects/eurostone-showroom/02.jpg', tag: '// view' }
+  - { src: '/projects/eurostone-showroom/03.jpg', tag: '// view' }
 ---

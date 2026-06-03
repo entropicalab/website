@@ -12,7 +12,7 @@ role: conceptual design + construction documents
 status: in construction
 featured: false
 order: 12
-heroImage: /projects/casa-ih/01.png
+heroImage: /projects/casa-ih/01.jpg
 metric:
   value: 'in progress'
   unit: ''
@@ -26,5 +26,5 @@ approach: |
   more detail on this project will be published as construction completes and the design
   intent becomes legible in built form.
 gallery:
-  - { src: '/projects/casa-ih/02.png', tag: '// view' }
+  - { src: '/projects/casa-ih/02.jpg', tag: '// view' }
 ---

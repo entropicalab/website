@@ -12,7 +12,7 @@ role: estudios de luz natural + modelado energético + especificación de fachad
 status: concepto
 featured: true
 order: 1
-heroImage: /projects/lotus-hall/01.png
+heroImage: /projects/lotus-hall/01.jpg
 metric:
   value: '-36'
   unit: '%'

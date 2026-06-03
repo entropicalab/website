@@ -6,7 +6,7 @@ categories: ['building physics']
 tags: ['façades', 'glass', 'solar gain']
 keywords: ['glass façade tropics', 'tropical architecture panama', 'solar control']
 eyebrow: '// building physics'
-heroImage: /blog/glass-delusion/glass-delusion.png
+heroImage: /blog/glass-delusion/glass-delusion.jpg
 summary: dismantling the temperate-modernist glass-box aesthetic with peer-reviewed building physics. why an unprotected glass façade in the tropics is life-support, not architecture.
 date: 2024-11-12
 author: josé barría

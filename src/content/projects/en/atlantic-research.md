@@ -12,9 +12,9 @@ role: conceptual design + construction documents + daylight studies
 status: in construction
 featured: false
 order: 6
-heroImage: /projects/atlantic-research/01.png
+heroImage: /projects/atlantic-research/01.jpg
 gallery:
-  - { src: '/projects/atlantic-research/02.png', tag: '// view' }
+  - { src: '/projects/atlantic-research/02.jpg', tag: '// view' }
 metric:
   value: 'in progress'
   unit: ''

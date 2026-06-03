@@ -12,7 +12,7 @@ role: façade design + envelope specification
 status: postponed
 featured: false
 order: 8
-heroImage: /projects/las-vaquitas-offices/01.png
+heroImage: /projects/las-vaquitas-offices/01.jpg
 brief: |
   the developer had a structural shell already designed and a façade procurement
   decision still open. the brief was façade design: compare reasonable glazing and shading variants,
@@ -33,6 +33,6 @@ strategies:
   - label: roof spec
     body: 'continuous insulation under the rainscreen; reflective topcoat.'
 gallery:
-  - { src: '/projects/las-vaquitas-offices/02.png', tag: '// interior' }
-  - { src: '/projects/las-vaquitas-offices/03.png', tag: '// façade detail' }
+  - { src: '/projects/las-vaquitas-offices/02.jpg', tag: '// interior' }
+  - { src: '/projects/las-vaquitas-offices/03.jpg', tag: '// façade detail' }
 ---

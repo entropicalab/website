@@ -9,7 +9,7 @@ eyebrow: '// facc 3.0'
 summary: a speculative design where building skins host algae instead of silicon, turning façades into urban biofactories that produce energy, biomass, and clean air.
 date: 2024-10-08
 author: josé barría
-heroImage: /blog/living-facade-elements/01.png
+heroImage: /blog/living-facade-elements/01.jpg
 draft: false
 ---
 

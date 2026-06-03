@@ -11,5 +11,5 @@ status: coming soon
 featured: false
 comingSoon: true
 order: 17
-heroImage: /projects/melbourne-sensory-center/melbourne-sensory-center.png
+heroImage: /projects/melbourne-sensory-center/melbourne-sensory-center.jpg
 ---

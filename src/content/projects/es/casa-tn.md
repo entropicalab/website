@@ -12,7 +12,7 @@ role: diseño conceptual + documentación constructiva + estudios de luz natural
 status: en construcción
 featured: false
 order: 9
-heroImage: /projects/casa-tn/01.png
+heroImage: /projects/casa-tn/01.jpg
 metric:
   value: 'en obra'
   unit: ''
@@ -59,7 +59,7 @@ resultDelta: 'TBD'
 closingQuote: 'una casa que se abre al clima donde se asienta.'
 gallery:
   - { src: '/projects/casa-tn/02.jpg', tag: '// vista' }
-  - { src: '/projects/casa-tn/03.png', tag: '// vista' }
-  - { src: '/projects/casa-tn/04.png', tag: '// vista' }
-  - { src: '/projects/casa-tn/05.png', tag: '// vista' }
+  - { src: '/projects/casa-tn/03.jpg', tag: '// vista' }
+  - { src: '/projects/casa-tn/04.jpg', tag: '// vista' }
+  - { src: '/projects/casa-tn/05.jpg', tag: '// vista' }
 ---

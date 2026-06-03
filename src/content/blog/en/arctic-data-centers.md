@@ -9,7 +9,7 @@ eyebrow: '// facc 2.0'
 summary: what if server farms moved to the freezing north? a speculative design where cold air, snow, and seawater do the cooling work that machines do today.
 date: 2024-09-01
 author: josé barría
-heroImage: /blog/arctic-data-centers/01.png
+heroImage: /blog/arctic-data-centers/01.jpg
 draft: false
 ---
 

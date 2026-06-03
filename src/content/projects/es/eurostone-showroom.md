@@ -12,7 +12,7 @@ role: estudios de luz natural + diseño conceptual (interiores)
 status: concepto
 featured: false
 order: 14
-heroImage: /projects/eurostone-showroom/01.png
+heroImage: /projects/eurostone-showroom/01.jpg
 metric:
   value: 'concepto'
   unit: ''
@@ -42,6 +42,6 @@ resultLabel: 'composición interior guiada por luz natural'
 resultDelta: 'concepto'
 closingQuote: 'un showroom para el material mismo.'
 gallery:
-  - { src: '/projects/eurostone-showroom/02.png', tag: '// vista' }
-  - { src: '/projects/eurostone-showroom/03.png', tag: '// vista' }
+  - { src: '/projects/eurostone-showroom/02.jpg', tag: '// vista' }
+  - { src: '/projects/eurostone-showroom/03.jpg', tag: '// vista' }
 ---

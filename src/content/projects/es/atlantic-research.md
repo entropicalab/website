@@ -12,9 +12,9 @@ role: diseño conceptual + documentación constructiva + estudios de luz natural
 status: en construcción
 featured: false
 order: 6
-heroImage: /projects/atlantic-research/01.png
+heroImage: /projects/atlantic-research/01.jpg
 gallery:
-  - { src: '/projects/atlantic-research/02.png', tag: '// vista' }
+  - { src: '/projects/atlantic-research/02.jpg', tag: '// vista' }
 metric:
   value: 'en obra'
   unit: ''
