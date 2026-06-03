@@ -22,6 +22,25 @@ const cookieDomain = ANALYTICS.cookieDomain;
       function gtag() { window.dataLayer.push(arguments); }
       window.gtag = gtag;
 
+      // ── internal / owner opt-out ───────────────────────────────────────
+      // visit the site once with ?ga-optout on a given browser to stop YOUR
+      // own visits from being tracked there. it persists in localStorage, so
+      // it survives IP changes and future sessions on that browser. use
+      // ?ga-optin to re-enable. this sets GA's official ga-disable-<id> flag,
+      // which blocks all hits for this measurement id regardless of consent.
+      try {
+        if (location.search.indexOf('ga-optout') !== -1) {
+          localStorage.setItem('entropica.ga_optout', '1');
+          console.info('[entrópica] analytics disabled on this browser (ga-optout).');
+        } else if (location.search.indexOf('ga-optin') !== -1) {
+          localStorage.removeItem('entropica.ga_optout');
+          console.info('[entrópica] analytics re-enabled on this browser (ga-optin).');
+        }
+      } catch (e) {}
+      try {
+        window['ga-disable-' + id] = localStorage.getItem('entropica.ga_optout') === '1';
+      } catch (e) {}
+
       // consent mode v2 — denied by default, flipped on user accept.
       // analytics_storage controls the _ga cookies.
       // ad_storage / ad_user_data / ad_personalization stay denied (we don't run ads).
