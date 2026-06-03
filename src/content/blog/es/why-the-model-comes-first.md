@@ -5,7 +5,8 @@ locale: es
 categories: ['método']
 tags: ['simulación', 'energía', 'proceso de diseño']
 keywords: ['simulación energética', 'arquitectura bioclimática panamá', 'desempeño edilicio']
-eyebrow: '// el aburrido'
+eyebrow: '// método'
+heroImage: /blog/model-comes-first/model-comes-first.PNG
 summary: una nota corta sobre por qué simulamos antes de dibujar, y por qué el orden importa más que el software.
 date: 2026-05-01
 author: josé barría

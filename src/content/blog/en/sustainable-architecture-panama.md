@@ -6,6 +6,7 @@ categories: ['guide']
 tags: ['tropical architecture', 'climate', 'panamá']
 keywords: ['sustainable architecture panama', 'tropical architecture panama', 'bioclimatic architecture panama']
 eyebrow: '// the guide'
+heroImage: /blog/sustainable-architecture-panama/sust-arch-panama.jpg
 summary: a long-form take on why panamá's glass-tower aesthetic is structurally incompatible with its climate and its electricity rates, and what tropical-specific design moves actually work.
 date: 2024-10-21
 author: josé barría

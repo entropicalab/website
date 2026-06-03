@@ -5,7 +5,8 @@ locale: en
 categories: ['method']
 tags: ['simulation', 'energy', 'design process']
 keywords: ['energy simulation', 'bioclimatic architecture panama', 'building performance']
-eyebrow: '// the boring part'
+eyebrow: '// method'
+heroImage: /blog/model-comes-first/model-comes-first.PNG
 summary: a short note on why we simulate before we draw, and why the order matters more than the software.
 date: 2026-05-01
 author: josé barría

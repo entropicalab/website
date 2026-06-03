@@ -6,6 +6,7 @@ categories: ['guía']
 tags: ['arquitectura tropical', 'clima', 'panamá']
 keywords: ['arquitectura sostenible panamá', 'arquitectura tropical panamá', 'arquitectura bioclimática panamá']
 eyebrow: '// la guía'
+heroImage: /blog/sustainable-architecture-panama/sust-arch-panama.jpg
 summary: una mirada extensa de por qué la estética de torres de vidrio en panamá es estructuralmente incompatible con su clima y con sus tarifas eléctricas, y qué movimientos de diseño específicamente tropicales sí funcionan.
 date: 2024-10-21
 author: josé barría
