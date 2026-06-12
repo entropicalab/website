@@ -6,7 +6,7 @@ import { localized, tr } from '../../i18n/utils';
 const locale = 'en' as const;
 const t = tr(locale);
 
-const allProjects = await getCollection('projects', ({ data }) => data.locale === locale);
+const allProjects = await getCollection('projects', ({ data }) => data.locale === locale && !data.hidden);
 const featured = allProjects
   .filter((p) => p.data.featured)
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));

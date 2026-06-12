@@ -11,6 +11,7 @@ typology: residential
 role: architecture + energy modelling
 status: in design
 featured: false
+hidden: true
 order: 6
 heroImage: /projects/colon-private-residence/01.jpg
 brief: |

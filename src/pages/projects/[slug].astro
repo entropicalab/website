@@ -7,7 +7,7 @@ const locale = 'es' as const;
 const t = tr(locale);
 
 export async function getStaticPaths() {
-  const all = await getCollection('projects', ({ data }) => data.locale === 'es' && !data.comingSoon);
+  const all = await getCollection('projects', ({ data }) => data.locale === 'es' && !data.comingSoon && !data.hidden);
   return all.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
 }
 

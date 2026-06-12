@@ -67,6 +67,8 @@ const projects = defineCollection({
     closingQuote: z.string().optional(),
     featured: z.boolean().default(false),
     comingSoon: z.boolean().default(false),
+    hidden: z.boolean().default(false), // temporarily pull a project from the site
+
     order: z.number().optional(),
   }),
 });

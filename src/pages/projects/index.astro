@@ -5,7 +5,7 @@ import { localized } from '../../i18n/utils';
 
 const locale = 'es' as const;
 
-const all = await getCollection('projects', ({ data }) => data.locale === locale);
+const all = await getCollection('projects', ({ data }) => data.locale === locale && !data.hidden);
 const projects = all.sort((a, b) => {
   const ad = a.data.order ?? 99;
   const bd = b.data.order ?? 99;
