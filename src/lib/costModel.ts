@@ -518,7 +518,7 @@ export interface CalculatorInputs {
   wwr?: WWR;
   premiumMaintenance?: boolean;
   // sustainable-case upfront capex uplift (better glazing/shading/controls).
-  sustainablePremiumPct?: number; // 0–0.10, default 0.05
+  sustainablePremiumPct?: number; // 0–0.10, default 0.04
   // financial assumptions for the lifecycle view (all editable in the UI)
   discountRate?: number; // default 0.0625 (SBP benchmark mortgage rate)
   tariffEscalation?: number; // default 0.03 (ASEP-aligned)
@@ -535,7 +535,7 @@ const SUSTAINABLE_MAINT_FACTOR = 0.88;
 export const DEFAULT_DISCOUNT_RATE = 0.0625;
 export const DEFAULT_TARIFF_ESCALATION = 0.03;
 export const DEFAULT_HORIZON_YEARS = 30;
-export const DEFAULT_SUSTAINABLE_PREMIUM = 0.05;
+export const DEFAULT_SUSTAINABLE_PREMIUM = 0.04;
 
 const mid = (x: Range): number => (x.low + x.high) / 2;
 const subR = (a: Range, b: Range): Range => ({ low: a.low - b.low, high: a.high - b.high });

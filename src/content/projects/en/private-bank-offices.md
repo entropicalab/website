@@ -26,7 +26,7 @@ brief: |
   the work was to cut the cooling demand back to something a quieter system could hold, without losing the daylight or the openness that made the brief make sense.
 approach: |
   we modelled the radiation map on the existing scheme first, in three timeslots across
-  the year. west and south were the surfaces with the highest solar load. the section was redrawn around a
+  the year. west and south were the surfaces with the highest solar load. the design was redrawn around a
   perforated breezeblock screen that admitted ventilated daylight while breaking the
   direct flux by a measurable factor of two.
 

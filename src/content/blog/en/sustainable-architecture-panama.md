@@ -15,23 +15,23 @@ draft: false
 
 > why glass buildings are costly in the tropics.
 
-panamá's skyline has transformed rapidly over the last two decades. glass façades now dominate our urban landscape — shimmering towers that promise modernity, transparency, and prestige. yet beneath their polished surfaces lies a contradiction: these aesthetic decisions come at a steep environmental and economic cost.
+panamá's skyline has transformed rapidly over the last two decades. glass façades now dominate our urban landscape: shimmering towers that promise modernity, transparency, and prestige. yet beneath their polished surfaces lies a contradiction: these aesthetic decisions come at a steep environmental and economic cost.
 
-as an architect working in the tropics, i see every day how the overuse of *unprotected* glass façades defies both climate logic and sustainable design principles. in a country with high electricity costs and constant heat, a glass building becomes not a symbol of progress, but a monument to inefficiency.
+as an architect working in the tropics, i see every day how the overuse of *unprotected* glass façades defies both climate logic and sustainable design principles. in a country with high electricity costs and constant heat, unprotected glass turns a building into a monument to inefficiency.
 
 ## local observations
 
 many office towers feature continuous glass façades in all directions. during the afternoon, you can see mirrored reflections of the sun bouncing onto neighbouring façades, multiplying heat and glare.
 
-meanwhile, *older tropical buildings* — those with deep balconies, shaded verandas, or ventilated roofs — often maintain reasonable indoor conditions with minimal cooling. their appearance may be less "corporate," but their logic is profoundly sustainable.
+meanwhile, *older tropical buildings* (those with deep balconies, shaded verandas, or ventilated roofs) often maintain reasonable indoor conditions with minimal cooling. their appearance may be less "corporate," but their logic is profoundly sustainable.
 
-i avoid naming specific projects out of respect for peers. the point is not to criticise individuals but to question a trend: why do we keep repeating a typology that works against our own climate?
+i avoid naming specific projects out of respect for peers. the aim is to question a trend, not to single out peers: why do we keep repeating a typology that works against our own climate?
 
 ## the energy context of panamá
 
 electricity in panamá is expensive. as of 2024, residential rates average around **USD 0.175 per kwh**, while commercial users pay closer to **USD 0.196 per kwh**. the national electricity market operates between **169 and 199 USD / mwh**, roughly the same 0.17 to 0.20 USD / kwh range.
 
-this positions panamá among high-electricity-cost nations, with higher prices than costa rica or el salvador. the reasons are structural: generation depends heavily on hydroelectricity, but variability in rainfall and the need for fossil-fuel backup add volatility. for any air-conditioned building, these rates translate into significant operational costs — and for a fully glazed building in the tropics, those costs multiply.
+this positions panamá among high-electricity-cost nations, with higher prices than costa rica or el salvador. the reasons are structural: generation depends heavily on hydroelectricity, but variability in rainfall and the need for fossil-fuel backup add volatility. for any air-conditioned building, these rates translate into significant operational costs, and for a fully glazed building in the tropics, those costs multiply.
 
 ## the greenhouse effect of glass buildings
 
@@ -43,9 +43,9 @@ research in tropical climates has quantified this effect. studies show that high
 
 ## the hidden cost of aesthetics
 
-when architects specify glass façades in tropical cities, the decision is often aesthetic or symbolic — "modern," "corporate," "transparent." rarely is it based on climate or performance.
+when architects specify glass façades in tropical cities, the decision is often aesthetic or symbolic: "modern," "corporate," "transparent." rarely is it based on climate or performance.
 
-however, every square metre of exposed glass increases internal heat gain, raising both cooling load and installed hvac capacity. this mechanical dependence creates a feedback loop: the more glass, the more cooling; the more cooling, the higher the bills; the higher the bills, the more pressure to cut comfort or efficiency elsewhere. and the heat trapped inside glass buildings does not disappear — it gets pushed outside and into the city, worsening the urban heat island.
+however, every square metre of exposed glass increases internal heat gain, raising both cooling load and installed hvac capacity. this mechanical dependence creates a feedback loop: the more glass, the more cooling; the more cooling, the higher the bills; the higher the bills, the more pressure to cut comfort or efficiency elsewhere. and the heat trapped inside glass buildings does not disappear, it gets pushed outside and into the city, worsening the urban heat island.
 
 for building owners, this translates into thousands of dollars in annual energy expenses. if a typical office tower consumes **100,000 kwh / year** for air conditioning, a 25 to 50% excess from poor façade design adds **25,000 to 50,000 kwh / year**, or roughly **USD 4,000 to 8,500 annually**, depending on tariff levels. over a 25-year lifespan, the difference can exceed **USD 200,000**, excluding maintenance and equipment replacement.
 
@@ -53,7 +53,7 @@ this is a non-marginal issue that defines the building's long-term sustainabilit
 
 ## the irony of mechanically-dependent modernism
 
-there is a philosophical irony at play. the international style — which popularised glass façades — emerged from temperate contexts where solar gain was welcome. copied *uncritically* to the tropics, it becomes self-defeating.
+there is a philosophical irony at play. the international style (which popularised glass façades) emerged from temperate contexts where solar gain was welcome. copied *uncritically* to the tropics, it becomes self-defeating.
 
 in panamá's hot-humid climate, full-glass buildings require **mechanical cooling 24 hours a day**. if the chiller fails or the grid cuts off, comfort collapses instantly. compare this to vernacular or climate-responsive buildings that remain habitable even when systems are off.
 
@@ -88,15 +88,15 @@ at entrópica, we begin every project by understanding its climatic forces: orie
 
 1. **climate first.** we model the sun's path and evaluate the façade's behaviour using simulation tools like energyplus and ladybug to predict energy consumption.
 2. **balance and modulation.** we combine transparent and opaque materials strategically, adding shade where necessary.
-3. **aesthetics through performance.** beauty emerges when form and energy logic align — when a façade both delights and protects.
+3. **aesthetics through performance.** beauty emerges when form and energy logic align: when a façade both delights and protects.
 
 lower heat gains → smaller mechanical equipment → lower upfront *and* lifetime costs.
 
-this approach merges art, science, and responsibility. it is how sustainable architecture must evolve in the tropics: not through imported styles, but through local intelligence.
+this approach merges art, science, and responsibility. it is how sustainable architecture must evolve in the tropics: through local intelligence.
 
 ## conclusion
 
-sustainable architecture in panamá is not a matter of certifications or slogans. it is a matter of coherence. a glass tower cooled by massive chillers is not sustainable simply because it installs efficient equipment. sustainability begins when design decisions themselves — form, material, orientation — reduce the need for that equipment.
+sustainable architecture in panamá is not a matter of certifications or slogans. it is a matter of coherence. a glass tower cooled by massive chillers is not sustainable simply because it installs efficient equipment. sustainability begins when design decisions themselves (form, material, orientation) reduce the need for that equipment.
 
 glass can be part of tropical architecture, but only when used consciously, shaded intelligently, and sized according to purpose. every square metre of façade is a long-term energy decision.
 

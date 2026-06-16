@@ -29,7 +29,7 @@ approach: |
   flat roof, creating deep overhangs that shield the interior from sun and rain. operable
   wooden louvres along the perimeter allow cross-ventilation, reduce heat gain, and filter
   daylight while preserving views to the surrounding landscape. the open plan integrates
-  shaded gathering areas with enclosed program spaces, maintaining a seamless transition
+  shaded gathering areas with enclosed program spaces, maintaining a continuous transition
   between interior and exterior.
 
   the building sits on a raised platform accessed by wide steps, reinforcing its civic

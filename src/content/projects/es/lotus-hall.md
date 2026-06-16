@@ -64,7 +64,7 @@ strategies:
     delta: 'TBD'
 resultLabel: 'arquitectura cultural · paris design awards 2024'
 resultDelta: 'ganador'
-closingQuote: 'un edificio donde la metáfora y la sección están de acuerdo.'
+closingQuote: 'un edificio donde la metáfora y la forma están de acuerdo.'
 gallery:
   - { src: '/projects/lotus-hall/02.jpg', tag: '// vista' }
   - { src: '/projects/lotus-hall/03.jpg', tag: '// vista' }

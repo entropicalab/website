@@ -28,7 +28,7 @@ brief: |
   pudiera sostener, sin perder la luz natural ni la apertura que daban sentido al brief.
 approach: |
   modelamos primero el mapa de radiación del esquema existente, en tres franjas horarias
-  del año. oeste y sur eran las superficies de mayor carga solar. la sección se redibujó alrededor
+  del año. oeste y sur eran las superficies de mayor carga solar. el diseño se redibujó alrededor
   de una piel de bloque perforado que admitía luz natural ventilada mientras quebraba el
   flujo directo por un factor medible de dos.
 

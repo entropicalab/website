@@ -54,7 +54,6 @@ const S = {
     acLabel: 'porcentaje con aire acondicionado',
     waterCooled: 'a/a por agua (torre de enfriamiento)',
     waterCooledHint: 'solo comercial / institucional',
-    premiumLabel: 'sobrecosto del diseño sostenible',
     horizonLabel: 'ver resultados en',
     horMonth: 'mensual',
     horYear: 'anual',
@@ -74,14 +73,14 @@ const S = {
     premiumRow: 'sobrecosto inicial',
     payback: 'retorno simple',
     paybackUnit: 'años',
-    paybackNone: '— sin ahorro',
+    paybackNone: 'sin ahorro',
     softNote: 'el total incluye ~15 % de costos indirectos: diseño, permisos municipales y legal.',
     excludesNote: 'no incluye terreno, mobiliario ni el itbms (7 %) sobre servicios profesionales.',
     perM2: '$/m² de construcción',
     // energy
     energyEb: '// costo de energía',
     energyH: 'electricidad mensual, lado a lado.',
-    resGloss: 'res v.2 — reglamento de edificación sostenible, el código panameño de eficiencia energética.',
+    resGloss: 'res v.2 · reglamento de edificación sostenible, el código panameño de eficiencia energética.',
     resCaveat: 'la columna res v.2 aplica las reducciones que el código busca por diseño; es una meta normativa, no un desempeño medido.',
     energyBreakdown: 'ver desglose por uso',
     methodology: 'metodología y supuestos',
@@ -120,7 +119,7 @@ const S = {
     assumptionsEb: '// qué hay detrás del cálculo',
     assumptionsH: 'los promedios por categoría.',
     assumptionsIntro:
-      'cada estimación parte de promedios de mercado y de las líneas base del reglamento de edificación sostenible (res v.2). el consumo de iluminación, equipos y otros se estima por m² y no depende del aire acondicionado; solo el enfriamiento varía con el a/a, el microclima y la proporción de vidrio. la columna res v.2 reduce cada uso por separado (enfriamiento −40 %, iluminación −30 %, equipos −5 %) — reducciones de diseño del código, no medidas.',
+      'cada estimación parte de promedios de mercado y de las líneas base del reglamento de edificación sostenible (res v.2). el consumo de iluminación, equipos y otros se estima por m² y no depende del aire acondicionado; solo el enfriamiento varía con el a/a, el microclima y la proporción de vidrio. la columna res v.2 reduce cada uso por separado (enfriamiento −40 %, iluminación −30 %, equipos −5 %): reducciones de diseño del código, no medidas.',
     aCapex: 'construcción (estándar)',
     aEnergy: 'energía (100 % a/a)',
     aEnergyUnit: 'kwh/m²·año',
@@ -177,7 +176,6 @@ const S = {
     acLabel: 'percent air-conditioned',
     waterCooled: 'water-cooled a/c (cooling tower)',
     waterCooledHint: 'commercial / institutional only',
-    premiumLabel: 'sustainable design premium',
     horizonLabel: 'show results in',
     horMonth: 'monthly',
     horYear: 'yearly',
@@ -196,13 +194,13 @@ const S = {
     premiumRow: 'upfront premium',
     payback: 'simple payback',
     paybackUnit: 'years',
-    paybackNone: '— no savings',
+    paybackNone: 'no savings',
     softNote: 'total includes ~15 % indirect costs: design, municipal permits, and legal.',
     excludesNote: 'excludes land, furniture/FF&E, and the 7 % ITBMS on professional services.',
     perM2: '$/m² of construction',
     energyEb: '// energy cost',
     energyH: 'monthly electricity, side by side.',
-    resGloss: 'res v.2 — reglamento de edificación sostenible, panama’s energy-efficiency building code.',
+    resGloss: 'res v.2 · reglamento de edificación sostenible, panama’s energy-efficiency building code.',
     resCaveat: 'the res v.2 column applies the reductions the code targets by design; it is a regulatory goal, not measured performance.',
     energyBreakdown: 'see breakdown by end use',
     methodology: 'methodology and assumptions',
@@ -238,7 +236,7 @@ const S = {
     assumptionsEb: '// what is behind the numbers',
     assumptionsH: 'the per-category averages.',
     assumptionsIntro:
-      'every estimate starts from market averages and the energy-use baselines of the res v.2 sustainable-building code. lighting, plug loads and other are estimated per m² and do not depend on air-conditioning; only cooling varies with the a/c, the microclimate and the glazing ratio. the res v.2 column reduces each end use separately (cooling −40 %, lighting −30 %, plug −5 %) — code design intent, not measured.',
+      'every estimate starts from market averages and the energy-use baselines of the res v.2 sustainable-building code. lighting, plug loads and other are estimated per m² and do not depend on air-conditioning; only cooling varies with the a/c, the microclimate and the glazing ratio. the res v.2 column reduces each end use separately (cooling −40 %, lighting −30 %, plug −5 %): code design intent, not measured.',
     aCapex: 'construction (standard)',
     aEnergy: 'energy (100 % a/c)',
     aEnergyUnit: 'kwh/m²·yr',
@@ -404,11 +402,6 @@ const sources = [
       <div class="field">
         <label for="ci-ac">{S.acLabel} <span class="val" id="ci-ac-val">80 %</span></label>
         <input type="range" id="ci-ac" min="0" max="100" step="5" value="80" />
-      </div>
-
-      <div class="field">
-        <label for="ci-premium">{S.premiumLabel} <span class="val" id="ci-premium-val">5 %</span></label>
-        <input type="range" id="ci-premium" min="0" max="10" step="1" value="5" />
       </div>
 
       <div class="checks">
@@ -785,7 +778,6 @@ const sources = [
     const acEl = $('ci-ac') as HTMLInputElement;
     const typEl = $('ci-typ') as HTMLSelectElement;
     const climEl = $('ci-climate') as HTMLSelectElement;
-    const premEl = $('ci-premium') as HTMLInputElement;
     const discEl = $('ci-disc') as HTMLInputElement;
     const escEl = $('ci-esc') as HTMLInputElement;
     const yearsEl = $('ci-years') as HTMLInputElement;
@@ -825,7 +817,7 @@ const sources = [
         mode,
         climate: climEl.value as ClimateZone,
         wwr,
-        sustainablePremiumPct: Number(premEl.value) / 100,
+        sustainablePremiumPct: 0.04,
         discountRate: Number(discEl.value) / 100,
         tariffEscalation: Number(escEl.value) / 100,
         horizonYears: Number(yearsEl.value),
@@ -833,7 +825,6 @@ const sources = [
 
       $('ci-area-val').textContent = `${num.format(input.area)} m²`;
       $('ci-ac-val').textContent = `${acEl.value} %`;
-      $('ci-premium-val').textContent = `${premEl.value} %`;
 
       const e = estimateAll(input);
       const reno = mode === 'renovation';
@@ -932,7 +923,7 @@ const sources = [
       syncMaintLabel();
       render();
     });
-    [areaEl, acEl, premEl, waterEl, climEl, discEl, escEl, yearsEl].forEach((el) =>
+    [areaEl, acEl, waterEl, climEl, discEl, escEl, yearsEl].forEach((el) =>
       el.addEventListener('input', render)
     );
 

@@ -35,7 +35,7 @@ in northern europe or north america, the primary thermal challenge is heating. a
 ## the durability layer
 
 - **sealant failure.** high uv indices in the tropics degrade silicone sealants faster than in temperate zones. glass curtain walls require expensive maintenance to prevent water ingress.
-- **condensation risks.** single glazing in humid climates creates condensation on the outside (if a/c is cold) or inside. double glazing with a thermal break is essential, not just for heat, but to manage dew points.
+- **condensation risks.** single glazing in humid climates creates condensation on the outside (if a/c is cold) or inside. double glazing with a thermal break is essential, both for heat and for managing dew points.
 - **thermal stress.** rapid cooling from rain showers on sun-heated glass causes thermal shock and breakage if the glass is not heat-strengthened.
 
 ## how we work the problem

@@ -17,7 +17,7 @@ draft: false
 
 el skyline de panamá se ha transformado rápido en las últimas dos décadas. las fachadas de vidrio dominan hoy el paisaje urbano: torres brillantes que prometen modernidad, transparencia y prestigio. pero bajo esa superficie pulida hay una contradicción: estas decisiones estéticas tienen un costo ambiental y económico alto.
 
-como arquitecto trabajando en el trópico, veo cada día cómo el sobreuso de fachadas *de vidrio sin protección* desafía tanto la lógica climática como los principios del diseño sostenible. en un país con tarifas eléctricas altas y calor constante, un edificio de vidrio no es un símbolo de progreso: es un monumento a la ineficiencia.
+como arquitecto trabajando en el trópico, veo cada día cómo el sobreuso de fachadas *de vidrio sin protección* desafía tanto la lógica climática como los principios del diseño sostenible. en un país con tarifas eléctricas altas y calor constante, el vidrio sin protección convierte un edificio en un monumento a la ineficiencia.
 
 ## observaciones locales
 
@@ -25,7 +25,7 @@ muchas torres de oficinas tienen fachadas continuas de vidrio en todas direccion
 
 mientras tanto, los *edificios tropicales más viejos* (los de balcones profundos, verandas sombreadas o cubiertas ventiladas) suelen mantener condiciones interiores razonables con mínimo enfriamiento. su apariencia será menos "corporativa", pero su lógica es profundamente sostenible.
 
-evito nombrar proyectos específicos por respeto a los colegas. el punto no es criticar a individuos sino cuestionar una tendencia: ¿por qué seguimos repitiendo una tipología que va en contra de nuestro propio clima?
+evito nombrar proyectos específicos por respeto a los colegas. el objetivo es cuestionar una tendencia, no señalar a colegas: ¿por qué seguimos repitiendo una tipología que va en contra de nuestro propio clima?
 
 ## el contexto energético de panamá
 
@@ -92,7 +92,7 @@ en entrópica, empezamos cada proyecto entendiendo sus fuerzas climáticas: orie
 
 menos ganancia térmica → equipo mecánico más pequeño → menores costos iniciales *y* de operación.
 
-este enfoque combina arte, ciencia y responsabilidad. así debe evolucionar la arquitectura sostenible en el trópico: no a través de estilos importados, sino con inteligencia local.
+este enfoque combina arte, ciencia y responsabilidad. así debe evolucionar la arquitectura sostenible en el trópico: desde la inteligencia local.
 
 ## conclusión
 
