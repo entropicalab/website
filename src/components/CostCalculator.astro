@@ -21,6 +21,13 @@ const { locale } = Astro.props;
 // formspree endpoint (same as the contact form) — used for lead capture
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xkoerobb';
 
+// where formspree returns the visitor after a full-page (non-ajax) submit.
+// the ajax path shows the thanks state in place without leaving; this only
+// kicks in when fetch is blocked or formspree challenges the request and we
+// fall back to a native form post. without it, the fallback strands the
+// visitor on formspree.io and the lead looks like it "never sent".
+const RETURN_URL = (locale === 'en' ? '/en/tools/cost-calculator' : '/tools/cost-calculator') + '?sent=1';
+
 // central-value formatters for the assumptions table (server-rendered)
 const c = (x: Range) => Math.round((x.low + x.high) / 2);
 const money = (x: Range) => `$${c(x).toLocaleString('en-US')}`;
@@ -551,6 +558,7 @@ const sources = [
           <input type="hidden" name="_subject" value="entropica-lab.com · calculadora · nuevo lead" />
           <input type="hidden" name="origen" value="cost-calculator" />
           <input type="hidden" name="resumen" id="email-summary" value="" />
+          <input type="hidden" name="_next" value={RETURN_URL} />
           <div class="honeypot" aria-hidden="true"><input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></div>
         </form>
         <p class="res-note">{S.emailNote}</p>
@@ -948,6 +956,12 @@ const sources = [
         emailForm.submit();
       }
     });
+
+    // formspree bounced us back after a full-page fallback submit: show thanks.
+    if (new URLSearchParams(location.search).get('sent') === '1') {
+      $('email-block').hidden = true;
+      $('email-sent').hidden = false;
+    }
 
     syncWaterCool();
     syncMaintLabel();
