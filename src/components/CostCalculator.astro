@@ -937,24 +937,17 @@ const sources = [
 
     $('r-download')?.addEventListener('click', () => window.print());
 
+    // NOTE: submit natively (full-page POST), the same way the contact form does.
+    // an earlier ajax fetch() version silently failed on this formspree form
+    // (formspree rejects the ajax path here), so calculator leads never arrived
+    // while the contact form did. the native post posts straight to formspree,
+    // which then redirects back to RETURN_URL (?sent=1); the check above shows the
+    // thanks state on return. do not reintroduce fetch() without verifying leads
+    // actually land in the inbox.
     const emailForm = root.querySelector('.email-form') as HTMLFormElement | null;
-    emailForm?.addEventListener('submit', async (ev) => {
-      ev.preventDefault();
-      try {
-        const res = await fetch(emailForm.action, {
-          method: 'POST',
-          body: new FormData(emailForm),
-          headers: { Accept: 'application/json' },
-        });
-        if (res.ok) {
-          $('email-block').hidden = true;
-          $('email-sent').hidden = false;
-        } else {
-          emailForm.submit();
-        }
-      } catch {
-        emailForm.submit();
-      }
+    emailForm?.addEventListener('submit', () => {
+      // make sure the lead summary is current in the hidden field before posting.
+      render();
     });
 
     // formspree bounced us back after a full-page fallback submit: show thanks.
