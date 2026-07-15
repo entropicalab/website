@@ -32,6 +32,11 @@ const RETURN_URL = (locale === 'en' ? '/en/tools/cost-calculator' : '/tools/cost
 const c = (x: Range) => Math.round((x.low + x.high) / 2);
 const money = (x: Range) => `$${c(x).toLocaleString('en-US')}`;
 const money2 = (x: Range) => `$${((x.low + x.high) / 2).toFixed(2)}`;
+// full low–high band, server-rendered so the $/m² figures are crawlable text.
+// the results block above is javascript-only, so this table is the only cost
+// data a search engine can actually read on this page.
+const band = (x: Range) =>
+  `$${Math.round(x.low).toLocaleString('en-US')}–${Math.round(x.high).toLocaleString('en-US')}`;
 
 const S = {
   es: {
@@ -124,10 +129,12 @@ const S = {
     downloadReport: 'descargar reporte (pdf)',
     // assumptions
     assumptionsEb: '// qué hay detrás del cálculo',
-    assumptionsH: 'los promedios por categoría.',
+    assumptionsH: 'costo de construcción por m², por categoría.',
     assumptionsIntro:
       'cada estimación parte de promedios de mercado y de las líneas base del reglamento de edificación sostenible (res v.2). el consumo de iluminación, equipos y otros se estima por m² y no depende del aire acondicionado; solo el enfriamiento varía con el a/a, el microclima y la proporción de vidrio. la columna res v.2 reduce cada uso por separado (enfriamiento −40 %, iluminación −30 %, equipos −5 %): reducciones de diseño del código, no medidas.',
-    aCapex: 'construcción (estándar)',
+    aCapexBasic: 'construcción · básico',
+    aCapexStd: 'construcción · estándar',
+    aCapexPrem: 'construcción · premium',
     aEnergy: 'energía (100 % a/a)',
     aEnergyUnit: 'kwh/m²·año',
     aWater: 'agua',
@@ -241,10 +248,12 @@ const S = {
     finNote: 'default discount 6.25 % (SBP benchmark mortgage rate); tariff escalation 3 % (ASEP adjusts every 6 months).',
     downloadReport: 'download report (pdf)',
     assumptionsEb: '// what is behind the numbers',
-    assumptionsH: 'the per-category averages.',
+    assumptionsH: 'construction cost per m², by category.',
     assumptionsIntro:
       'every estimate starts from market averages and the energy-use baselines of the res v.2 sustainable-building code. lighting, plug loads and other are estimated per m² and do not depend on air-conditioning; only cooling varies with the a/c, the microclimate and the glazing ratio. the res v.2 column reduces each end use separately (cooling −40 %, lighting −30 %, plug −5 %): code design intent, not measured.',
-    aCapex: 'construction (standard)',
+    aCapexBasic: 'construction · basic',
+    aCapexStd: 'construction · standard',
+    aCapexPrem: 'construction · premium',
     aEnergy: 'energy (100 % a/c)',
     aEnergyUnit: 'kwh/m²·yr',
     aWater: 'water',
@@ -586,7 +595,9 @@ const sources = [
       {typOrder.map((k) => (
         <div class="assum-card">
           <div class="assum-title">{S.typ[k]}</div>
-          <div class="assum-row"><span class="ak">{S.aCapex}</span><span class="av">{money(CAPEX_M2[k].standard)}<span class="au">/m²</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aCapexBasic}</span><span class="av">{band(CAPEX_M2[k].basic)}<span class="au">/m²</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aCapexStd}</span><span class="av">{band(CAPEX_M2[k].standard)}<span class="au">/m²</span></span></div>
+          <div class="assum-row"><span class="ak">{S.aCapexPrem}</span><span class="av">{band(CAPEX_M2[k].premium)}<span class="au">/m²</span></span></div>
           <div class="assum-row"><span class="ak">{S.aEnergy}</span><span class="av">{c(EUI[k].fc)}<span class="au">{S.aEnergyUnit}</span></span></div>
           <div class="assum-row"><span class="ak">{S.aWater}</span><span class="av">{c(PERCAPITA[k])}<span class="au">{S.aWaterUnit}</span></span></div>
           <div class="assum-row"><span class="ak">{S.aOcc}</span><span class="av">{DENSITY[k]}<span class="au">{S.aOccUnit}{k === 'residential-sf' ? ` · ${S.aOccCap}` : ''}</span></span></div>
