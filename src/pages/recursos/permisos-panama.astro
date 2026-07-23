@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PermitFlowchart from '../../components/PermitFlowchart.astro';
+import { localized } from '../../i18n/utils';
+
+const locale = 'es' as const;
+---
+
+<BaseLayout
+  title="permisos de construcción en panamá · el mapa del proceso"
+  description="mapa interactivo del proceso de permisos de construcción en el municipio de panamá, centroamérica: anteproyecto, ventanilla única, construcción y ocupación, con impuestos y tasas estimadas por paso."
+  locale={locale}
+  ogImage="/arq-tropical.jpg"
+>
+  <section class="tool-hero">
+    <div class="site-wrap">
+      <div class="eyebrow">// recursos</div>
+      <h1 class="hero-h">
+        el mapa del permiso<br />
+        de construcción en panamá.
+      </h1>
+      <p class="hero-lede">
+        el proceso completo del municipio de panamá, paso a paso. elige tu punto de
+        partida, pon el tamaño y el costo por m², y verás los impuestos y las tasas que
+        carga cada etapa. es un mapa general, no la lista de documentos.
+      </p>
+    </div>
+  </section>
+
+  <section class="tool-body">
+    <div class="site-wrap">
+      <PermitFlowchart locale={locale} />
+    </div>
+  </section>
+
+  <section class="tool-cta">
+    <div class="site-wrap">
+      <div class="cta-inner">
+        <div class="eyebrow">// del mapa al proyecto</div>
+        <h2 class="cta-h">un idóneo firma los planos. hagamos que pasen a la primera.</h2>
+        <a class="btn amber" href={localized('/contact', locale)}>
+          cuéntanos de tu proyecto
+          <span class="arrow-tail" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tool-hero { padding: 96px 0 40px; }
+  .tool-hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; }
+  .hero-h { font-size: clamp(32px, 4.5vw, 56px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; font-weight: 300; text-wrap: balance; }
+  .hero-lede { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 64ch; margin: 0; font-weight: 300; }
+
+  .tool-body { padding: 24px 0 64px; }
+
+  .tool-cta { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .cta-inner { max-width: 720px; }
+  .cta-inner .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; font-weight: 400; }
+  .cta-h { font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 28px; font-weight: 300; text-wrap: balance; }
+</style>
