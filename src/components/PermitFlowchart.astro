@@ -311,6 +311,14 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
 <style>
   .pmap { padding: 8px 0 24px; }
 
+  /* the brand stylesheet forces text-transform: lowercase globally. these
+     elements mix lowercase prose with UPPERCASE siglas (RLA, DOYC…) and the
+     B/. currency, so opt them out to render as authored. */
+  .pstep-title, .pstep-tip, .pstep-fee, .pnest-chip, .pnest-tip,
+  .pmap-notes li, .est-v, .est-sub, .pin-val, .est-note, .pmap-foot {
+    text-transform: none;
+  }
+
   /* scenario selector */
   .pmap-start { padding: 8px 0; }
   .pmap-start-q { font-size: clamp(18px, 2vw, 22px); font-weight: 300; letter-spacing: -0.015em; margin: 0 0 18px; }
@@ -375,12 +383,14 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
   .pmap-notes li::before { content: '*'; position: absolute; left: 0; color: var(--amber); }
 
   /* highlighted cost estimator */
-  .pmap-estimator { margin-top: 40px; border: 1px solid var(--ink-on-paper); background: var(--paper-2); padding: 28px 28px 24px; display: grid; grid-template-columns: minmax(180px, 260px) 1fr; gap: 32px 40px; align-items: start; }
+  .pmap-estimator { margin-top: 40px; border: 1px solid var(--ink-on-paper); background: var(--paper-2); padding: 28px 28px 24px; display: grid; grid-template-columns: auto 1fr; gap: 32px 48px; align-items: start; }
   @media (max-width: 700px) { .pmap-estimator { grid-template-columns: 1fr; gap: 24px; } }
   .est-figure { border-left: 3px solid var(--amber); padding-left: 18px; }
   .est-k { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
   .est-star { color: var(--amber); }
-  .est-v { font-size: clamp(32px, 4vw, 44px); font-weight: 300; letter-spacing: -0.03em; color: var(--amber); font-feature-settings: 'tnum' 1; line-height: 1.05; margin: 6px 0 4px; }
+  /* reserve width for the widest possible value ("> B/. 206,295" at the slider
+     max, monospace = 1ch per char) so the number never reflows as you drag. */
+  .est-v { font-size: clamp(30px, 3.6vw, 42px); font-weight: 300; letter-spacing: -0.03em; color: var(--amber); font-feature-settings: 'tnum' 1; line-height: 1.05; margin: 6px 0 4px; min-width: 13ch; white-space: nowrap; }
   .est-sub { font-size: 12px; color: var(--mute-on-paper); font-weight: 300; }
   .est-sub b { color: var(--ink-on-paper); font-weight: 400; }
   .est-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }
@@ -423,10 +433,14 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
       const value = area * cost;
       const tax = constructionTax(value);
 
+      // at the slider ceiling the real project can be larger, so show "> ".
+      const atMax = area >= Number(areaEl.max) && cost >= Number(costEl.max);
+      const pre = atMax ? '> ' : '';
+
       areaVal.textContent = `${money.format(area)} m²`;
       costVal.textContent = b(cost);
-      valueEl.textContent = b(value);
-      taxHead.textContent = b(tax);
+      valueEl.textContent = `${pre}${b(value)}`;
+      taxHead.textContent = `${pre}${b(tax)}`;
 
       for (const li of stepEls) {
         const feeEl = li.querySelector('[data-fee]') as HTMLElement;

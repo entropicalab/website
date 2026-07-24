@@ -102,8 +102,10 @@ const locale = 'es' as const;
 
   .proceso-resumen { padding: 64px 0; border-top: 1px solid var(--line-on-paper); }
   .proceso-resumen .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 16px; display: inline-block; }
-  .resumen-h { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.2; font-weight: 300; letter-spacing: -0.015em; margin: 0 0 16px; max-width: 34ch; text-wrap: balance; }
+  .resumen-h { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.2; font-weight: 300; letter-spacing: -0.015em; margin: 0 0 16px; max-width: 52ch; text-wrap: balance; }
   .resumen-intro { font-size: 15px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 300; max-width: 70ch; margin: 0 0 32px; }
+  /* opt out of the brand's global lowercase so siglas (RLA, DOYC…) render caps */
+  .resumen-intro, .resumen-list h3, .resumen-list p { text-transform: none; }
   .resumen-list { list-style: none; counter-reset: r; padding: 0; margin: 0; display: flex; flex-direction: column; }
   .resumen-list li { counter-increment: r; padding: 22px 0; border-top: 1px solid var(--line-on-paper-2); display: grid; grid-template-columns: 36px 1fr; gap: 16px; }
   .resumen-list li::before { content: counter(r, decimal-leading-zero); font-size: 13px; color: var(--amber); font-weight: 400; font-feature-settings: 'tnum' 1; padding-top: 3px; }
