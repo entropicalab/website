@@ -33,6 +33,43 @@ const locale = 'es' as const;
     </div>
   </section>
 
+  <!-- crawlable text summary: the same content in plain prose, so the process
+       is indexable regardless of how the interactive map renders. -->
+  <section class="proceso-resumen">
+    <div class="site-wrap">
+      <div class="eyebrow">// el proceso en texto</div>
+      <h2 class="resumen-h">las etapas del permiso de construcción en el municipio de panamá.</h2>
+      <p class="resumen-intro">
+        construir en el municipio de panamá pasa por una secuencia de aprobaciones ante la
+        dirección de obras y construcciones (DOYC) y la ventanilla única, donde varias
+        instituciones revisan los planos en simultáneo. este es el orden general, según de
+        dónde partas: un lote vacío, una demolición para construir nuevo, o una renovación.
+      </p>
+      <ol class="resumen-list">
+        <li>
+          <h3>anteproyecto (RLA)</h3>
+          <p>aprobación urbana del concepto: uso de suelo, altura, retiros y densidad. se presenta 100% en línea por el portal RLA de alcaldía digital, lo firma un arquitecto idóneo, y tiene una validez de 3 años. da derecho a preventa, pero no autoriza construir.</p>
+        </li>
+        <li>
+          <h3>planos constructivos (RDP) o misceláneos (RDPM)</h3>
+          <p>la revisión técnica multidisciplinaria en la ventanilla única, donde DOYC, DINASEPI (bomberos), MINSA, MOP, MIVIOT, IDAAN, MIAMBIENTE y ATTT evalúan los planos a la vez. el RDP requiere anteproyecto previo; el RDPM, para obras que no cambian el uso ni la zonificación, está exento. al aprobar, los planos reciben un número CONS con validez de 5 años.</p>
+        </li>
+        <li>
+          <h3>demolición y movimiento de tierra</h3>
+          <p>si hay una estructura que retirar, el permiso de demolición exige un plan firmado por un ingeniero idóneo, y DOYC calcula el impuesto de demolición en inspección. la terracería y las fundaciones tempranas pueden arrancar bajo la autorización transitoria de construcción (ATC) mientras se terminan de revisar los planos.</p>
+        </li>
+        <li>
+          <h3>permiso digital de construcción (PDC)</h3>
+          <p>autoriza la construcción física. DOYC fija el avalúo en 10 días hábiles y emite el permiso 5 días hábiles después del pago. aquí se paga el impuesto de construcción, progresivo sobre el valor de la obra según el acuerdo 73-17: 1.00% hasta B/. 500,000, 1.26% sobre el excedente hasta B/. 1,000,000, y 0.50% de ahí en adelante.</p>
+        </li>
+        <li>
+          <h3>permiso de ocupación (PDO)</h3>
+          <p>la inspección final. sin objeciones técnicas, DOYC calcula el impuesto de ocupación y emite el PDO con firma digital y código QR. es el documento que legaliza el uso del edificio.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
   <section class="tool-cta">
     <div class="site-wrap">
       <div class="cta-inner">
@@ -54,6 +91,17 @@ const locale = 'es' as const;
   .hero-lede { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 64ch; margin: 0; font-weight: 300; }
 
   .tool-body { padding: 24px 0 64px; }
+
+  .proceso-resumen { padding: 64px 0; border-top: 1px solid var(--line-on-paper); }
+  .proceso-resumen .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 16px; display: inline-block; }
+  .resumen-h { font-size: clamp(22px, 2.6vw, 30px); font-weight: 300; letter-spacing: -0.015em; margin: 0 0 16px; max-width: 26ch; text-wrap: balance; }
+  .resumen-intro { font-size: 15px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 300; max-width: 70ch; margin: 0 0 32px; }
+  .resumen-list { list-style: none; counter-reset: r; padding: 0; margin: 0; display: flex; flex-direction: column; }
+  .resumen-list li { counter-increment: r; padding: 22px 0; border-top: 1px solid var(--line-on-paper-2); display: grid; grid-template-columns: 36px 1fr; gap: 16px; }
+  .resumen-list li::before { content: counter(r, decimal-leading-zero); font-size: 13px; color: var(--amber); font-weight: 400; font-feature-settings: 'tnum' 1; padding-top: 3px; }
+  .resumen-list h3 { font-size: 16px; font-weight: 400; letter-spacing: -0.01em; margin: 0 0 6px; }
+  .resumen-list p { font-size: 14px; line-height: 1.6; color: var(--mute-on-paper); font-weight: 300; margin: 0; max-width: 72ch; }
+  @media (max-width: 640px) { .resumen-list li { grid-template-columns: 1fr; gap: 6px; } }
 
   .tool-cta { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
   .cta-inner { max-width: 720px; }

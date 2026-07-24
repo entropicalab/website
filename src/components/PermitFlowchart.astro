@@ -1,129 +1,158 @@
 ---
 // interactive map of the municipio de panamá permitting process.
-// base draft · español only · one component, vanilla (no libraries), same
-// pattern as CostCalculator.astro. the client island lives at the bottom and
-// imports the pure fee model from src/lib/permitFees.ts.
+// base draft · español only · vanilla (no libraries), same pattern as
+// CostCalculator.astro. the client island at the bottom imports the pure fee
+// model from src/lib/permitFees.ts.
+//
+// note on casing: entrópica writes lowercase, but the institutional siglas
+// (RLA, RDP, PDC, DOYC, …) are kept UPPERCASE on purpose, so the reader can
+// tell they are acronyms. this is a deliberate exception to the house style.
 import { FIXED_FEES } from '../lib/permitFees';
 
-// default construction cost per m² (B/.), matches the site's stated median.
-const DEFAULT_COST_M2 = 1000;
-const DEFAULT_AREA = 250;
+const DEFAULT_COST_M2 = 1000; // B/. per m², matches the site's stated median
+const DEFAULT_AREA = 250; // m²
 
-// the three entry scenarios, chosen by the visitor at the top.
+// entry scenarios, chosen at the top. icon = google material symbol.
 const scenarios = [
-  { key: 'vacio', label: 'lote vacío', sub: 'obra nueva' },
-  { key: 'demoler', label: 'demoler y construir', sub: 'estructura existente' },
-  { key: 'renovar', label: 'renovar lo existente', sub: 'sin demoler' },
+  { key: 'vacio', label: 'lote vacío', sub: 'obra nueva', icon: 'grass' },
+  { key: 'demoler', label: 'demoler y construir', sub: 'estructura existente', icon: 'demolition' },
+  { key: 'renovar', label: 'renovar lo existente', sub: 'sin demoler', icon: 'handyman' },
 ] as const;
+type ScnKey = (typeof scenarios)[number]['key'];
 
-// the institutions that review inside the ventanilla única (nested box).
+// institutions that review in parallel inside the ventanilla única (nested box).
 const ventanilla = [
-  { k: 'doyc', n: 'doyc', d: 'dirección de obras y construcciones' },
-  { k: 'dinasepi', n: 'dinasepi', d: 'bomberos · seguridad y prevención de incendios' },
-  { k: 'minsa', n: 'minsa', d: 'ministerio de salud' },
-  { k: 'mop', n: 'mop', d: 'ministerio de obras públicas' },
-  { k: 'miviot', n: 'miviot', d: 'vivienda y ordenamiento territorial' },
-  { k: 'idaan', n: 'idaan', d: 'acueductos y alcantarillados' },
-  { k: 'miambiente', n: 'miambiente', d: 'ministerio de ambiente' },
-  { k: 'attt', n: 'attt', d: 'tránsito y transporte terrestre' },
+  { n: 'DOYC', d: 'dirección de obras y construcciones' },
+  { n: 'DINASEPI', d: 'bomberos · seguridad y prevención de incendios' },
+  { n: 'MINSA', d: 'ministerio de salud' },
+  { n: 'MOP', d: 'ministerio de obras públicas' },
+  { n: 'MIVIOT', d: 'vivienda y ordenamiento territorial' },
+  { n: 'IDAAN', d: 'acueductos y alcantarillados' },
+  { n: 'MIAMBIENTE', d: 'ministerio de ambiente' },
+  { n: 'ATTT', d: 'tránsito y transporte terrestre' },
 ];
 
-// the steps. each carries the scenarios it appears in, its order within each
-// scenario, and how its fee is computed. fee.kind:
-//   'fixed'  → a flat B/. amount we can show
-//   'tax'    → the progressive construction tax, computed from size × cost/m²
-//   'assessed' → doyc assesses it on inspection, no public formula
-type StepKey = 'anteproyecto' | 'demolicion' | 'rdp' | 'rdpm' | 'pdc' | 'ocupacion';
+// responsibility tags. only these three roles are used across the map.
+type Role = 'arquitecto' | 'contratista' | 'propietario';
+
+// fee.kind: 'fixed' shows a flat B/.; 'tax' is the progressive construction
+// tax; 'assessed' is set by DOYC on inspection; 'none' is an authorization
+// with no separate charge.
 interface Step {
-  key: StepKey;
-  num: string;
+  key: string;
   title: string;
   inst: string;
   online?: boolean;
-  nested?: boolean; // renders the ventanilla única institution chips
-  // order per scenario; absent = hidden in that scenario
-  order: Partial<Record<(typeof scenarios)[number]['key'], number>>;
-  cond?: Partial<Record<(typeof scenarios)[number]['key'], string>>; // "conditional" tag
-  feeKind: 'fixed' | 'tax' | 'assessed';
-  feeFixed?: number; // computable flat portion (B/.)
-  feeNote?: string; // extra per-unit / variable note
+  nested?: boolean;
+  roles: Role[];
+  order: Partial<Record<ScnKey, number>>;
+  feeKind: 'fixed' | 'tax' | 'assessed' | 'none';
+  feeFixed?: number;
+  feeNote?: string;
   tip: string;
 }
 
 const steps: Step[] = [
   {
     key: 'anteproyecto',
-    num: '01',
-    title: 'anteproyecto (rla)',
-    inst: 'mupa · doyc',
+    title: 'anteproyecto (RLA)',
+    inst: 'MUPA · DOYC',
     online: true,
-    order: { vacio: 1, demoler: 1, renovar: 1 },
-    cond: { renovar: 'solo si cambia uso, zonificación o densidad' },
+    roles: ['arquitecto'],
+    order: { vacio: 1, demoler: 1 },
     feeKind: 'fixed',
     feeFixed: FIXED_FEES.anteproyectoBase,
     feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina`,
-    tip: 'aprobación urbana del concepto: uso de suelo, altura, retiros y densidad. 100% en línea por el portal rla de alcaldía digital, lo presenta un arquitecto idóneo. no autoriza construir, pero da derecho a preventa. validez 3 años, prorrogable 1 más.',
+    tip: 'aprobación urbana del concepto: uso de suelo, altura, retiros y densidad. 100% en línea por el portal RLA de alcaldía digital, lo presenta un arquitecto idóneo. no autoriza construir, pero da derecho a preventa. validez 3 años, prorrogable 1 más.',
   },
   {
     key: 'demolicion',
-    num: '02',
     title: 'permiso de demolición',
-    inst: 'doyc',
-    order: { demoler: 2, renovar: 2 },
-    cond: { renovar: 'solo si hay demolición parcial' },
+    inst: 'DOYC',
+    roles: ['contratista'],
+    order: { demoler: 2 },
     feeKind: 'assessed',
-    feeNote: 'impuesto de demolición · mitradel si supera B/. 1,000,000',
-    tip: 'requiere plan de demolición firmado por ingeniero idóneo, con la secuencia de retiro de elementos para evitar colapso progresivo. doyc inspecciona el sitio, calcula el impuesto de demolición y emite el permiso en máximo 5 días hábiles tras el pago.',
+    feeNote: 'impuesto de demolición · MITRADEL si supera B/. 1,000,000',
+    tip: 'requiere un plan de demolición firmado por ingeniero idóneo, con la secuencia de retiro de elementos para evitar el colapso progresivo. DOYC inspecciona el sitio, calcula el impuesto de demolición y emite el permiso en máximo 5 días hábiles tras el pago.',
+  },
+  {
+    key: 'terraceria',
+    title: 'movimiento de tierra (ATC)',
+    inst: 'DOYC',
+    roles: ['contratista'],
+    order: { vacio: 2, demoler: 3 },
+    feeKind: 'none',
+    feeNote: 'autorización transitoria · ATC',
+    tip: 'la autorización transitoria de construcción (ATC) permite arrancar la terracería, el movimiento de tierra y las fundaciones tempranas mientras la ventanilla única termina de revisar los planos. no lleva un impuesto aparte: el de construcción se paga en el PDC.',
   },
   {
     key: 'rdp',
-    num: '03',
-    title: 'planos constructivos (rdp)',
+    title: 'planos constructivos (RDP)',
     inst: 'ventanilla única',
     nested: true,
-    order: { vacio: 2, demoler: 3 },
+    roles: ['arquitecto'],
+    order: { vacio: 3, demoler: 4 },
     feeKind: 'fixed',
     feeFixed: FIXED_FEES.minsaReview + FIXED_FEES.mopReview,
-    feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina + tarifas dinasepi`,
-    tip: 'revisión técnica multidisciplinaria, en simultáneo, por todas las instituciones de la ventanilla única. requiere anteproyecto aprobado. al aprobar, los planos se firman por el director de doyc y se registran con un número cons. validez 5 años.',
+    feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina + tarifas DINASEPI`,
+    tip: 'revisión técnica multidisciplinaria, en simultáneo, por todas las instituciones de la ventanilla única. requiere un anteproyecto aprobado. al aprobar, los planos se firman por el director de DOYC y se registran con un número CONS. validez 5 años.',
   },
   {
     key: 'rdpm',
-    num: '03',
-    title: 'planos misceláneos (rdpm)',
+    title: 'planos misceláneos (RDPM)',
     inst: 'ventanilla única',
     nested: true,
-    order: { renovar: 3 },
+    roles: ['arquitecto'],
+    order: { renovar: 1 },
     feeKind: 'fixed',
     feeFixed: FIXED_FEES.minsaReview + FIXED_FEES.mopReview,
-    feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina + tarifas dinasepi`,
-    tip: 'la vía para obras que no alteran uso de suelo, densidad ni zonificación. exenta del anteproyecto, pero pasa por la misma revisión de la ventanilla única que un rdp.',
+    feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina + tarifas DINASEPI`,
+    tip: 'la vía para obras que no alteran el uso de suelo, la densidad ni la zonificación. exenta del anteproyecto, pero pasa por la misma revisión de la ventanilla única que un RDP.',
   },
   {
     key: 'pdc',
-    num: '04',
-    title: 'permiso digital de construcción (pdc)',
-    inst: 'doyc',
+    title: 'permiso digital de construcción (PDC)',
+    inst: 'DOYC',
     online: true,
-    order: { vacio: 3, demoler: 4, renovar: 4 },
+    roles: ['arquitecto', 'propietario'],
+    order: { vacio: 4, demoler: 5, renovar: 2 },
     feeKind: 'tax',
     feeNote: 'impuesto de construcción · acuerdo 73-17',
-    tip: 'autoriza la construcción física. doyc revisa el presupuesto y fija el avalúo en 10 días hábiles, y emite el permiso 5 días hábiles después del pago del impuesto. la atc permite arrancar movimiento de tierra y fundaciones mientras se completa la revisión.',
+    tip: 'autoriza la construcción física. DOYC revisa el presupuesto y fija el avalúo en 10 días hábiles, y emite el permiso 5 días hábiles después del pago del impuesto. el impuesto de construcción es progresivo sobre el valor de la obra.',
   },
   {
     key: 'ocupacion',
-    num: '05',
-    title: 'permiso de ocupación (pdo)',
-    inst: 'doyc',
-    order: { vacio: 4, demoler: 5, renovar: 5 },
+    title: 'permiso de ocupación (PDO)',
+    inst: 'DOYC',
+    roles: ['propietario'],
+    order: { vacio: 5, demoler: 6, renovar: 3 },
     feeKind: 'assessed',
     feeNote: 'impuesto de ocupación',
-    tip: 'la inspección final. si no hay objeciones técnicas, doyc calcula el impuesto de ocupación y, tras el pago, emite el pdo con firma digital y código qr. es el documento que legaliza el uso del edificio.',
+    tip: 'la inspección final. si no hay objeciones técnicas, DOYC calcula el impuesto de ocupación y, tras el pago, emite el PDO con firma digital y código QR. es el documento que legaliza el uso del edificio.',
   },
 ];
+
+// asterisk notes shown at the bottom of a scenario tab.
+const scenarioNotes: Record<ScnKey, string[]> = {
+  vacio: [],
+  demoler: [],
+  renovar: [
+    'el anteproyecto (RLA) solo se requiere si la obra cambia el uso, la zonificación o la densidad.',
+    'la demolición aplica solo si hay demolición parcial de la estructura.',
+  ],
+};
+
+// server-render the default (lote vacío) sequence numbered, so the page reads
+// correctly before javascript runs and for crawlers. javascript re-numbers on
+// scenario change.
+const defaultScn: ScnKey = 'vacio';
+const defaultOrder = steps
+  .filter((s) => s.order[defaultScn])
+  .sort((a, b) => (a.order[defaultScn]! - b.order[defaultScn]!));
+const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padStart(2, '0')]));
 ---
 
-<section class="pmap" data-cost-default={DEFAULT_COST_M2} data-area-default={DEFAULT_AREA}>
+<section class="pmap">
   <!-- ============ inputs ============ -->
   <div class="pmap-inputs">
     <div class="pin-field">
@@ -138,16 +167,17 @@ const steps: Step[] = [
     <div class="pin-value">
       <div class="pin-value-k">valor estimado de obra</div>
       <div class="pin-value-v" id="pm-project-value">B/. 250,000</div>
-      <div class="pin-value-note" id="pm-tax-head">impuesto de construcción estimado: <b>B/. 2,500</b></div>
+      <div class="pin-value-note" id="pm-tax-head">impuesto de construcción estimado: <b>B/. 2,495</b></div>
     </div>
   </div>
 
   <!-- ============ scenario selector ============ -->
   <div class="pmap-start">
-    <div class="pmap-start-q">quiero construir algo. ¿de qué parto?</div>
+    <h2 class="pmap-start-q">quiero construir algo. ¿de qué parto?</h2>
     <div class="seg" role="group" id="pm-scn">
       {scenarios.map((s, i) => (
         <button type="button" class={`seg-btn${i === 0 ? ' active' : ''}`} data-scn={s.key}>
+          <span class="material-symbols-outlined seg-icon">{s.icon}</span>
           <span class="seg-label">{s.label}</span>
           <span class="seg-sub">{s.sub}</span>
         </button>
@@ -164,42 +194,55 @@ const steps: Step[] = [
         data-order-vacio={st.order.vacio ?? ''}
         data-order-demoler={st.order.demoler ?? ''}
         data-order-renovar={st.order.renovar ?? ''}
-        data-cond-renovar={st.cond?.renovar ?? ''}
         data-fee-kind={st.feeKind}
         data-fee-fixed={st.feeFixed ?? ''}
         data-fee-note={st.feeNote ?? ''}
+        hidden={!st.order[defaultScn]}
         tabindex="0"
       >
         <div class="pstep-card">
           <div class="pstep-head">
-            <span class="pstep-num">{st.num}</span>
+            <span class="pstep-num">{defaultNum.get(st.key) ?? ''}</span>
             <div class="pstep-titles">
-              <div class="pstep-title">{st.title}</div>
+              <h3 class="pstep-title">{st.title}</h3>
               <div class="pstep-inst">{st.inst}{st.online ? ' · en línea' : ''}</div>
             </div>
             <span class="pstep-fee" data-fee>—</span>
           </div>
-          <div class="pstep-cond" data-cond hidden></div>
+          <div class="pstep-roles">
+            {st.roles.map((r) => <span class={`role role-${r}`}>{r}</span>)}
+          </div>
           {st.nested && (
             <div class="pstep-nested">
               <div class="pnest-label">revisión simultánea · ventanilla única</div>
               <div class="pnest-chips">
                 {ventanilla.map((v) => (
-                  <span class="pnest-chip" tabindex="0" data-tip={v.d}>{v.n}<span class="pnest-tip">{v.d}</span></span>
+                  <span class="pnest-chip" tabindex="0">{v.n}<span class="pnest-tip">{v.d}</span></span>
                 ))}
               </div>
             </div>
           )}
-          <div class="pstep-tip">{st.tip}</div>
+          <p class="pstep-tip">{st.tip}</p>
         </div>
       </li>
     ))}
   </ol>
 
+  <!-- per-scenario asterisk notes (server-rendered, indexable) -->
+  <div class="pmap-notes">
+    {(Object.keys(scenarioNotes) as ScnKey[]).map((k) =>
+      scenarioNotes[k].length ? (
+        <ul data-scn-notes={k} hidden={k !== defaultScn}>
+          {scenarioNotes[k].map((n) => <li>{n}</li>)}
+        </ul>
+      ) : null
+    )}
+  </div>
+
   <p class="pmap-foot">
     mapa general del proceso, no la lista completa de documentos. las cifras son
     estimaciones con datos públicos de 2026, para orientar. el impuesto de demolición y el
-    de ocupación los calcula doyc en inspección, así que aquí se marcan como tales. para el
+    de ocupación los calcula DOYC en inspección, así que aquí se marcan como tales. para el
     número de tu proyecto, hablemos.
   </p>
 </section>
@@ -207,12 +250,12 @@ const steps: Step[] = [
 <style>
   .pmap { padding: 8px 0 24px; }
 
-  /* inputs */
+  /* inputs, aligned to the top of the row */
   .pmap-inputs {
     display: grid;
     grid-template-columns: 1fr 1fr auto;
     gap: 32px;
-    align-items: end;
+    align-items: start;
     padding-bottom: 32px;
     border-bottom: 1px solid var(--line-on-paper);
   }
@@ -231,65 +274,75 @@ const steps: Step[] = [
 
   /* scenario selector */
   .pmap-start { padding: 32px 0 8px; }
-  .pmap-start-q { font-size: clamp(18px, 2vw, 22px); font-weight: 300; letter-spacing: -0.015em; margin-bottom: 18px; }
+  .pmap-start-q { font-size: clamp(18px, 2vw, 22px); font-weight: 300; letter-spacing: -0.015em; margin: 0 0 18px; }
   .pmap-start .seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line-on-paper); }
   @media (max-width: 640px) { .pmap-start .seg { grid-template-columns: 1fr; } }
-  .seg-btn { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; text-align: left; background: none; border: none; border-right: 1px solid var(--line-on-paper); font-family: inherit; padding: 14px 16px; cursor: pointer; color: var(--mute-on-paper); transition: all 0.15s; }
+  .seg-btn { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; text-align: left; background: none; border: none; border-right: 1px solid var(--line-on-paper); font-family: inherit; padding: 16px 18px; cursor: pointer; color: var(--mute-on-paper); transition: all 0.15s; }
   .seg-btn:last-child { border-right: none; }
   @media (max-width: 640px) { .seg-btn { border-right: none; border-bottom: 1px solid var(--line-on-paper); } .seg-btn:last-child { border-bottom: none; } }
   .seg-btn:hover { color: var(--ink-on-paper); }
   .seg-btn.active { background: var(--amber); color: #1a1a1a; }
+  .seg-icon { font-size: 26px; font-variation-settings: 'wght' 300; margin-bottom: 2px; }
   .seg-label { font-size: 14px; font-weight: 400; letter-spacing: 0.01em; }
   .seg-sub { font-size: 11px; opacity: 0.7; }
 
   /* flow */
   .pmap-flow { list-style: none; padding: 0; margin: 40px 0 0; display: flex; flex-direction: column; }
   .pstep { display: flex; position: relative; padding-bottom: 28px; outline: none; }
-  .pstep:last-child { padding-bottom: 0; }
-  /* connector line + arrow between visible steps */
+  .pstep[hidden] { display: none; }
+  .pstep:last-of-type { padding-bottom: 0; }
+  /* connector line between visible steps */
   .pstep::after { content: ''; position: absolute; left: 27px; top: 100%; width: 1px; height: 28px; background: var(--line-on-paper); transform: translateY(-28px); }
-  .pstep:last-child::after { display: none; }
+  .pstep:last-of-type::after { display: none; }
   .pstep-card { position: relative; flex: 1; border: 1px solid var(--line-on-paper); background: var(--paper); padding: 20px 24px; transition: border-color 0.15s; }
   .pstep:hover .pstep-card, .pstep:focus .pstep-card, .pstep:focus-within .pstep-card { border-color: var(--ink-on-paper); }
   .pstep-head { display: grid; grid-template-columns: 32px 1fr auto; gap: 16px; align-items: baseline; }
   .pstep-num { font-size: 13px; color: var(--amber); font-weight: 400; font-feature-settings: 'tnum' 1; letter-spacing: 0.06em; }
-  .pstep-title { font-size: 17px; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; }
+  .pstep-title { font-size: 17px; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; margin: 0; }
   .pstep-inst { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-top: 4px; }
   .pstep-fee { font-size: 14px; font-weight: 400; text-align: right; white-space: nowrap; font-feature-settings: 'tnum' 1; color: var(--ink-on-paper); }
-  .pstep-fee.assessed { color: var(--mute-on-paper-2); font-size: 12px; font-style: italic; font-weight: 300; }
+  .pstep-fee.assessed, .pstep-fee.none { color: var(--mute-on-paper-2); font-size: 12px; font-style: italic; font-weight: 300; }
   .pstep-fee.tax { color: var(--amber); }
 
-  .pstep-cond { grid-column: 2 / -1; margin: 10px 0 0 48px; font-size: 12px; font-weight: 300; color: var(--mute-on-paper); font-style: italic; }
-  .pstep-cond::before { content: '↳ '; color: var(--amber); font-style: normal; }
+  /* responsibility tags */
+  .pstep-roles { display: flex; gap: 6px; margin: 12px 0 0 48px; }
+  .role { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 400; padding: 3px 8px; border: 1px solid var(--line-on-paper); color: var(--mute-on-paper); }
+  .role-propietario { border-color: var(--amber); color: var(--ink-on-paper); }
 
   /* nested ventanilla única */
   .pstep-nested { margin: 16px 0 0 48px; padding: 14px 16px; background: var(--paper-2); border: 1px solid var(--line-on-paper-2); }
   .pnest-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 12px; }
   .pnest-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pnest-chip { position: relative; font-size: 12px; font-weight: 400; letter-spacing: 0.02em; padding: 5px 10px; background: var(--paper); border: 1px solid var(--line-on-paper); color: var(--ink-on-paper); cursor: help; outline: none; }
+  .pnest-chip { position: relative; font-size: 12px; font-weight: 400; letter-spacing: 0.03em; padding: 5px 10px; background: var(--paper); border: 1px solid var(--line-on-paper); color: var(--ink-on-paper); cursor: help; outline: none; }
   .pnest-chip:hover, .pnest-chip:focus { border-color: var(--amber); }
-  .pnest-tip { position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 5; width: max-content; max-width: 240px; background: #1c1c1c; color: #f4f1ea; font-size: 11px; font-weight: 300; letter-spacing: 0; line-height: 1.4; padding: 8px 10px; opacity: 0; visibility: hidden; transition: opacity 0.12s; pointer-events: none; }
+  .pnest-tip { position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 5; width: max-content; max-width: 240px; background: #1c1c1c; color: #f4f1ea; font-size: 11px; font-weight: 300; letter-spacing: 0; text-transform: none; line-height: 1.4; padding: 8px 10px; opacity: 0; visibility: hidden; transition: opacity 0.12s; pointer-events: none; }
   .pnest-chip:hover .pnest-tip, .pnest-chip:focus .pnest-tip { opacity: 1; visibility: visible; }
 
   /* per-step tooltip */
-  .pstep-tip { margin: 14px 0 0 48px; font-size: 13px; line-height: 1.55; color: var(--mute-on-paper); font-weight: 300; max-width: 68ch; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.25s ease, opacity 0.2s, margin 0.25s; }
-  .pstep:hover .pstep-tip, .pstep:focus .pstep-tip, .pstep:focus-within .pstep-tip, .pstep.open .pstep-tip { max-height: 200px; opacity: 1; }
+  .pstep-tip { margin: 14px 0 0 48px; font-size: 13px; line-height: 1.55; color: var(--mute-on-paper); font-weight: 300; max-width: 68ch; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.25s ease, opacity 0.2s; }
+  .pstep:hover .pstep-tip, .pstep:focus .pstep-tip, .pstep:focus-within .pstep-tip, .pstep.open .pstep-tip { max-height: 240px; opacity: 1; }
   @media (max-width: 640px) {
     .pstep-head { grid-template-columns: 28px 1fr; }
     .pstep-fee { grid-column: 2; text-align: left; margin-top: 6px; }
-    .pstep-cond, .pstep-nested, .pstep-tip { margin-left: 0; }
+    .pstep-roles, .pstep-nested, .pstep-tip { margin-left: 0; }
   }
 
-  .pmap-foot { margin-top: 36px; font-size: 12px; line-height: 1.6; color: var(--mute-on-paper-2); font-weight: 300; font-style: italic; max-width: 72ch; }
+  .pmap-notes { margin-top: 28px; }
+  .pmap-notes ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .pmap-notes li { font-size: 12px; line-height: 1.5; color: var(--mute-on-paper); font-weight: 300; padding-left: 16px; position: relative; }
+  .pmap-notes li::before { content: '*'; position: absolute; left: 0; color: var(--amber); }
+
+  .pmap-foot { margin-top: 28px; font-size: 12px; line-height: 1.6; color: var(--mute-on-paper-2); font-weight: 300; font-style: italic; max-width: 72ch; }
 </style>
 
 <script>
-  import { constructionTax, FIXED_FEES } from '../lib/permitFees';
+  import { constructionTax } from '../lib/permitFees';
 
   const root = document.querySelector('.pmap') as HTMLElement | null;
   if (root) {
     const money = new Intl.NumberFormat('es-PA', { maximumFractionDigits: 0 });
     const b = (n: number) => `B/. ${money.format(Math.round(n))}`;
+    const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
     const areaEl = document.getElementById('pm-area') as HTMLInputElement;
     const costEl = document.getElementById('pm-cost') as HTMLInputElement;
@@ -298,8 +351,9 @@ const steps: Step[] = [
     const valueEl = document.getElementById('pm-project-value')!;
     const taxHead = document.getElementById('pm-tax-head')!;
     const flow = document.getElementById('pm-flow') as HTMLElement;
-    const steps = Array.from(flow.querySelectorAll<HTMLElement>('.pstep'));
+    const stepEls = Array.from(flow.querySelectorAll<HTMLElement>('.pstep'));
     const scnBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('#pm-scn .seg-btn'));
+    const noteLists = Array.from(root.querySelectorAll<HTMLElement>('[data-scn-notes]'));
 
     let scenario: 'vacio' | 'demoler' | 'renovar' = 'vacio';
 
@@ -314,17 +368,20 @@ const steps: Step[] = [
       valueEl.textContent = b(value);
       taxHead.innerHTML = `impuesto de construcción estimado: <b>${b(tax)}</b>`;
 
-      for (const li of steps) {
+      for (const li of stepEls) {
         const feeEl = li.querySelector('[data-fee]') as HTMLElement;
-        const kind = li.dataset.feeKind;
+        const kind = li.dataset.feeKind ?? 'fixed';
         const note = li.dataset.feeNote ?? '';
-        feeEl.classList.remove('assessed', 'tax');
+        feeEl.classList.remove('assessed', 'tax', 'none');
         if (kind === 'tax') {
           feeEl.classList.add('tax');
           feeEl.textContent = `≈ ${b(tax)}`;
         } else if (kind === 'assessed') {
           feeEl.classList.add('assessed');
           feeEl.textContent = 'se calcula en inspección';
+        } else if (kind === 'none') {
+          feeEl.classList.add('none');
+          feeEl.textContent = note;
         } else {
           const fixed = Number(li.dataset.feeFixed || 0);
           feeEl.textContent = note ? `${b(fixed)} ${note}` : b(fixed);
@@ -333,23 +390,24 @@ const steps: Step[] = [
     }
 
     function applyScenario() {
-      for (const li of steps) {
-        const ord = li.dataset[`order${scenario.charAt(0).toUpperCase()}${scenario.slice(1)}` as keyof DOMStringMap];
+      // show + order the steps in this scenario, then number them sequentially
+      const visible: HTMLElement[] = [];
+      for (const li of stepEls) {
+        const ord = li.dataset[`order${cap(scenario)}` as keyof DOMStringMap];
         if (ord) {
           li.hidden = false;
           li.style.order = String(ord);
-          const condEl = li.querySelector('[data-cond]') as HTMLElement;
-          const condText = li.dataset[`cond${scenario.charAt(0).toUpperCase()}${scenario.slice(1)}` as keyof DOMStringMap];
-          if (condText) {
-            condEl.textContent = condText;
-            condEl.hidden = false;
-          } else {
-            condEl.hidden = true;
-          }
+          visible.push(li);
         } else {
           li.hidden = true;
         }
       }
+      visible.sort((a, b2) => Number(a.style.order) - Number(b2.style.order));
+      visible.forEach((li, i) => {
+        (li.querySelector('.pstep-num') as HTMLElement).textContent = String(i + 1).padStart(2, '0');
+      });
+      // asterisk notes for this scenario
+      for (const ul of noteLists) ul.hidden = ul.dataset.scnNotes !== scenario;
     }
 
     scnBtns.forEach((btn) => {
@@ -363,8 +421,8 @@ const steps: Step[] = [
 
     [areaEl, costEl].forEach((el) => el.addEventListener('input', fees));
 
-    // touch: tap a step to toggle its tooltip (hover handles pointer devices)
-    steps.forEach((li) => {
+    // touch: tap a step to toggle its tooltip (hover covers pointer devices)
+    stepEls.forEach((li) => {
       li.addEventListener('click', (e) => {
         if ((e.target as HTMLElement).closest('a, .pnest-chip')) return;
         li.classList.toggle('open');
