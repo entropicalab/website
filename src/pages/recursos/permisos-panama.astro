@@ -43,7 +43,8 @@ const locale = 'es' as const;
         construir en el municipio de panamá pasa por una secuencia de aprobaciones ante la
         dirección de obras y construcciones (DOYC) y la ventanilla única, donde varias
         instituciones revisan los planos en simultáneo. este es el orden general, según de
-        dónde partas: un lote vacío, una demolición para construir nuevo, o una renovación.
+        dónde partas: un lote vacío, una demolición para construir nuevo, una renovación, o
+        una urbanización de más de 10 hectáreas, que primero pasa por MIVIOT a nivel nacional.
       </p>
       <ol class="resumen-list">
         <li>
@@ -67,16 +68,23 @@ const locale = 'es' as const;
           <p>la inspección final. sin objeciones técnicas, DOYC calcula el impuesto de ocupación y emite el PDO con firma digital y código QR. es el documento que legaliza el uso del edificio.</p>
         </li>
       </ol>
+      <p class="resumen-intro" style="margin-top: 32px;">
+        las urbanizaciones de más de 10 hectáreas empiezan antes, a nivel nacional: MIVIOT
+        aprueba el esquema de ordenamiento territorial (EOT), el anteproyecto de urbanización y
+        los planos de infraestructura con su estudio de impacto ambiental, y solo después el
+        proyecto entra al municipio por el mismo RLA, RDP y PDC. al final, el desarrollador
+        traspasa calles, parques y servidumbres al municipio antes de poder ocupar.
+      </p>
     </div>
   </section>
 
   <section class="tool-cta">
     <div class="site-wrap">
       <div class="cta-inner">
-        <div class="eyebrow">// del mapa al proyecto</div>
-        <h2 class="cta-h">un idóneo firma los planos. hagamos que pasen a la primera.</h2>
+        <div class="eyebrow">// aquí entramos nosotros</div>
+        <h2 class="cta-h">¿se ve como un enredo? un poco lo es. lo hemos recorrido muchas veces, y con gusto te acompañamos.</h2>
         <a class="btn amber" href={localized('/contact', locale)}>
-          cuéntanos de tu proyecto
+          hablemos de tu proyecto
           <span class="arrow-tail" aria-hidden="true"></span>
         </a>
       </div>
@@ -94,7 +102,7 @@ const locale = 'es' as const;
 
   .proceso-resumen { padding: 64px 0; border-top: 1px solid var(--line-on-paper); }
   .proceso-resumen .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 16px; display: inline-block; }
-  .resumen-h { font-size: clamp(22px, 2.6vw, 30px); font-weight: 300; letter-spacing: -0.015em; margin: 0 0 16px; max-width: 26ch; text-wrap: balance; }
+  .resumen-h { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.2; font-weight: 300; letter-spacing: -0.015em; margin: 0 0 16px; max-width: 34ch; text-wrap: balance; }
   .resumen-intro { font-size: 15px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 300; max-width: 70ch; margin: 0 0 32px; }
   .resumen-list { list-style: none; counter-reset: r; padding: 0; margin: 0; display: flex; flex-direction: column; }
   .resumen-list li { counter-increment: r; padding: 22px 0; border-top: 1px solid var(--line-on-paper-2); display: grid; grid-template-columns: 36px 1fr; gap: 16px; }
