@@ -1,325 +1,303 @@
 ---
 // interactive map of the municipio de panamá permitting process.
-// base draft · español only · vanilla (no libraries), same pattern as
-// CostCalculator.astro. the client island imports the pure fee model from
-// src/lib/permitFees.ts.
+// bilingual (es/en), vanilla (no libraries), same pattern as CostCalculator.
+// the client island imports the pure fee model from src/lib/permitFees.ts.
 //
-// casing: entrópica writes lowercase, but institutional siglas (RLA, RDP,
-// PDC, DOYC, MIVIOT…) are kept UPPERCASE on purpose, so the reader can tell
-// they are acronyms. deliberate exception to the house style.
+// casing: entrópica writes lowercase, and the brand stylesheet enforces
+// text-transform: lowercase globally. institutional siglas (RLA, RDP, PDC,
+// DOYC, MIVIOT…) and the B/. currency are opted out via text-transform:none
+// in the styles so they render as authored.
+import type { Locale } from '../i18n/strings';
+import { localized } from '../i18n/utils';
 import { FIXED_FEES } from '../lib/permitFees';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
 
 const DEFAULT_COST_M2 = 1000; // B/. per m², matches the site's stated median
 const DEFAULT_AREA = 250; // m²
 
-// entry scenarios, chosen at the top. icon = google material symbol (verified
-// to render in the loaded font; 'demolition'/'excavator' do not, so demoler
-// uses front_loader).
-const scenarios = [
-  { key: 'vacio', label: 'lote vacío', sub: 'obra nueva', icon: 'grass' },
-  { key: 'demoler', label: 'demoler y construir', sub: 'estructura existente', icon: 'front_loader' },
-  { key: 'renovar', label: 'renovar lo existente', sub: 'sin demoler', icon: 'handyman' },
-  { key: 'urbanizacion', label: 'urbanización', sub: 'más de 10 hectáreas', icon: 'other_houses' },
-] as const;
-type ScnKey = (typeof scenarios)[number]['key'];
-
-// municipal ventanilla única: institutions that review in parallel (nested box).
-const ventanilla = [
-  { n: 'DOYC', d: 'dirección de obras y construcciones' },
-  { n: 'DINASEPI', d: 'bomberos · seguridad y prevención de incendios' },
-  { n: 'MINSA', d: 'ministerio de salud' },
-  { n: 'MOP', d: 'ministerio de obras públicas' },
-  { n: 'MIVIOT', d: 'vivienda y ordenamiento territorial' },
-  { n: 'IDAAN', d: 'acueductos y alcantarillados' },
-  { n: 'MIAMBIENTE', d: 'ministerio de ambiente' },
-  { n: 'ATTT', d: 'tránsito y transporte terrestre' },
-];
-
-// responsibility tags.
-type Role = 'arquitecto' | 'ing-estructural' | 'ing-electromecanico' | 'contratista' | 'propietario';
-const roleLabels: Record<Role, string> = {
-  arquitecto: 'arquitecto',
-  'ing-estructural': 'ing. estructural',
-  'ing-electromecanico': 'ing. electromecánico',
-  contratista: 'contratista',
-  propietario: 'propietario',
+// entry scenarios: key + icon are language-neutral; labels come from S.
+const scenarioKeys = ['vacio', 'demoler', 'renovar', 'urbanizacion'] as const;
+type ScnKey = (typeof scenarioKeys)[number];
+const scenarioIcons: Record<ScnKey, string> = {
+  vacio: 'grass',
+  demoler: 'front_loader',
+  renovar: 'handyman',
+  urbanizacion: 'other_houses',
 };
 
-interface Step {
+// ventanilla única institution siglas (same in both languages); descriptions in S.
+const vuKeys = ['DOYC', 'DINASEPI', 'MINSA', 'MOP', 'MIVIOT', 'IDAAN', 'MIAMBIENTE', 'ATTT'] as const;
+
+type Role = 'arquitecto' | 'ing-estructural' | 'ing-electromecanico' | 'contratista' | 'propietario';
+
+// language-neutral step structure. text (title/inst/note/tip) lives in S.step[key].
+interface StepDef {
   key: string;
-  title: string;
-  inst: string;
   online?: boolean;
   nested?: boolean;
   roles: Role[];
   order: Partial<Record<ScnKey, number>>;
   feeKind: 'fixed' | 'tax' | 'assessed' | 'none';
   feeFixed?: number;
-  feeNote?: string;
-  tip: string;
 }
 
-const steps: Step[] = [
-  // ---- MIVIOT (national) phase · urbanización only ----
-  {
-    key: 'eot',
-    title: 'esquema de ordenamiento territorial (EOT)',
-    inst: 'MIVIOT',
-    roles: ['arquitecto'],
-    order: { urbanizacion: 1 },
-    feeKind: 'none',
-    feeNote: 'resolución ministerial · MIVIOT',
-    tip: 'el plan maestro para polígonos de más de 10 hectáreas (más de 300 ha exige un PPOT por ordenanza municipal). MIVIOT evalúa uso de suelo, densidad y capacidad ambiental, con revisión de SINAPROC y MIAMBIENTE, y consulta pública si hay alta densidad o vivienda social. termina en una resolución ministerial que habilita la lotificación.',
-  },
-  {
-    key: 'ante_urb',
-    title: 'anteproyecto de urbanización',
-    inst: 'MIVIOT · ventanilla única',
-    roles: ['arquitecto'],
-    order: { urbanizacion: 2 },
-    feeKind: 'none',
-    feeNote: 'nota de anteproyecto · validez 2 años',
-    tip: 'la lotificación preliminar, revisada por la ventanilla única de MIVIOT (MIVIOT, MOP, IDAAN, MINSA, MIAMBIENTE y ATTT). da derecho a preventa y a la promesa de compraventa, con validez de 2 años. no autoriza movimiento de tierra ni construcción.',
-  },
-  {
-    key: 'planos_urb',
-    title: 'planos de urbanización (+ EIA)',
-    inst: 'MIVIOT · ventanilla única',
-    roles: ['arquitecto', 'ing-estructural', 'ing-electromecanico'],
-    order: { urbanizacion: 3 },
-    feeKind: 'assessed',
-    feeNote: 'incluye EIA de MIAMBIENTE',
-    tip: 'los planos de infraestructura ya diseñados: vialidad (MOP y ATTT), drenaje pluvial (MOP), agua potable y sanitario (IDAAN y MINSA), más la resolución de impacto ambiental (EIA) de MIAMBIENTE. al sellarse, MIVIOT emite la nota de apto, que permite segregar las fincas individuales en el registro público.',
-  },
-  // ---- municipal (DOYC) phase ----
-  {
-    key: 'anteproyecto',
-    title: 'anteproyecto (RLA)',
-    inst: 'MUPA · DOYC',
-    online: true,
-    roles: ['arquitecto'],
-    order: { vacio: 1, demoler: 1, urbanizacion: 4 },
-    feeKind: 'fixed',
-    feeFixed: FIXED_FEES.anteproyectoBase,
-    feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina`,
-    tip: 'aprobación urbana del concepto: uso de suelo, altura, retiros y densidad. 100% en línea por el portal RLA de alcaldía digital, lo presenta un arquitecto idóneo. no autoriza construir, pero da derecho a preventa. validez 3 años, prorrogable 1 más.',
-  },
-  {
-    key: 'demolicion',
-    title: 'permiso de demolición',
-    inst: 'DOYC',
-    roles: ['contratista'],
-    order: { demoler: 2 },
-    feeKind: 'assessed',
-    feeNote: 'impuesto de demolición · MITRADEL si supera B/. 1,000,000',
-    tip: 'requiere un plan de demolición firmado por ingeniero idóneo, con la secuencia de retiro de elementos para evitar el colapso progresivo. DOYC inspecciona el sitio, calcula el impuesto de demolición y emite el permiso en máximo 5 días hábiles tras el pago.',
-  },
-  {
-    key: 'terraceria',
-    title: 'movimiento de tierra (ATC)',
-    inst: 'DOYC',
-    roles: ['contratista'],
-    order: { vacio: 2, demoler: 3, urbanizacion: 5 },
-    feeKind: 'none',
-    feeNote: 'autorización transitoria · ATC',
-    tip: 'la autorización transitoria de construcción (ATC) permite arrancar la terracería, el movimiento de tierra y las fundaciones tempranas mientras la ventanilla única termina de revisar los planos. no lleva un impuesto aparte: el de construcción se paga en el PDC.',
-  },
-  {
-    key: 'rdp',
-    title: 'planos constructivos (RDP)',
-    inst: 'ventanilla única',
-    nested: true,
-    roles: ['arquitecto', 'ing-estructural', 'ing-electromecanico'],
-    order: { vacio: 3, demoler: 4, urbanizacion: 6 },
-    feeKind: 'fixed',
-    feeFixed: FIXED_FEES.minsaReview + FIXED_FEES.mopReview,
-    feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina + tarifas DINASEPI`,
-    tip: 'revisión técnica multidisciplinaria, en simultáneo, por todas las instituciones de la ventanilla única. requiere un anteproyecto aprobado, e incluye las memorias de cálculo firmadas por los ingenieros estructural y electromecánico. al aprobar, los planos se firman por el director de DOYC y se registran con un número CONS. validez 5 años.',
-  },
-  {
-    key: 'rdpm',
-    title: 'planos misceláneos (RDPM)',
-    inst: 'ventanilla única',
-    nested: true,
-    roles: ['arquitecto', 'ing-estructural', 'ing-electromecanico'],
-    order: { renovar: 1 },
-    feeKind: 'fixed',
-    feeFixed: FIXED_FEES.minsaReview + FIXED_FEES.mopReview,
-    feeNote: `+ B/. ${FIXED_FEES.perSheet} por lámina + tarifas DINASEPI`,
-    tip: 'la vía para obras que no alteran el uso de suelo, la densidad ni la zonificación. exenta del anteproyecto, pero pasa por la misma revisión de la ventanilla única que un RDP, con las memorias de los ingenieros estructural y electromecánico.',
-  },
-  {
-    key: 'pdc',
-    title: 'permiso de construcción (PDC)',
-    inst: 'DOYC',
-    online: true,
-    roles: ['contratista'],
-    order: { vacio: 4, demoler: 5, renovar: 2, urbanizacion: 7 },
-    feeKind: 'tax',
-    feeNote: 'impuesto de construcción · acuerdo 73-17',
-    tip: 'autoriza la construcción física, y el permiso queda asignado al contratista. DOYC revisa el presupuesto y fija el avalúo en 10 días hábiles, y emite el permiso 5 días hábiles después del pago. el impuesto de construcción es progresivo sobre el valor de la obra.',
-  },
-  {
-    key: 'traspaso',
-    title: 'traspaso de infraestructura',
-    inst: 'DOYC · MOP · IDAAN',
-    roles: ['propietario'],
-    order: { urbanizacion: 8 },
-    feeKind: 'none',
-    feeNote: 'actas de aceptación + escritura de traspaso',
-    tip: 'antes de ocupar, el desarrollador entrega al municipio las calles, parques, áreas verdes y servidumbres, con actas de aceptación de MOP e IDAAN y una escritura pública de traspaso (ley 63 de 2015). sin este paso no se emite la ocupación de la urbanización.',
-  },
-  {
-    key: 'ocupacion',
-    title: 'permiso de ocupación (PDO)',
-    inst: 'DOYC',
-    roles: ['propietario'],
-    order: { vacio: 5, demoler: 6, renovar: 3, urbanizacion: 9 },
-    feeKind: 'assessed',
-    feeNote: 'impuesto de ocupación',
-    tip: 'la inspección final (PDO, también procesada como SPOC). si no hay objeciones técnicas, DOYC calcula el impuesto de ocupación y, tras el pago, emite el permiso con firma digital y código QR. es el documento que legaliza el uso del edificio.',
-  },
+const steps: StepDef[] = [
+  { key: 'eot', roles: ['arquitecto'], order: { urbanizacion: 1 }, feeKind: 'none' },
+  { key: 'ante_urb', roles: ['arquitecto'], order: { urbanizacion: 2 }, feeKind: 'none' },
+  { key: 'planos_urb', roles: ['arquitecto', 'ing-estructural', 'ing-electromecanico'], order: { urbanizacion: 3 }, feeKind: 'assessed' },
+  { key: 'anteproyecto', online: true, roles: ['arquitecto'], order: { vacio: 1, demoler: 1, urbanizacion: 4 }, feeKind: 'fixed', feeFixed: FIXED_FEES.anteproyectoBase },
+  { key: 'demolicion', roles: ['contratista'], order: { demoler: 2 }, feeKind: 'assessed' },
+  { key: 'terraceria', roles: ['contratista'], order: { vacio: 2, demoler: 3, urbanizacion: 5 }, feeKind: 'none' },
+  { key: 'rdp', nested: true, roles: ['arquitecto', 'ing-estructural', 'ing-electromecanico'], order: { vacio: 3, demoler: 4, urbanizacion: 6 }, feeKind: 'fixed', feeFixed: FIXED_FEES.minsaReview + FIXED_FEES.mopReview },
+  { key: 'rdpm', nested: true, roles: ['arquitecto', 'ing-estructural', 'ing-electromecanico'], order: { renovar: 1 }, feeKind: 'fixed', feeFixed: FIXED_FEES.minsaReview + FIXED_FEES.mopReview },
+  { key: 'pdc', online: true, roles: ['contratista'], order: { vacio: 4, demoler: 5, renovar: 2, urbanizacion: 7 }, feeKind: 'tax' },
+  { key: 'traspaso', roles: ['propietario'], order: { urbanizacion: 8 }, feeKind: 'none' },
+  { key: 'ocupacion', roles: ['propietario'], order: { vacio: 5, demoler: 6, renovar: 3, urbanizacion: 9 }, feeKind: 'assessed' },
 ];
 
-// asterisk notes shown at the bottom of a scenario tab.
-const scenarioNotes: Record<ScnKey, string[]> = {
-  vacio: [],
-  demoler: [],
-  renovar: [
-    'el anteproyecto (RLA) solo se requiere si la obra cambia el uso, la zonificación o la densidad.',
-    'la demolición aplica solo si hay demolición parcial de la estructura.',
-  ],
-  urbanizacion: [
-    'la fase de MIVIOT (EOT, anteproyecto y planos de urbanización) aplica a polígonos de más de 10 hectáreas; más de 300 ha exige además un PPOT por ordenanza municipal.',
-  ],
-};
+const perSheet = FIXED_FEES.perSheet;
+type StepText = { title: string; inst: string; note?: string; tip: string };
 
-// server-render the default (lote vacío) sequence numbered, so the page reads
-// correctly before javascript runs and for crawlers.
+const STRINGS = {
+  es: {
+    scn: {
+      vacio: { label: 'lote vacío', sub: 'obra nueva' },
+      demoler: { label: 'demoler y construir', sub: 'estructura existente' },
+      renovar: { label: 'renovar lo existente', sub: 'sin demoler' },
+      urbanizacion: { label: 'urbanización', sub: 'más de 10 hectáreas' },
+    },
+    vu: {
+      DOYC: 'dirección de obras y construcciones',
+      DINASEPI: 'bomberos · seguridad y prevención de incendios',
+      MINSA: 'ministerio de salud',
+      MOP: 'ministerio de obras públicas',
+      MIVIOT: 'vivienda y ordenamiento territorial',
+      IDAAN: 'acueductos y alcantarillados',
+      MIAMBIENTE: 'ministerio de ambiente',
+      ATTT: 'tránsito y transporte terrestre',
+    },
+    roles: {
+      arquitecto: 'arquitecto',
+      'ing-estructural': 'ing. estructural',
+      'ing-electromecanico': 'ing. electromecánico',
+      contratista: 'contratista',
+      propietario: 'propietario',
+    } as Record<Role, string>,
+    online: '100% en línea',
+    vuLabel: 'revisión simultánea · ventanilla única',
+    assessed: 'se calcula en inspección',
+    startQ: 'quiero construir algo, ¿por dónde empiezo?',
+    estK: 'impuesto de construcción estimado',
+    estSub: 'sobre un valor de obra de',
+    areaLabel: 'área a construir',
+    costLabel: 'costo de construcción por m²',
+    estNote: 'los montos marcados con * en el mapa dependen del tamaño y del costo por m² que ajustes aquí.',
+    calcLink: '¿no sabes cuánto puede costar por m²? usa la calculadora →',
+    foot: 'mapa general del proceso, no la lista completa de documentos. las cifras son estimaciones con datos públicos de 2026, para orientar. el impuesto de demolición y el de ocupación los calcula DOYC en inspección, así que aquí se marcan como tales. para el número de tu proyecto, hablemos.',
+    notes: {
+      renovar: [
+        'el anteproyecto (RLA) solo se requiere si la obra cambia el uso, la zonificación o la densidad.',
+        'la demolición aplica solo si hay demolición parcial de la estructura.',
+      ],
+      urbanizacion: [
+        'la fase de MIVIOT (EOT, anteproyecto y planos de urbanización) aplica a polígonos de más de 10 hectáreas; más de 300 ha exige además un PPOT por ordenanza municipal.',
+      ],
+    } as Partial<Record<ScnKey, string[]>>,
+    step: {
+      eot: { title: 'esquema de ordenamiento territorial (EOT)', inst: 'MIVIOT', note: 'resolución ministerial · MIVIOT', tip: 'el plan maestro para polígonos de más de 10 hectáreas (más de 300 ha exige un PPOT por ordenanza municipal). MIVIOT evalúa uso de suelo, densidad y capacidad ambiental, con revisión de SINAPROC y MIAMBIENTE, y consulta pública si hay alta densidad o vivienda social. termina en una resolución ministerial que habilita la lotificación.' },
+      ante_urb: { title: 'anteproyecto de urbanización', inst: 'MIVIOT · ventanilla única', note: 'nota de anteproyecto · validez 2 años', tip: 'la lotificación preliminar, revisada por la ventanilla única de MIVIOT (MIVIOT, MOP, IDAAN, MINSA, MIAMBIENTE y ATTT). da derecho a preventa y a la promesa de compraventa, con validez de 2 años. no autoriza movimiento de tierra ni construcción.' },
+      planos_urb: { title: 'planos de urbanización (+ EIA)', inst: 'MIVIOT · ventanilla única', note: 'incluye EIA de MIAMBIENTE', tip: 'los planos de infraestructura ya diseñados: vialidad (MOP y ATTT), drenaje pluvial (MOP), agua potable y sanitario (IDAAN y MINSA), más la resolución de impacto ambiental (EIA) de MIAMBIENTE. al sellarse, MIVIOT emite la nota de apto, que permite segregar las fincas individuales en el registro público.' },
+      anteproyecto: { title: 'anteproyecto (RLA)', inst: 'MUPA · DOYC', note: `+ B/. ${perSheet} por lámina`, tip: 'aprobación urbana del concepto: uso de suelo, altura, retiros y densidad. 100% en línea por el portal RLA de alcaldía digital, lo presenta un arquitecto idóneo. no autoriza construir, pero da derecho a preventa. validez 3 años, prorrogable 1 más.' },
+      demolicion: { title: 'permiso de demolición', inst: 'DOYC', note: 'impuesto de demolición · MITRADEL si supera B/. 1,000,000', tip: 'requiere un plan de demolición firmado por ingeniero idóneo, con la secuencia de retiro de elementos para evitar el colapso progresivo. DOYC inspecciona el sitio, calcula el impuesto de demolición y emite el permiso en máximo 5 días hábiles tras el pago.' },
+      terraceria: { title: 'movimiento de tierra (ATC)', inst: 'DOYC', note: 'autorización transitoria · ATC', tip: 'la autorización transitoria de construcción (ATC) permite arrancar la terracería, el movimiento de tierra y las fundaciones tempranas mientras la ventanilla única termina de revisar los planos. no lleva un impuesto aparte: el de construcción se paga en el PDC.' },
+      rdp: { title: 'planos constructivos (RDP)', inst: 'ventanilla única', note: `+ B/. ${perSheet} por lámina + tarifas DINASEPI`, tip: 'revisión técnica multidisciplinaria, en simultáneo, por todas las instituciones de la ventanilla única. requiere un anteproyecto aprobado, e incluye las memorias de cálculo firmadas por los ingenieros estructural y electromecánico. al aprobar, los planos se firman por el director de DOYC y se registran con un número CONS. validez 5 años.' },
+      rdpm: { title: 'planos misceláneos (RDPM)', inst: 'ventanilla única', note: `+ B/. ${perSheet} por lámina + tarifas DINASEPI`, tip: 'la vía para obras que no alteran el uso de suelo, la densidad ni la zonificación. exenta del anteproyecto, pero pasa por la misma revisión de la ventanilla única que un RDP, con las memorias de los ingenieros estructural y electromecánico.' },
+      pdc: { title: 'permiso de construcción (PDC)', inst: 'DOYC', note: 'impuesto de construcción · acuerdo 73-17', tip: 'autoriza la construcción física, y el permiso queda asignado al contratista. DOYC revisa el presupuesto y fija el avalúo en 10 días hábiles, y emite el permiso 5 días hábiles después del pago. el impuesto de construcción es progresivo sobre el valor de la obra.' },
+      traspaso: { title: 'traspaso de infraestructura', inst: 'DOYC · MOP · IDAAN', note: 'actas de aceptación + escritura de traspaso', tip: 'antes de ocupar, el desarrollador entrega al municipio las calles, parques, áreas verdes y servidumbres, con actas de aceptación de MOP e IDAAN y una escritura pública de traspaso (ley 63 de 2015). sin este paso no se emite la ocupación de la urbanización.' },
+      ocupacion: { title: 'permiso de ocupación (PDO)', inst: 'DOYC', note: 'impuesto de ocupación', tip: 'la inspección final (PDO, también procesada como SPOC). si no hay objeciones técnicas, DOYC calcula el impuesto de ocupación y, tras el pago, emite el permiso con firma digital y código QR. es el documento que legaliza el uso del edificio.' },
+    } as Record<string, StepText>,
+  },
+  en: {
+    scn: {
+      vacio: { label: 'empty lot', sub: 'new build' },
+      demoler: { label: 'demolish and build', sub: 'existing structure' },
+      renovar: { label: 'renovate', sub: 'no demolition' },
+      urbanizacion: { label: 'urbanization', sub: 'over 10 hectares' },
+    },
+    vu: {
+      DOYC: 'directorate of works and constructions',
+      DINASEPI: 'fire department · safety and fire prevention',
+      MINSA: 'ministry of health',
+      MOP: 'ministry of public works',
+      MIVIOT: 'housing and land management',
+      IDAAN: 'aqueducts and sewers',
+      MIAMBIENTE: 'ministry of environment',
+      ATTT: 'transit and land transport authority',
+    },
+    roles: {
+      arquitecto: 'architect',
+      'ing-estructural': 'structural eng.',
+      'ing-electromecanico': 'electromechanical eng.',
+      contratista: 'contractor',
+      propietario: 'owner',
+    } as Record<Role, string>,
+    online: '100% online',
+    vuLabel: 'simultaneous review · single window',
+    assessed: 'assessed on inspection',
+    startQ: 'i want to build something. where do i start?',
+    estK: 'estimated construction tax',
+    estSub: 'on a works value of',
+    areaLabel: 'area to build',
+    costLabel: 'construction cost per m²',
+    estNote: 'the amounts marked with * on the map depend on the size and the cost per m² you set here.',
+    calcLink: 'not sure what it costs per m²? use the calculator →',
+    foot: 'a general map of the process, not the full document list. figures are estimates from public 2026 data, for guidance. the demolition tax and the occupancy tax are assessed by DOYC on inspection, so they are marked as such here. for your project\'s number, let\'s talk.',
+    notes: {
+      renovar: [
+        'the preliminary design (RLA) is only required if the work changes the use, zoning or density.',
+        'demolition applies only if there is partial demolition of the structure.',
+      ],
+      urbanizacion: [
+        'the MIVIOT phase (EOT, urbanization preliminary and plans) applies to polygons over 10 hectares; over 300 ha also requires a PPOT by municipal ordinance.',
+      ],
+    } as Partial<Record<ScnKey, string[]>>,
+    step: {
+      eot: { title: 'territorial planning scheme (EOT)', inst: 'MIVIOT', note: 'ministerial resolution · MIVIOT', tip: 'the master plan for polygons over 10 hectares (over 300 ha also needs a PPOT by municipal ordinance). MIVIOT evaluates land use, density and environmental capacity, with SINAPROC and MIAMBIENTE review, and a public consultation for high density or social housing. it ends in a ministerial resolution that unlocks the lotification.' },
+      ante_urb: { title: 'urbanization preliminary (anteproyecto)', inst: 'MIVIOT · single window', note: 'anteproyecto note · valid 2 years', tip: 'the preliminary lotification, reviewed by MIVIOT\'s single window (MIVIOT, MOP, IDAAN, MINSA, MIAMBIENTE and ATTT). it grants pre-sale and promise-of-sale rights, valid for 2 years. it does not authorize earthworks or construction.' },
+      planos_urb: { title: 'urbanization plans (+ EIA)', inst: 'MIVIOT · single window', note: 'includes MIAMBIENTE EIA', tip: 'the infrastructure plans, fully engineered: roads (MOP and ATTT), stormwater (MOP), potable water and sanitary networks (IDAAN and MINSA), plus the environmental impact assessment (EIA) from MIAMBIENTE. once stamped, MIVIOT issues the nota de apto, which lets the individual parcels (fincas) be segregated in the public registry.' },
+      anteproyecto: { title: 'preliminary design (RLA)', inst: 'MUPA · DOYC', note: `+ B/. ${perSheet} per sheet`, tip: 'urban approval of the concept: land use, height, setbacks and density. filed 100% online through the RLA portal of alcaldía digital, by a licensed architect. it does not authorize building, but it grants pre-sale rights. valid 3 years, extendable once.' },
+      demolicion: { title: 'demolition permit', inst: 'DOYC', note: 'demolition tax · MITRADEL above B/. 1,000,000', tip: 'requires a demolition plan signed by a licensed engineer, with the sequence of element removal to prevent progressive collapse. DOYC inspects the site, assesses the demolition tax and issues the permit within 5 business days of payment.' },
+      terraceria: { title: 'earthworks (ATC)', inst: 'DOYC', note: 'transitional authorization · ATC', tip: 'the transitional construction authorization (ATC) lets earthworks, grading and early foundations start while the single window finishes reviewing the plans. it carries no separate tax: the construction tax is paid at the PDC.' },
+      rdp: { title: 'construction drawings (RDP)', inst: 'single window', note: `+ B/. ${perSheet} per sheet + DINASEPI fees`, tip: 'the multidisciplinary technical review, all at once, by every institution in the single window. it requires an approved preliminary design, and includes the calculation memories signed by the structural and electromechanical engineers. once approved, the drawings are signed by the DOYC director and registered with a CONS number. valid 5 years.' },
+      rdpm: { title: 'miscellaneous plans (RDPM)', inst: 'single window', note: `+ B/. ${perSheet} per sheet + DINASEPI fees`, tip: 'the route for works that do not change land use, density or zoning. exempt from the preliminary design, but it goes through the same single-window review as an RDP, with the structural and electromechanical engineers\' memories.' },
+      pdc: { title: 'construction permit (PDC)', inst: 'DOYC', note: 'construction tax · acuerdo 73-17', tip: 'authorizes physical construction, and the permit is assigned to the contractor. DOYC reviews the budget and sets the appraisal in 10 business days, and issues the permit 5 business days after payment. the construction tax is progressive on the value of the works.' },
+      traspaso: { title: 'infrastructure handover', inst: 'DOYC · MOP · IDAAN', note: 'acceptance acts + handover deed', tip: 'before occupation, the developer hands the streets, parks, green areas and easements over to the municipality, with acceptance acts from MOP and IDAAN and a public handover deed (ley 63 de 2015). without this step the urbanization\'s occupancy permit is not issued.' },
+      ocupacion: { title: 'occupancy permit (PDO)', inst: 'DOYC', note: 'occupancy tax', tip: 'the final inspection (PDO, also processed as SPOC). with no technical objections, DOYC assesses the occupancy tax and, after payment, issues the permit with a digital signature and QR code. it is the document that legalizes the building\'s use.' },
+    } as Record<string, StepText>,
+  },
+}[locale];
+
+// server-render the default (empty lot) sequence numbered, for no-JS + crawlers.
 const defaultScn: ScnKey = 'vacio';
-const defaultOrder = steps
-  .filter((s) => s.order[defaultScn])
-  .sort((a, b) => (a.order[defaultScn]! - b.order[defaultScn]!));
+const defaultOrder = steps.filter((s) => s.order[defaultScn]).sort((a, b) => a.order[defaultScn]! - b.order[defaultScn]!);
 const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padStart(2, '0')]));
 ---
 
-<section class="pmap">
-  <!-- ============ scenario selector ============ -->
+<section class="pmap" data-locale={locale} data-assessed={STRINGS.assessed}>
+  <!-- scenario selector -->
   <div class="pmap-start">
-    <h2 class="pmap-start-q">quiero construir algo, ¿por dónde empiezo?</h2>
+    <h2 class="pmap-start-q">{STRINGS.startQ}</h2>
     <div class="seg" role="group" id="pm-scn">
-      {scenarios.map((s, i) => (
-        <button type="button" class={`seg-btn${i === 0 ? ' active' : ''}`} data-scn={s.key}>
-          <span class="material-symbols-outlined seg-icon">{s.icon}</span>
-          <span class="seg-label">{s.label}</span>
-          <span class="seg-sub">{s.sub}</span>
+      {scenarioKeys.map((k, i) => (
+        <button type="button" class={`seg-btn${i === 0 ? ' active' : ''}`} data-scn={k}>
+          <span class="material-symbols-outlined seg-icon">{scenarioIcons[k]}</span>
+          <span class="seg-label">{STRINGS.scn[k].label}</span>
+          <span class="seg-sub">{STRINGS.scn[k].sub}</span>
         </button>
       ))}
     </div>
   </div>
 
-  <!-- ============ flow ============ -->
+  <!-- flow -->
   <ol class="pmap-flow" id="pm-flow">
-    {steps.map((st) => (
-      <li
-        class="pstep"
-        data-step={st.key}
-        data-order-vacio={st.order.vacio ?? ''}
-        data-order-demoler={st.order.demoler ?? ''}
-        data-order-renovar={st.order.renovar ?? ''}
-        data-order-urbanizacion={st.order.urbanizacion ?? ''}
-        data-fee-kind={st.feeKind}
-        data-fee-fixed={st.feeFixed ?? ''}
-        data-fee-note={st.feeNote ?? ''}
-        hidden={!st.order[defaultScn]}
-        tabindex="0"
-      >
-        <div class="pstep-card">
-          <div class="pstep-head">
-            <span class="pstep-num">{defaultNum.get(st.key) ?? ''}</span>
-            <div class="pstep-titles">
-              <h3 class="pstep-title">{st.title}</h3>
-              <div class="pstep-inst">
-                {st.inst}
-                {st.online && <span class="pstep-online">100% en línea</span>}
+    {steps.map((st) => {
+      const t = STRINGS.step[st.key];
+      return (
+        <li
+          class="pstep"
+          data-step={st.key}
+          data-order-vacio={st.order.vacio ?? ''}
+          data-order-demoler={st.order.demoler ?? ''}
+          data-order-renovar={st.order.renovar ?? ''}
+          data-order-urbanizacion={st.order.urbanizacion ?? ''}
+          data-fee-kind={st.feeKind}
+          data-fee-fixed={st.feeFixed ?? ''}
+          data-fee-note={t.note ?? ''}
+          hidden={!st.order[defaultScn]}
+          tabindex="0"
+        >
+          <div class="pstep-card">
+            <div class="pstep-head">
+              <span class="pstep-num">{defaultNum.get(st.key) ?? ''}</span>
+              <div class="pstep-titles">
+                <h3 class="pstep-title">{t.title}</h3>
+                <div class="pstep-inst">
+                  {t.inst}
+                  {st.online && <span class="pstep-online">{STRINGS.online}</span>}
+                </div>
               </div>
+              <span class="pstep-fee" data-fee>—</span>
             </div>
-            <span class="pstep-fee" data-fee>—</span>
-          </div>
-          <div class="pstep-roles">
-            {st.roles.map((r) => <span class={`role role-${r}`}>{roleLabels[r]}</span>)}
-          </div>
-          {st.nested && (
-            <div class="pstep-nested">
-              <div class="pnest-label">revisión simultánea · ventanilla única</div>
-              <div class="pnest-chips">
-                {ventanilla.map((v) => (
-                  <span class="pnest-chip" tabindex="0">{v.n}<span class="pnest-tip">{v.d}</span></span>
-                ))}
+            <div class="pstep-roles">
+              {st.roles.map((r) => <span class={`role role-${r}`}>{STRINGS.roles[r]}</span>)}
+            </div>
+            {st.nested && (
+              <div class="pstep-nested">
+                <div class="pnest-label">{STRINGS.vuLabel}</div>
+                <div class="pnest-chips">
+                  {vuKeys.map((v) => (
+                    <span class="pnest-chip" tabindex="0">{v}<span class="pnest-tip">{STRINGS.vu[v]}</span></span>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-          <p class="pstep-tip">{st.tip}</p>
-        </div>
-      </li>
-    ))}
+            )}
+            <p class="pstep-tip">{t.tip}</p>
+          </div>
+        </li>
+      );
+    })}
   </ol>
 
-  <!-- per-scenario asterisk notes (server-rendered, indexable) -->
+  <!-- per-scenario asterisk notes -->
   <div class="pmap-notes">
-    {(Object.keys(scenarioNotes) as ScnKey[]).map((k) =>
-      scenarioNotes[k].length ? (
+    {scenarioKeys.map((k) =>
+      STRINGS.notes[k]?.length ? (
         <ul data-scn-notes={k} hidden={k !== defaultScn}>
-          {scenarioNotes[k].map((n) => <li>{n}</li>)}
+          {STRINGS.notes[k]!.map((n) => <li>{n}</li>)}
         </ul>
       ) : null
     )}
   </div>
 
-  <!-- ============ cost estimator (highlighted, at the bottom) ============ -->
+  <!-- highlighted cost estimator -->
   <div class="pmap-estimator">
     <div class="est-figure">
-      <div class="est-k">impuesto de construcción estimado <span class="est-star">*</span></div>
+      <div class="est-k">{STRINGS.estK} <span class="est-star">*</span></div>
       <div class="est-v" id="pm-tax-head">B/. 2,495</div>
-      <div class="est-sub">sobre un valor de obra de <b id="pm-project-value">B/. 250,000</b></div>
+      <div class="est-sub">{STRINGS.estSub} <b id="pm-project-value">B/. 250,000</b></div>
     </div>
     <div class="est-controls">
       <div class="pin-field">
-        <label for="pm-area">área a construir <span class="pin-val" id="pm-area-val">250 m²</span></label>
+        <label for="pm-area">{STRINGS.areaLabel} <span class="pin-val" id="pm-area-val">250 m²</span></label>
         <input type="range" id="pm-area" min="30" max="10000" step="10" value={DEFAULT_AREA} />
       </div>
       <div class="pin-field">
-        <label for="pm-cost">costo de construcción por m² <span class="pin-val" id="pm-cost-val">B/. 1,000</span></label>
+        <label for="pm-cost">{STRINGS.costLabel} <span class="pin-val" id="pm-cost-val">B/. 1,000</span></label>
         <input type="range" id="pm-cost" min="300" max="4000" step="50" value={DEFAULT_COST_M2} />
       </div>
     </div>
     <p class="est-note">
-      * los montos marcados con <span class="est-star">*</span> en el mapa dependen del tamaño y
-      del costo por m² que ajustes aquí.
-      <a class="est-link" href="/tools/cost-calculator">¿no sabes cuánto puede costar por m²? usa la calculadora →</a>
+      <span class="est-star">*</span> {STRINGS.estNote}
+      <a class="est-link" href={localized('/tools/cost-calculator', locale)}>{STRINGS.calcLink}</a>
     </p>
   </div>
 
-  <p class="pmap-foot">
-    mapa general del proceso, no la lista completa de documentos. las cifras son
-    estimaciones con datos públicos de 2026, para orientar. el impuesto de demolición y el
-    de ocupación los calcula DOYC en inspección, así que aquí se marcan como tales. para el
-    número de tu proyecto, hablemos.
-  </p>
+  <p class="pmap-foot">{STRINGS.foot}</p>
 </section>
 
 <style>
   .pmap { padding: 8px 0 24px; }
 
-  /* the brand stylesheet forces text-transform: lowercase globally. these
-     elements mix lowercase prose with UPPERCASE siglas (RLA, DOYC…) and the
-     B/. currency, so opt them out to render as authored. */
+  /* opt acronyms + B/. currency out of the brand's global lowercase transform */
   .pstep-title, .pstep-tip, .pstep-fee, .pnest-chip, .pnest-tip,
   .pmap-notes li, .est-v, .est-sub, .pin-val, .est-note, .pmap-foot {
     text-transform: none;
   }
 
-  /* scenario selector */
   .pmap-start { padding: 8px 0; }
   .pmap-start-q { font-size: clamp(18px, 2vw, 22px); font-weight: 300; letter-spacing: -0.015em; margin: 0 0 18px; }
   .pmap-start .seg { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line-on-paper); }
@@ -330,7 +308,6 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
   @media (max-width: 760px) {
     .seg-btn { border-right: none; border-bottom: 1px solid var(--line-on-paper); }
     .seg-btn:nth-child(odd) { border-right: 1px solid var(--line-on-paper); }
-    .seg-btn:nth-last-child(-n+1) { border-bottom: none; }
   }
   @media (max-width: 460px) { .seg-btn { border-right: none !important; } .seg-btn:last-child { border-bottom: none; } }
   .seg-btn:hover { color: var(--ink-on-paper); }
@@ -339,7 +316,6 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
   .seg-label { font-size: 14px; font-weight: 400; letter-spacing: 0.01em; }
   .seg-sub { font-size: 11px; opacity: 0.7; }
 
-  /* flow */
   .pmap-flow { list-style: none; padding: 0; margin: 40px 0 0; display: flex; flex-direction: column; }
   .pstep { display: flex; position: relative; padding-bottom: 28px; outline: none; }
   .pstep[hidden] { display: none; }
@@ -366,7 +342,7 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
   .pnest-chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .pnest-chip { position: relative; font-size: 12px; font-weight: 400; letter-spacing: 0.03em; padding: 5px 10px; background: var(--paper); border: 1px solid var(--line-on-paper); color: var(--ink-on-paper); cursor: help; outline: none; }
   .pnest-chip:hover, .pnest-chip:focus { border-color: var(--amber); }
-  .pnest-tip { position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 5; width: max-content; max-width: 240px; background: #1c1c1c; color: #f4f1ea; font-size: 11px; font-weight: 300; letter-spacing: 0; text-transform: none; line-height: 1.4; padding: 8px 10px; opacity: 0; visibility: hidden; transition: opacity 0.12s; pointer-events: none; }
+  .pnest-tip { position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 5; width: max-content; max-width: 240px; background: #1c1c1c; color: #f4f1ea; font-size: 11px; font-weight: 300; letter-spacing: 0; line-height: 1.4; padding: 8px 10px; opacity: 0; visibility: hidden; transition: opacity 0.12s; pointer-events: none; }
   .pnest-chip:hover .pnest-tip, .pnest-chip:focus .pnest-tip { opacity: 1; visibility: visible; }
 
   .pstep-tip { margin: 14px 0 0 48px; font-size: 13px; line-height: 1.55; color: var(--mute-on-paper); font-weight: 300; max-width: 68ch; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.25s ease, opacity 0.2s; }
@@ -382,14 +358,11 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
   .pmap-notes li { font-size: 12px; line-height: 1.5; color: var(--mute-on-paper); font-weight: 300; padding-left: 16px; position: relative; }
   .pmap-notes li::before { content: '*'; position: absolute; left: 0; color: var(--amber); }
 
-  /* highlighted cost estimator */
   .pmap-estimator { margin-top: 40px; border: 1px solid var(--ink-on-paper); background: var(--paper-2); padding: 28px 28px 24px; display: grid; grid-template-columns: auto 1fr; gap: 32px 48px; align-items: start; }
   @media (max-width: 700px) { .pmap-estimator { grid-template-columns: 1fr; gap: 24px; } }
   .est-figure { border-left: 3px solid var(--amber); padding-left: 18px; }
   .est-k { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute-on-paper); font-weight: 400; }
   .est-star { color: var(--amber); }
-  /* reserve width for the widest possible value ("> B/. 206,295" at the slider
-     max, monospace = 1ch per char) so the number never reflows as you drag. */
   .est-v { font-size: clamp(30px, 3.6vw, 42px); font-weight: 300; letter-spacing: -0.03em; color: var(--amber); font-feature-settings: 'tnum' 1; line-height: 1.05; margin: 6px 0 4px; min-width: 13ch; white-space: nowrap; }
   .est-sub { font-size: 12px; color: var(--mute-on-paper); font-weight: 300; }
   .est-sub b { color: var(--ink-on-paper); font-weight: 400; }
@@ -410,7 +383,9 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
 
   const root = document.querySelector('.pmap') as HTMLElement | null;
   if (root) {
-    const money = new Intl.NumberFormat('es-PA', { maximumFractionDigits: 0 });
+    const locale = root.dataset.locale === 'en' ? 'en' : 'es';
+    const assessedText = root.dataset.assessed ?? 'se calcula en inspección';
+    const money = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-PA', { maximumFractionDigits: 0 });
     const b = (n: number) => `B/. ${money.format(Math.round(n))}`;
     const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -432,8 +407,6 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
       const cost = Number(costEl.value);
       const value = area * cost;
       const tax = constructionTax(value);
-
-      // at the slider ceiling the real project can be larger, so show "> ".
       const atMax = area >= Number(areaEl.max) && cost >= Number(costEl.max);
       const pre = atMax ? '> ' : '';
 
@@ -449,10 +422,10 @@ const defaultNum = new Map(defaultOrder.map((s, i) => [s.key, String(i + 1).padS
         feeEl.classList.remove('assessed', 'tax', 'none');
         if (kind === 'tax') {
           feeEl.classList.add('tax');
-          feeEl.textContent = `≈ ${b(tax)} *`;
+          feeEl.textContent = `≈ ${pre}${b(tax)} *`;
         } else if (kind === 'assessed') {
           feeEl.classList.add('assessed');
-          feeEl.textContent = 'se calcula en inspección';
+          feeEl.textContent = assessedText;
         } else if (kind === 'none') {
           feeEl.classList.add('none');
           feeEl.textContent = note;

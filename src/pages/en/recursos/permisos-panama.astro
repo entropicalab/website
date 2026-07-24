@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PermitFlowchart from '../../../components/PermitFlowchart.astro';
+import { localized } from '../../../i18n/utils';
+
+const locale = 'en' as const;
+---
+
+<BaseLayout
+  title="construction permits in panama · the process map"
+  description="an interactive map of the construction permitting process in the municipality of panamá, central america: preliminary design, single window, construction and occupancy, with taxes and fees estimated per step."
+  locale={locale}
+  ogImage="/arq-tropical.jpg"
+>
+  <section class="tool-hero">
+    <div class="site-wrap">
+      <div class="eyebrow">// resources</div>
+      <h1 class="hero-h">
+        the map of the building<br />
+        permit in panamá.
+      </h1>
+      <p class="hero-lede">
+        the full municipality of panamá process, step by step. pick your starting point,
+        set the size and the cost per m², and you'll see the taxes and fees each stage
+        carries. it is a general map, not the document list.
+      </p>
+    </div>
+  </section>
+
+  <section class="tool-body">
+    <div class="site-wrap">
+      <PermitFlowchart locale={locale} />
+    </div>
+  </section>
+
+  <!-- crawlable text summary: the same content in plain prose, indexable
+       regardless of how the interactive map renders. -->
+  <section class="proceso-resumen">
+    <div class="site-wrap">
+      <div class="eyebrow">// the process in words</div>
+      <h2 class="resumen-h">the stages of a building permit in the municipality of panamá.</h2>
+      <p class="resumen-intro">
+        building in the municipality of panamá runs through a sequence of approvals before
+        the directorate of works and constructions (DOYC) and the single window, where
+        several institutions review the drawings at once. this is the general order, by where
+        you start: an empty lot, a demolition to build new, a renovation, or an urbanization
+        over 10 hectares, which passes through MIVIOT at the national level first.
+      </p>
+      <ol class="resumen-list">
+        <li>
+          <h3>preliminary design (RLA)</h3>
+          <p>urban approval of the concept: land use, height, setbacks and density. filed 100% online through the RLA portal of alcaldía digital, signed by a licensed architect, valid for 3 years. it grants pre-sale rights, but does not authorize building.</p>
+        </li>
+        <li>
+          <h3>construction drawings (RDP) or miscellaneous (RDPM)</h3>
+          <p>the multidisciplinary technical review in the single window, where DOYC, DINASEPI (fire department), MINSA, MOP, MIVIOT, IDAAN, MIAMBIENTE and ATTT evaluate the drawings at once. the RDP requires a prior preliminary design; the RDPM, for works that do not change use or zoning, is exempt. once approved, the drawings receive a CONS number valid for 5 years.</p>
+        </li>
+        <li>
+          <h3>demolition and earthworks</h3>
+          <p>if there is a structure to remove, the demolition permit needs a plan signed by a licensed engineer, and DOYC assesses the demolition tax on inspection. earthworks and early foundations can start under the transitional construction authorization (ATC) while the drawings are still under review.</p>
+        </li>
+        <li>
+          <h3>construction permit (PDC)</h3>
+          <p>authorizes physical construction. DOYC sets the appraisal in 10 business days and issues the permit 5 business days after payment. here the construction tax is paid, progressive on the value of the works under acuerdo 73-17: 1.00% up to B/. 500,000, 1.26% on the excess to B/. 1,000,000, and 0.50% beyond that.</p>
+        </li>
+        <li>
+          <h3>occupancy permit (PDO)</h3>
+          <p>the final inspection. with no technical objections, DOYC assesses the occupancy tax and issues the PDO with a digital signature and QR code. it is the document that legalizes the building's use.</p>
+        </li>
+      </ol>
+      <p class="resumen-intro" style="margin-top: 32px;">
+        urbanizations over 10 hectares start earlier, at the national level: MIVIOT approves
+        the territorial planning scheme (EOT), the urbanization preliminary and the
+        infrastructure plans with their environmental impact assessment, and only then does
+        the project enter the municipality through the same RLA, RDP and PDC. at the end, the
+        developer hands the streets, parks and easements over to the municipality before it
+        can be occupied.
+      </p>
+    </div>
+  </section>
+
+  <section class="tool-cta">
+    <div class="site-wrap">
+      <div class="cta-inner">
+        <div class="eyebrow">// this is where we come in</div>
+        <h2 class="cta-h">looks like a maze? it is, a little. we have walked it many times, and we are happy to walk it with you.</h2>
+        <a class="btn amber" href={localized('/contact', locale)}>
+          let's talk about your project
+          <span class="arrow-tail" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tool-hero { padding: 96px 0 40px; }
+  .tool-hero .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 24px; font-weight: 400; }
+  .hero-h { font-size: clamp(32px, 4.5vw, 56px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; font-weight: 300; text-wrap: balance; }
+  .hero-lede { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: var(--mute-on-paper); max-width: 64ch; margin: 0; font-weight: 300; }
+
+  .tool-body { padding: 24px 0 64px; }
+
+  .proceso-resumen { padding: 64px 0; border-top: 1px solid var(--line-on-paper); }
+  .proceso-resumen .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute-on-paper-2); font-weight: 400; margin-bottom: 16px; display: inline-block; }
+  .resumen-h { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.2; font-weight: 300; letter-spacing: -0.015em; margin: 0 0 16px; max-width: 52ch; text-wrap: balance; }
+  .resumen-intro { font-size: 15px; line-height: 1.65; color: var(--mute-on-paper); font-weight: 300; max-width: 70ch; margin: 0 0 32px; }
+  .resumen-intro, .resumen-list h3, .resumen-list p { text-transform: none; }
+  .resumen-list { list-style: none; counter-reset: r; padding: 0; margin: 0; display: flex; flex-direction: column; }
+  .resumen-list li { counter-increment: r; padding: 22px 0; border-top: 1px solid var(--line-on-paper-2); display: grid; grid-template-columns: 36px 1fr; gap: 4px 16px; }
+  .resumen-list li::before { content: counter(r, decimal-leading-zero); grid-column: 1; grid-row: 1; font-size: 13px; color: var(--amber); font-weight: 400; font-feature-settings: 'tnum' 1; padding-top: 3px; }
+  .resumen-list h3 { grid-column: 2; font-size: 16px; font-weight: 400; letter-spacing: -0.01em; margin: 0 0 6px; }
+  .resumen-list p { grid-column: 2; font-size: 14px; line-height: 1.6; color: var(--mute-on-paper); font-weight: 300; margin: 0; max-width: 72ch; }
+  @media (max-width: 640px) { .resumen-list li { grid-template-columns: 1fr; gap: 6px; } }
+
+  .tool-cta { padding: 80px 0; border-top: 1px solid var(--line-on-paper); }
+  .cta-inner { max-width: 720px; }
+  .cta-inner .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; font-weight: 400; }
+  .cta-h { font-size: clamp(26px, 3vw, 38px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 28px; font-weight: 300; text-wrap: balance; }
+</style>

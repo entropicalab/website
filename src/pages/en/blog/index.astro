@@ -42,18 +42,31 @@ function getTopic(categories: string[] = []): string {
 
   <section class="tool-callout">
     <div class="site-wrap">
-      <a class="tool-card" href={localized('/tools/cost-calculator', locale)}>
-        <div class="tool-card-body">
-          <div class="eyebrow amber">// interactive tool</div>
-          <h2 class="tool-card-h">construction + operating cost calculator.</h2>
-          <p class="tool-card-p">
-            estimate what it costs to build, renovate and operate a building in panamá,
-            and the difference, month after month, between a typical building and one built
-            to the sustainable code.
-          </p>
-        </div>
-        <span class="tool-card-cta">open the calculator <span class="arrow-tail" aria-hidden="true"></span></span>
-      </a>
+      <div class="tool-grid">
+        <a class="tool-card" href={localized('/tools/cost-calculator', locale)}>
+          <div class="tool-card-body">
+            <div class="eyebrow amber">// interactive tool</div>
+            <h2 class="tool-card-h">construction + operating cost calculator.</h2>
+            <p class="tool-card-p">
+              estimate what it costs to build, renovate and operate a building in panamá,
+              and the difference, month after month, between a typical building and one built
+              to the sustainable code.
+            </p>
+          </div>
+          <span class="tool-card-cta">open the calculator <span class="arrow-tail" aria-hidden="true"></span></span>
+        </a>
+        <a class="tool-card" href={localized('/recursos/permisos-panama', locale)}>
+          <div class="tool-card-body">
+            <div class="eyebrow amber">// interactive tool</div>
+            <h2 class="tool-card-h">the building permit map for panamá.</h2>
+            <p class="tool-card-p">
+              the municipality of panamá process, step by step, by where you start, with the
+              taxes and fees each stage carries.
+            </p>
+          </div>
+          <span class="tool-card-cta">open the map <span class="arrow-tail" aria-hidden="true"></span></span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -127,7 +140,9 @@ function getTopic(categories: string[] = []): string {
   .topics-label { color: var(--mute-on-paper); margin-right: 8px; }
 
   .tool-callout { padding: 8px 0 32px; }
-  .tool-card { display: flex; align-items: center; justify-content: space-between; gap: 32px; border: 1px solid var(--amber); padding: 28px 32px; color: inherit; text-decoration: none; transition: background 0.15s; }
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .tool-grid { grid-template-columns: 1fr; } }
+  .tool-card { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 20px; border: 1px solid var(--amber); padding: 28px 32px; color: inherit; text-decoration: none; transition: background 0.15s; }
   .tool-card:hover { background: var(--paper-2); }
   .tool-card .eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; display: inline-block; }
   .tool-card-h { font-size: clamp(20px, 2.4vw, 28px); line-height: 1.15; letter-spacing: -0.015em; font-weight: 300; margin: 0 0 12px; max-width: 28ch; }

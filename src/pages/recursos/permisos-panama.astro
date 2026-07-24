@@ -107,8 +107,13 @@ const locale = 'es' as const;
   /* opt out of the brand's global lowercase so siglas (RLA, DOYC…) render caps */
   .resumen-intro, .resumen-list h3, .resumen-list p { text-transform: none; }
   .resumen-list { list-style: none; counter-reset: r; padding: 0; margin: 0; display: flex; flex-direction: column; }
-  .resumen-list li { counter-increment: r; padding: 22px 0; border-top: 1px solid var(--line-on-paper-2); display: grid; grid-template-columns: 36px 1fr; gap: 16px; }
-  .resumen-list li::before { content: counter(r, decimal-leading-zero); font-size: 13px; color: var(--amber); font-weight: 400; font-feature-settings: 'tnum' 1; padding-top: 3px; }
+  .resumen-list li { counter-increment: r; padding: 22px 0; border-top: 1px solid var(--line-on-paper-2); display: grid; grid-template-columns: 36px 1fr; gap: 4px 16px; }
+  /* place the counter in col 1 row 1, and keep BOTH the heading and paragraph
+     in col 2 (otherwise the <p> auto-flows into the 36px column and wraps one
+     word per line). */
+  .resumen-list li::before { content: counter(r, decimal-leading-zero); grid-column: 1; grid-row: 1; font-size: 13px; color: var(--amber); font-weight: 400; font-feature-settings: 'tnum' 1; padding-top: 3px; }
+  .resumen-list h3 { grid-column: 2; }
+  .resumen-list p { grid-column: 2; }
   .resumen-list h3 { font-size: 16px; font-weight: 400; letter-spacing: -0.01em; margin: 0 0 6px; }
   .resumen-list p { font-size: 14px; line-height: 1.6; color: var(--mute-on-paper); font-weight: 300; margin: 0; max-width: 72ch; }
   @media (max-width: 640px) { .resumen-list li { grid-template-columns: 1fr; gap: 6px; } }
